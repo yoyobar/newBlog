@@ -18,6 +18,9 @@ const Header = () => {
     const aboutHandler = () => {
         setShowMenu(false);
     };
+    const githubHandler = () => {
+        setShowMenu(false);
+    };
 
     return (
         <div className='relative select-none w-full h-12 bg-header text-header-text text-2xl font-medium flex justify-between pl-8 pr-8 items-center'>
@@ -35,6 +38,14 @@ const Header = () => {
                         <div onClick={animationHandler} className='p-2 rounded-md w-full text-center hover:bg-blue-600'>
                             Turn <span>{running ? 'OFF' : 'ON'}</span> Animation
                         </div>
+                        <Link
+                            target='_blank'
+                            href='https://github.com/yoyobar'
+                            onClick={githubHandler}
+                            className='p-2 rounded-md w-full text-center hover:bg-blue-600'
+                        >
+                            Github
+                        </Link>
                     </div>
                 )}
                 <Image
