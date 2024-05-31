@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<h3 align="center">newBlog 제작 프로젝트</h2>
+<p align="center">
+<img src="https://img.shields.io/badge/-typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=48a0eb">
+<img src="https://img.shields.io/badge/-React-20232a?style=for-the-badge&logo=React&logoColor=61dafb">
+<img src="https://img.shields.io/badge/-Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white"><br/>
+  <img src="https://img.shields.io/badge/-Firebase-ffca28?style=for-the-badge&logo=firebase&logoColor=red">
+  <img src="https://img.shields.io/badge/-TailwindCSS-647f8d?style=for-the-badge&logo=tailwindcss&logoColor=06B6D4">
+  <img src="https://img.shields.io/badge/-ZUSTAND-5c1f70?style=for-the-badge">
+</p>
+<hr>
 
-## Getting Started
+`Next.js` 신규 블로그 프로젝트
 
-First, run the development server:
+## 구현 목표
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## HOME
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+-   인터랙티브 반응형 디자인
+-   애니메이션 효과
+-   동적 라우팅 구현 (App-router)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## POST
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+-   카테고리 분류
+-   MDX 파일의 대한 형태 지정
+-   이미지 첨부의 대한 형태 지정
+-   Automator를 통한 webp 변환
+-   코드 블럭, 특수 `mdx`문법의 대한 형태 지정
+-   인터랙티브 반응형 디자인
 
-## Learn More
+## COMMENT
 
-To learn more about Next.js, take a look at the following resources:
+-   인증 구현
+-   전체 코멘트를 분류하고 관리
+-   firebase realtime DB를 통한 댓글 관리
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## DIARY
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+-   Calendar 라이브러리 중 하나로 캘린더 구현
+-   캘린더 별 짧은 일기장 구현 및 라우팅
