@@ -52,13 +52,15 @@ const Header = () => {
                     onClick={() => {
                         setShowMenu(!showMenu);
                     }}
-                    className='cursor-pointer hover:brightness-75 transition'
+                    className={`${showMenu && 'brightness-200'} cursor-pointer hover:brightness-75 transition`}
                     width={24}
                     height={24}
                     alt='background-logo'
                     src={'/logo/main-logo.png'}
                 />
-                <Link href={'/'}>Trouble Wiki</Link>
+                <Link className='md:block hidden' href={'/'}>
+                    Trouble Wiki
+                </Link>
             </div>
             <div className='flex gap-2 items-center justify-between min-w-[220px]'>
                 <UserCount />
