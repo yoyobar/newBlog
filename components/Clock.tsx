@@ -21,11 +21,11 @@ const Clock = () => {
     const [time, setTime] = useState<Date>(new Date());
 
     useEffect(() => {
-        const intervalId = setInterval(() => {
+        const timeInterval = setInterval(() => {
             setTime(new Date());
         }, 1000);
 
-        return () => clearInterval(intervalId);
+        return () => clearInterval(timeInterval);
     }, []);
 
     const timeData = useMemo(() => formatTime(time), [time]);

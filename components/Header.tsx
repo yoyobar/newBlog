@@ -42,7 +42,7 @@ const Header = () => {
                             target='_blank'
                             href='https://github.com/yoyobar'
                             onClick={githubHandler}
-                            className='p-2 rounded-md w-full text-center hover:bg-blue-600'
+                            className='cursor-default p-2 rounded-md w-full text-center hover:bg-blue-600'
                         >
                             Github
                         </Link>
