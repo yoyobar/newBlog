@@ -6,24 +6,27 @@ import useAnimation from '@/store';
 
 const Snowfall = () => {
     const { running } = useAnimation();
-
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const container = containerRef.current;
         if (!container) return;
 
+        while (container.firstChild) {
+            container.removeChild(container.firstChild);
+        }
+
         for (let i = 0; i < 200; i++) {
             const snow = document.createElement('div');
             snow.className = styles.snow;
             snow.style.opacity = String(Math.random());
 
-            const startX = Math.random() * 100;
+            const startX = Math.random() * 90;
             const endX = startX + (Math.random() * 20 - 10);
             const scale = Math.max(Math.random(), 0.1);
 
             const keyframe = [
-                { transform: `translate(${startX}vw, 0) scale(${scale})` },
+                { transform: `translate(${startX}vw, 0vh) scale(${scale})` },
                 { transform: `translate(${endX}vw, 100vh) scale(${scale})` },
             ];
             const option = {
@@ -38,7 +41,7 @@ const Snowfall = () => {
         }
     }, [running]);
 
-    return running && <div ref={containerRef} className={`snow-container`}></div>;
+    return running && <div ref={containerRef} className={`snow-container ${styles.snowContainer}`}></div>;
 };
 
 export default Snowfall;

@@ -4,16 +4,9 @@ import Clock from './Clock';
 import Image from 'next/image';
 import UserCount from './UserCount';
 import { useState } from 'react';
-import useAnimation from '@/store';
 
 const Header = () => {
     const [showMenu, setShowMenu] = useState(false);
-    const { running, onToggle } = useAnimation();
-
-    const animationHandler = () => {
-        onToggle();
-        setShowMenu(false);
-    };
 
     const aboutHandler = () => {
         setShowMenu(false);
@@ -28,15 +21,12 @@ const Header = () => {
                 {showMenu && (
                     <div
                         className='
-                    z-10 absolute w-[160px] top-14 flex gap-1 
-                    flex-col justify-center items-center p-1 bg-background
+                    z-10 absolute w-[80px] top-14 flex gap-1 
+                    flex-col items-center p-1 bg-background
                      rounded-md font-normal border border-gray-600 shadow-gray-500 shadow-sm'
                     >
                         <div onClick={aboutHandler} className='p-2 rounded-md w-full text-center hover:bg-blue-600'>
-                            About Me
-                        </div>
-                        <div onClick={animationHandler} className='p-2 rounded-md w-full text-center hover:bg-blue-600'>
-                            Turn <span>{running ? 'OFF' : 'ON'}</span> Animation
+                            About
                         </div>
                         <Link
                             target='_blank'

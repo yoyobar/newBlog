@@ -11,7 +11,8 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 90%;
     height: 100%;
-    pointer-events: none; /* To allow interaction with other elements */
+    pointer-events: painted;
+    overflow: hidden;
 }

@@ -15,6 +15,10 @@ const Dock = () => {
             src: 'https://upload.wikimedia.org/wikipedia/commons/5/51/IMessage_logo.svg',
             text: 'Comments',
         },
+        {
+            src: 'https://upload.wikimedia.org/wikipedia/commons/a/ac/Windows_Settings_icon.svg',
+            text: 'Setting',
+        },
     ];
 
     return (
