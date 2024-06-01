@@ -32,7 +32,7 @@ const Clock = () => {
         return () => clearInterval(timeInterval);
     }, []);
 
-    const timeData = useMemo(() => formatTime(time), [time]);
+    const timeData = formatTime(time);
 
     return (
         <div>
