@@ -14,7 +14,6 @@ export default function Home() {
         >
             <Snowfall />
             <Header />
-            <Dock />
         </main>
     );
 }
