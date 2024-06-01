@@ -18,7 +18,8 @@ const formatTime = (date: Date) => {
 };
 
 const Clock = () => {
-    const [time, setTime] = useState<Date>(new Date());
+    const initialTime = new Date();
+    const [time, setTime] = useState<Date>(initialTime);
 
     useEffect(() => {
         const timeInterval = setInterval(() => {
