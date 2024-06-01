@@ -13,7 +13,7 @@ export default function Home() {
             className='w-full h-full bg-background relative'
         >
             <Snowfall />
-            <Header />
+            <Dock />
         </main>
     );
 }
