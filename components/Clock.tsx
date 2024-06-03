@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const formatTime = (date: Date) => {
     //? 월 일 시 분 데이터
@@ -18,25 +18,19 @@ const formatTime = (date: Date) => {
 };
 
 const Clock = () => {
-    const [time, setTime] = useState<Date>(new Date());
-
-    useEffect(() => {
-        setTime(new Date());
-    }, []);
+    const [time, setTime] = useState<string>(formatTime(new Date()));
 
     useEffect(() => {
         const timeInterval = setInterval(() => {
-            setTime(new Date());
+            setTime(formatTime(new Date()));
         }, 1000);
 
         return () => clearInterval(timeInterval);
     }, []);
 
-    const timeData = formatTime(time);
-
     return (
         <div>
-            <div>{timeData}</div>
+            <div>{time}</div>
         </div>
     );
 };
