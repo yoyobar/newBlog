@@ -22,6 +22,7 @@ const UserCount = () => {
         >
             <Icon.person_fill />
             <div>0</div>
+            <div className='ml-2 h-[15px] border-r border-r-gray-300'></div>
             {focus && <Modal>일일 방문자 수</Modal>}
         </div>
     );

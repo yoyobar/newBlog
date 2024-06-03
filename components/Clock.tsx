@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Loading from './Loading';
 
 const formatTime = (date: Date) => {
     //? 월 일 시 분 데이터
@@ -18,7 +19,7 @@ const formatTime = (date: Date) => {
 };
 
 const Clock = () => {
-    const [time, setTime] = useState<string>(formatTime(new Date()));
+    const [time, setTime] = useState<string>('');
 
     useEffect(() => {
         const timeInterval = setInterval(() => {
@@ -30,7 +31,8 @@ const Clock = () => {
 
     return (
         <div>
-            <div>{time}</div>
+            <div>{time === '' && <Loading />}</div>
+            <div>{time && time}</div>
         </div>
     );
 };
