@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Loading from './Loading';
+import { LOADING_ENUM } from '@/types';
 
 const formatTime = (date: Date) => {
     //? 월 일 시 분 데이터
@@ -31,7 +32,7 @@ const Clock = () => {
 
     return (
         <div>
-            <div>{time === '' && <Loading />}</div>
+            <div>{time === '' && <Loading type={LOADING_ENUM.SMALL} />}</div>
             <div>{time && time}</div>
         </div>
     );
