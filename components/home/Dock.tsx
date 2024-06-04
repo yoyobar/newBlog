@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 
 const Dock = () => {
     enum DataType {
@@ -31,6 +31,7 @@ const Dock = () => {
     ];
 
     const router = useRouter();
+    const pathname = usePathname();
 
     const selectHandler = (select: string) => {
         switch (select) {
@@ -55,14 +56,10 @@ const Dock = () => {
         <>
             <nav
                 className='
-            border border-[#565656] z-10 absolute top-[50%] 
+            border border-[#565656] relative top-[50%] 
             left-10 px-3 py-4 rounded-3xl bg-header
-            translate-y-[-40%]
-            w-auto
-            shadow-sm shadow-[#3f3f3f]
-            flex flex-col gap-5
-            select-none
-            skew-y-[5deg]
+            translate-y-[-40%] w-28 shadow-sm shadow-[#3f3f3f]
+            gap-5 select-none skew-y-[5deg] flex flex-col items-center
             '
             >
                 {dockData.map((item) => (

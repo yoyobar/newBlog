@@ -16,7 +16,7 @@ const Header = () => {
     };
 
     return (
-        <div className='relative select-none w-full h-12 bg-header text-header-text text-2xl font-medium flex justify-between pl-8 pr-8 items-center'>
+        <div className='relative select-none w-full h-12 bg-header text-header-text text-2xl font-medium flex justify-between pl-8 pr-8 items-center z-50'>
             <div className='flex gap-8 h-full items-center'>
                 {showMenu && (
                     <div
