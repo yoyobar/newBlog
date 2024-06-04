@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import Header from '@/components/Header';
+import Snowfall from '@/components/SnowFall';
+import Dock from '@/components/Dock';
 
 export const metadata: Metadata = {
     title: 'Trouble Wiki',
@@ -28,7 +31,21 @@ export default function RootLayout({
 }>) {
     return (
         <html lang='ko'>
-            <body className='overflow-hidden'>{children}</body>
+            <body className='overflow-hidden'>
+                <main
+                    style={{
+                        backgroundImage: `url(/logo/main-bg.webp)`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                    }}
+                    className='w-full h-full bg-background relative'
+                >
+                    <Header />
+                    <Snowfall />
+                    <Dock />
+                    {children}
+                </main>
+            </body>
         </html>
     );
 }

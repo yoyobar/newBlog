@@ -46,7 +46,7 @@ const Dock = () => {
 
                 break;
             case DataType.SETTING:
-                router.push('/option');
+                router.push('/setting');
                 break;
         }
     };

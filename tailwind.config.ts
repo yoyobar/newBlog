@@ -15,6 +15,7 @@ const config: Config = {
                         opacity: '0.9',
                     },
                 },
+
                 pageOn: {
                     '0%': {
                         scale: '0%',
@@ -23,10 +24,19 @@ const config: Config = {
                         scale: '100%',
                     },
                 },
+                pageOff: {
+                    '0%': {
+                        scale: '100%',
+                    },
+                    '100%': {
+                        scale: '0%',
+                    },
+                },
             },
             animation: {
                 popUp: 'popUp 0.3s ease-out 1',
                 pageOn: 'pageOn 0.3s ease-out 1',
+                pageOff: 'pageOff 0.3s ease-out 1',
             },
             colors: {
                 background: {
