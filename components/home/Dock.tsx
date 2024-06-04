@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 const Dock = () => {
     enum DataType {
@@ -31,7 +31,6 @@ const Dock = () => {
     ];
 
     const router = useRouter();
-    const pathname = usePathname();
 
     const selectHandler = (select: string) => {
         switch (select) {

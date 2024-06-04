@@ -40,9 +40,9 @@ export default function RootLayout({
                     }}
                     className='w-full h-full bg-background relative'
                 >
+                    <Header />
                     {children}
                     <Snowfall />
-                    <Header />
                     <Dock />
                 </main>
             </body>

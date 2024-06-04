@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useRef, useState } from 'react';
 
 const PageContainer = ({
     children,
@@ -12,6 +12,7 @@ const PageContainer = ({
     const [isDragging, setIsDragging] = useState(false);
     const [endPosition, setEndPosition] = useState({ x: 251, y: -23 });
     const [startPosition, setStartPosition] = useState({ x: 1192, y: 94 });
+    const [isMaximize, setIsMaximize] = useState(false);
 
     const exitHandler = () => {
         router.push('/');
@@ -38,13 +39,19 @@ const PageContainer = ({
         setIsDragging(false);
     };
 
+    const maximizeHandler = () => {
+        setIsMaximize((prev) => !prev);
+    };
+
     return (
         <>
             <div
                 style={{ left: endPosition.x, top: endPosition.y }}
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
-                className={`static w-full h-full md:border-t-[80px] border-transparent rounded-md z-10 md:absolute md:w-4/6 md:h-[calc(100%-40px)] animate-pageOn`}
+                className={`${!isMaximize && 'md:border-t-[80px] md:absolute md:w-4/6 md:h-[calc(100%-40px)]'} 
+                static animate-pageOn left-0 w-full h-full 
+                border-transparent rounded-md z-10`}
             >
                 <header
                     onMouseDown={handleMouseDown}
@@ -58,7 +65,7 @@ const PageContainer = ({
                     <div onClick={exitHandler} className='cursor-pointer relative w-5 h-5 rounded-full bg-[#fabb2c]'>
                         <div className='top-[5px] left-[3px] absolute w-[7px] h-1 rounded-md bg-[#a87f1f]'></div>
                     </div>
-                    <div className='relative w-5 h-5 rounded-full bg-[#28c841]'>
+                    <div onClick={maximizeHandler} className='hidden md:block relative w-5 h-5 rounded-full bg-[#28c841]'>
                         <div className='bottom-[3px] left-[2px] absolute w-5 h-5 font-bold -rotate-[40deg] text-xs text-[#146721]'>▲</div>
                         <div className='top-[3px] right-[1px] absolute w-5 h-5 font-bold rotate-[130deg] text-xs text-[#146721]'>▲</div>
                     </div>
