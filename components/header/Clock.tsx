@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Loading from './Loading';
+import Loading from '../Loading';
 import { LOADING_ENUM } from '@/types';
 
 const formatTime = (date: Date) => {

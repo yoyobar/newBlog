@@ -2,10 +2,10 @@
 
 import React, { useEffect, useRef } from 'react';
 import styles from './Snowfall.module.css';
-import useAnimation from '@/store';
+import useOptions from '@/store';
 
 const Snowfall = () => {
-    const { running } = useAnimation();
+    const { data } = useOptions();
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -39,9 +39,9 @@ const Snowfall = () => {
 
             container.appendChild(snow);
         }
-    }, [running]);
+    }, [data.animation]);
 
-    return running && <div ref={containerRef} className={`snow-container ${styles.snowContainer}`}></div>;
+    return data.animation && <div ref={containerRef} className={`snow-container ${styles.snowContainer}`}></div>;
 };
 
 export default Snowfall;

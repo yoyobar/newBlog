@@ -1,14 +1,29 @@
-import { create } from 'zustand';
+import { create, StateCreator } from 'zustand';
+import { persist, PersistOptions } from 'zustand/middleware';
 
-interface AnimationStore {
-    running: boolean;
-    onToggle: () => void;
+export interface OptionForm {
+    animation: boolean;
+    theme: boolean;
+}
+interface OptionStore {
+    data: OptionForm;
+    setData: (form: OptionForm) => void;
 }
 
-const useAnimation = create<AnimationStore>((set) => ({
-    running: true,
+type Persist = (config: StateCreator<OptionStore>, options: PersistOptions<OptionStore>) => StateCreator<OptionStore>;
 
-    onToggle: () => set((state) => ({ running: !state.running })),
-}));
-
-export default useAnimation;
+const useOptions = create<OptionStore>(
+    (persist as Persist)(
+        (set, get) => ({
+            data: {
+                animation: true,
+                theme: true,
+            },
+            setData: (form: OptionForm) => set({ data: form }),
+        }),
+        {
+            name: 'option',
+        }
+    )
+);
+export default useOptions;

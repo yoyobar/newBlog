@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import Header from '@/components/Header';
-import Snowfall from '@/components/SnowFall';
-import Dock from '@/components/Dock';
+import Header from '@/components/header/Header';
+import Snowfall from '@/components/home/SnowFall';
+import Dock from '@/components/home/Dock';
 
 export const metadata: Metadata = {
     title: 'Trouble Wiki',
