@@ -41,7 +41,7 @@ const PageContainer = ({
                         <div className='top-[3px] right-[1px] absolute w-5 h-5 font-bold rotate-[130deg] text-xs text-[#146721]'>▲</div>
                     </div>
                 </header>
-                <div className='p-2 overflow-y-scroll mr-2 h-[calc(100%-20px)]'>
+                <div className='overflow-y-scroll overflow-x-hidden p-2 mr-2 h-[calc(100%-20px)]'>
                     <div className='w-full h-full'>{children}</div>
                 </div>
             </div>
