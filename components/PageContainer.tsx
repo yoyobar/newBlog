@@ -71,7 +71,7 @@ const PageContainer = ({
                     </div>
                 </header>
                 <div className='overflow-y-scroll p-2 bg-background h-full rounded-b-md'>
-                    <div className='w-full h-full'>{children}</div>
+                    <div className='w-full h-[200vh]'>{children}</div>
                 </div>
             </div>
         </>
