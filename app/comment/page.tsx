@@ -4,7 +4,7 @@ const Comment = () => {
     return (
         <>
             <PageContainer>
-                <div>COMMENT</div>
+                <div className='text-3xl font-bold text-white'>COMMENT</div>
             </PageContainer>
         </>
     );

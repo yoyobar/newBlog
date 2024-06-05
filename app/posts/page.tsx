@@ -1,13 +1,13 @@
 import PageContainer from '@/components/PageContainer';
 
-const Post = () => {
+const Setting = () => {
     return (
         <>
             <PageContainer>
-                <div>POST</div>
+                <div>PAGE</div>
             </PageContainer>
         </>
     );
 };
 
-export default Post;
+export default Setting;

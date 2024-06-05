@@ -1,7 +1,9 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const withMDX = require('@next/mdx')();
+
+module.exports = withMDX({
+    pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
     webpack: (config) => {
-        reactStrictMode: false;
         config.module.rules.push({
             test: /\.svg$/,
             use: ['@svgr/webpack'],
@@ -9,6 +11,4 @@ const nextConfig = {
 
         return config;
     },
-};
-
-export default nextConfig;
+});

@@ -35,7 +35,7 @@ const Dock = () => {
     const selectHandler = (select: string) => {
         switch (select) {
             case DataType.WIKI:
-                router.push('/post');
+                router.push('/posts');
                 break;
             case DataType.CALENDAR:
                 router.push('/calendar');

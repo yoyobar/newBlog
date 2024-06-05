@@ -13,11 +13,13 @@ const PageContainer = ({
     const [endPosition, setEndPosition] = useState({ x: 251, y: -23 });
     const [startPosition, setStartPosition] = useState({ x: 1192, y: 94 });
     const [isMaximize, setIsMaximize] = useState(false);
+    const clickCount = useRef(0);
 
     const exitHandler = () => {
         router.push('/');
     };
 
+    //? DragDown 이벤트
     const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
         setIsDragging(true);
         setStartPosition({
@@ -43,6 +45,19 @@ const PageContainer = ({
         setIsMaximize((prev) => !prev);
     };
 
+    const doubleMaximizeHandler = () => {
+        clickCount.current += 1;
+
+        if (clickCount.current === 1) {
+            setTimeout(() => {
+                clickCount.current = 0;
+            }, 300);
+        } else if (clickCount.current === 2) {
+            clickCount.current = 0;
+            maximizeHandler();
+        }
+    };
+
     return (
         <>
             <div
@@ -50,10 +65,11 @@ const PageContainer = ({
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
                 className={`${!isMaximize && 'md:border-t-[80px] md:absolute md:w-4/6 md:h-[calc(100%-40px)]'} 
-                static animate-pageOn left-0 w-full h-full 
+                static animate-pageOn left-0 w-full h-full transition-width-height
                 border-transparent rounded-md z-10`}
             >
                 <header
+                    onClick={doubleMaximizeHandler}
                     onMouseDown={handleMouseDown}
                     className='flex select-none items-center gap-3 pl-2 rounded-t-md w-full h-[24px] bg-[#4b4b66]'
                 >
@@ -71,7 +87,7 @@ const PageContainer = ({
                     </div>
                 </header>
                 <div className='overflow-y-scroll p-2 bg-background h-full rounded-b-md'>
-                    <div className='w-full h-[200vh]'>{children}</div>
+                    <div className='w-full h-full'>{children}</div>
                 </div>
             </div>
         </>

@@ -30,3 +30,11 @@ html {
     /* border: 2px solid transparent;
     background-clip: content-box; */
 }
+
+@layer utilities {
+    .transition-maximize {
+        @apply transition-width-height;
+        transition-duration: 500ms;
+        transition-timing-function: ease;
+    }
+}
