@@ -31,20 +31,18 @@ export default function RootLayout({
 }>) {
     return (
         <html lang='ko'>
-            <body className='overflow-hidden'>
-                <main
-                    style={{
-                        backgroundImage: `url(/logo/main-bg.webp)`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                    }}
-                    className='w-full h-full bg-background relative'
-                >
-                    <Header />
-                    {children}
-                    <Snowfall />
-                    <Dock />
-                </main>
+            <body
+                style={{
+                    backgroundImage: `url(/logo/main-bg.webp)`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                }}
+                className='isolate overflow-hidden w-full h-full bg-background'
+            >
+                <Header />
+                {children}
+                <Snowfall />
+                <Dock />
             </body>
         </html>
     );

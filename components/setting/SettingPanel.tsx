@@ -100,7 +100,7 @@ const SettingPanel = () => {
                     </div>
                 </label>
             </div>
-            <button onClick={confirmHandler} className='bg-indigo-400 mt-32 text-3xl hover:bg-indigo-600 rounded-md w-fit p-4 transition'>
+            <button onClick={confirmHandler} className='bg-indigo-400 mt-10 text-3xl hover:bg-indigo-600 rounded-md w-fit p-4 transition'>
                 저장
             </button>
         </div>
