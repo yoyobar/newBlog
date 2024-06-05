@@ -37,7 +37,7 @@ export default function RootLayout({
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                 }}
-                className='isolate overflow-hidden w-full h-full bg-background'
+                className='fixed overflow-hidden w-full h-full bg-background'
             >
                 <Header />
                 {children}
