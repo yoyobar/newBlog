@@ -87,7 +87,7 @@ const PageContainer = ({
                     </div>
                 </header>
                 <div className='overflow-y-scroll p-2 bg-background h-full rounded-b-md'>
-                    <div className='w-full h-full prose prose-sm md:prose-base lg:prose-lg prose-slate'>{children}</div>
+                    <div className='text-3xl prose'>{children}</div>
                 </div>
             </div>
         </>

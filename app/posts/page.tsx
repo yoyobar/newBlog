@@ -3,26 +3,35 @@ import path from 'path';
 import matter from 'gray-matter';
 import Link from 'next/link';
 import PageContainer from '@/components/PageContainer';
+import { allBrowseLoad, allFilesLoad } from '@/lib/parseData';
+
+const BASE_DIR = 'posts';
 
 export default function Home() {
-    const blogDir = 'posts/';
-    const files = fs.readdirSync(path.join(blogDir));
-    const blogs = files.map((filename) => {
-        const fileContent = fs.readFileSync(path.join(blogDir, filename), 'utf-8');
+    const { category, mdx } = allBrowseLoad();
+    const categoryFiles = allFilesLoad(category);
 
+    const allFiles = [...mdx.map((file) => ({ category: '', file })), ...categoryFiles];
+
+    const blogs = allFiles.map(({ category, file }) => {
+        const filePath = category ? path.join(BASE_DIR, category, file) : path.join(BASE_DIR, file);
+        const fileContent = fs.readFileSync(filePath, 'utf-8');
         const { data: frontMatter } = matter(fileContent);
 
         return {
             meta: frontMatter,
-            slug: filename.replace('.mdx', ''),
+            slug: category ? `${category}/${file.replace('.mdx', '')}` : file.replace('.mdx', ''),
         };
     });
 
     return (
         <PageContainer>
             {blogs.map((blog) => (
-                <Link passHref key={blog.slug} href={'/posts/' + blog.slug}>
-                    <article>{blog.meta.title}</article>
+                <Link passHref key={blog.slug} href={`/posts/${blog.slug}`}>
+                    <article>
+                        <h2>{blog.meta.title}</h2>
+                        {blog.meta.category && <p>Category: {blog.meta.category}</p>}
+                    </article>
                 </Link>
             ))}
         </PageContainer>
