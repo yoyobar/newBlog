@@ -21,6 +21,6 @@
             "@/*": ["./*"]
         }
     },
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "utils/Modules.ts", "components/SnowFall.jsx"],
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "utils/Modules.ts", "app/components/SnowFall.jsx"],
     "exclude": ["node_modules"]
 }

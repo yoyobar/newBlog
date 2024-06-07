@@ -1,9 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 const Dock = () => {
+    const path = usePathname();
+
     enum DataType {
         WIKI = 'Wiki',
         CALENDAR = 'Calendar',
@@ -35,17 +37,19 @@ const Dock = () => {
     const selectHandler = (select: string) => {
         switch (select) {
             case DataType.WIKI:
+                if (path === '/posts') return router.push('/');
                 router.push('/posts');
                 break;
             case DataType.CALENDAR:
+                if (path === '/calendar') return router.push('/');
                 router.push('/calendar');
-
                 break;
             case DataType.COMMENTS:
+                if (path === '/comment') return router.push('/');
                 router.push('/comment');
-
                 break;
             case DataType.SETTING:
+                if (path === '/setting') return router.push('/');
                 router.push('/setting');
                 break;
         }
