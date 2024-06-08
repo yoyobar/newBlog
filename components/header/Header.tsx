@@ -4,7 +4,6 @@ import Clock from './Clock';
 import Image from 'next/image';
 import UserCount from './UserCount';
 import { useState } from 'react';
-import ThemeStatus from './ThemeStatus';
 
 const Header = () => {
     const [showMenu, setShowMenu] = useState(false);
