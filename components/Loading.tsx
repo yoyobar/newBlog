@@ -1,4 +1,4 @@
-import { LOADING_ENUM } from '@/types';
+import { LOADING_ENUM } from '@/config/types';
 import React from 'react';
 
 interface LoadingProps {

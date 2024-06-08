@@ -3,6 +3,7 @@ import path from 'path';
 import matter from 'gray-matter';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import PageContainer from '@/components/PageContainer';
+import Mdx_Body from '@/components/mdx';
 
 const BASE_DIR = 'posts';
 
@@ -39,7 +40,7 @@ export default async function Page({ params }: { params: { category: string; slu
     return (
         <PageContainer>
             <h1>{frontMatter.title}</h1>
-            <MDXRemote source={content} />
+            <Mdx_Body content={content} />
         </PageContainer>
     );
 }

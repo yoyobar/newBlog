@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import styles from './Snowfall.module.css';
-import useOptions from '@/store';
+import useOptions from '@/config/store';
 
 const Snowfall = () => {
     const { data } = useOptions();

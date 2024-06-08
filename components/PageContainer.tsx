@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
-
 const PageContainer = ({
     children,
 }: Readonly<{
@@ -19,7 +18,6 @@ const PageContainer = ({
         router.push('/');
     };
 
-    //? DragDown 이벤트
     const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
         setIsDragging(true);
         setStartPosition({
@@ -65,7 +63,7 @@ const PageContainer = ({
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
                 className={`${!isMaximize && 'md:border-t-[80px] md:absolute md:w-4/6 md:h-[calc(100%-40px)]'} 
-                static animate-pageOn left-0 w-full h-full transition-width-height
+                static left-0 w-full h-full transition-width-height
                 border-transparent rounded-md z-10`}
             >
                 <header
@@ -86,7 +84,7 @@ const PageContainer = ({
                         <div className='top-[3px] right-[1px] absolute w-5 h-5 font-bold rotate-[130deg] text-xs text-[#146721]'>▲</div>
                     </div>
                 </header>
-                <div className='overflow-y-scroll p-2 bg-background h-full rounded-b-md'>
+                <div className='overflow-y-scroll p-6 bg-white dark:bg-background h-full rounded-b-md'>
                     <div className='text-3xl prose'>{children}</div>
                 </div>
             </div>

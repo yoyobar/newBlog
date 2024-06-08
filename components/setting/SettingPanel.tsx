@@ -1,5 +1,5 @@
 'use client';
-import useOptions from '@/store';
+import useOptions from '@/config/store';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -47,10 +47,10 @@ const SettingPanel = () => {
     };
 
     return (
-        <div className='select-none p-10 flex flex-col text-header-text'>
+        <div className='select-none p-10 flex flex-col dark:text-header-text'>
             <div className='text-5xl font-bold'>홈페이지 옵션 설정</div>
 
-            <div className='text-3xl mt-32 mb-10 bg-slate-600 p-4 rounded-md'>애니메이션 설정</div>
+            <div className='text-3xl mt-32 mb-10 bg-slate-300 dark:bg-slate-600 p-4 rounded-md'>애니메이션 설정</div>
 
             <div>
                 <input
@@ -76,7 +76,7 @@ const SettingPanel = () => {
                 </label>
             </div>
 
-            <div className='text-3xl mt-32 mb-10 bg-slate-600 p-4 rounded-md'>테마 설정</div>
+            <div className='text-3xl mt-32 mb-10 bg-slate-300 dark:bg-slate-600 p-4 rounded-md'>테마 설정</div>
 
             <div>
                 <input
@@ -100,7 +100,10 @@ const SettingPanel = () => {
                     </div>
                 </label>
             </div>
-            <button onClick={confirmHandler} className='bg-indigo-400 mt-10 text-3xl hover:bg-indigo-600 rounded-md w-fit p-4 transition'>
+            <button
+                onClick={confirmHandler}
+                className='bg-indigo-400 text-white mt-10 text-3xl hover:bg-indigo-600 rounded-md w-fit p-4 transition'
+            >
                 저장
             </button>
         </div>

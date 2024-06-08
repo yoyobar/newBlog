@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Loading from '../Loading';
-import { LOADING_ENUM } from '@/types';
+import { LOADING_ENUM } from '@/config/types';
 
 const formatTime = (date: Date) => {
     //? 월 일 시 분 데이터

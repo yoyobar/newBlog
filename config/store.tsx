@@ -14,7 +14,7 @@ type Persist = (config: StateCreator<OptionStore>, options: PersistOptions<Optio
 
 const useOptions = create<OptionStore>(
     (persist as Persist)(
-        (set, get) => ({
+        (set) => ({
             data: {
                 animation: true,
                 theme: true,

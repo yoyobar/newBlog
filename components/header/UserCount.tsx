@@ -1,6 +1,6 @@
 'use client';
 
-import { Icon } from '@/utils/Icon';
+import { Icon } from '@/lib/parseIcon';
 import React, { useState } from 'react';
 import Modal from './Modal';
 
