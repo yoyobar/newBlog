@@ -4,6 +4,7 @@ import Clock from './Clock';
 import Image from 'next/image';
 import UserCount from './UserCount';
 import { useState } from 'react';
+import ThemeStatus from './ThemeStatus';
 
 const Header = () => {
     const [showMenu, setShowMenu] = useState(false);
@@ -16,7 +17,9 @@ const Header = () => {
     };
 
     return (
-        <div className='relative select-none w-full h-12 bg-header text-header-text text-2xl font-medium flex justify-between pl-8 pr-8 items-center z-50'>
+        <div
+            className={`bg-header text-header-text fill-header-text relative select-none w-full h-12 text-2xl font-medium flex justify-between pl-8 pr-8 items-center z-50`}
+        >
             <div className='flex gap-8 h-full items-center'>
                 {showMenu && (
                     <div

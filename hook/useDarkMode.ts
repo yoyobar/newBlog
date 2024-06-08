@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 export const useDarkMode = () => {
     const { data } = useOptions();
-    const { setTheme, theme } = useTheme();
+    const { setTheme } = useTheme();
     useEffect(() => {
         if (data.theme) {
             setTheme('dark');

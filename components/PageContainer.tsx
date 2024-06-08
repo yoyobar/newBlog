@@ -64,7 +64,7 @@ const PageContainer = ({
                 onMouseUp={handleMouseUp}
                 className={`${!isMaximize && 'md:border-t-[80px] md:absolute md:w-4/6 md:h-[calc(100%-40px)]'} 
                 static left-0 w-full h-full transition-width-height
-                border-transparent rounded-md z-10`}
+                border-transparent rounded-md z-10 `}
             >
                 <header
                     onClick={doubleMaximizeHandler}
@@ -85,7 +85,7 @@ const PageContainer = ({
                     </div>
                 </header>
                 <div className='overflow-y-scroll p-6 bg-white dark:bg-background h-full rounded-b-md'>
-                    <div className='text-3xl prose'>{children}</div>
+                    <div className='text-3xl prose dark:prose-invert m-auto min-w-[60%]'>{children}</div>
                 </div>
             </div>
         </>

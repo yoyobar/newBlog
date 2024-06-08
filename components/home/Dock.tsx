@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 
 const Dock = () => {
@@ -73,7 +72,7 @@ const Dock = () => {
                         className='relative hover:scale-[175%] hover:z-10 transition'
                         key={item.text}
                     >
-                        <Image src={item.src} alt={item.text} width={50} height={50}></Image>
+                        <img src={item.src} alt={item.text} width={50} height={50}></img>
                         <p className='text-header-text text-center p-2 font-bold ml-6 absolute top-[50%] left-[100%] translate-y-[-50%] rounded-md bg-header text-xl'>
                             {item.text}
                         </p>

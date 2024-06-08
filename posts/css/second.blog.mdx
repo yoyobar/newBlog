@@ -11,15 +11,33 @@ import { Counter } from '@/lib/mdx.tsx';
 
 This is my **first** blog post using _markdown_
 
+이건 `const numbers = [1, 2, 3]{:js}` 왜
+
+```
+test
+```
+
+개행 테스트
+
 ### My subHeading
 
 Here are some code sniipet below:
 
-```
+```tsx showLineNumbers
 export function newComponent() {
-    return(
-        <p> new Component Test </p>
-    )
+    return <p> new Component Test </p>;
+}
+```
+
+This is my **first** blog post using _markdown_
+
+### My subHeading
+
+Here are some code sniipet below:
+
+```jsx
+export function newComponent() {
+    return <p> new Component Test </p>;
 }
 ```
 
@@ -51,16 +69,23 @@ export function newComponent() {
 }
 ```
 
-This is my **first** blog post using _markdown_
+# GFM
 
-### My subHeading
+## Autolink literals
 
-Here are some code sniipet below:
+www.example.com, https://example.com, and contact@example.com.
 
-```
-export function newComponent() {
-    return(
-        <p> new Component Test </p>
-    )
-}
-```
+## Strikethrough
+
+~one~ or ~~two~~ tildes.
+
+## Table
+
+| a   | b   |   c |   d |
+| --- | :-- | --: | --: |
+| AAA | BBB | CCC | DDD |
+
+## Tasklist
+
+-   [ ] to do
+-   [x] done

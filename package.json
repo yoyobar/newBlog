@@ -9,6 +9,7 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@fec/remark-a11y-emoji": "^4.0.2",
         "@mdx-js/loader": "^3.0.1",
         "@mdx-js/react": "^3.0.1",
         "@next/mdx": "^14.2.3",
@@ -21,13 +22,15 @@
         "next-themes": "^0.3.0",
         "react": "^18",
         "react-dom": "^18",
+        "react-icons": "^5.2.1",
         "reading-time": "^1.5.0",
-        "tailwind-scrollbar": "^3.1.0",
+        "rehype-pretty-code": "^0.13.2",
+        "remark-breaks": "^4.0.0",
+        "remark-gfm": "^4.0.0",
+        "shiki": "^1.6.3",
         "zustand": "^4.5.2"
     },
     "devDependencies": {
-        "@shikijs/markdown-it": "^1.6.2",
-        "@svgr/webpack": "^8.1.0",
         "@types/glob": "^8.1.0",
         "@types/node": "^20",
         "@types/react": "^18",
