@@ -1,14 +1,14 @@
-import { MDXRemote } from 'next-mdx-remote/rsc';
 import React from 'react';
+import { MDXRemote } from 'next-mdx-remote/rsc';
 import { Preview } from './modules/Preview';
 import { Image } from './modules/Image';
 import { Callout } from './modules/Callout';
+import { Card, Cards } from './modules/Card';
 import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
 import rehypePrettyCode from 'rehype-pretty-code';
 // @ts-expect-error no types
 import remarkA11yEmoji from '@fec/remark-a11y-emoji';
-import { Card, Cards } from './modules/Card';
 
 const Mdx_Module = {
   Preview,

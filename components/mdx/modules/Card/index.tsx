@@ -58,7 +58,7 @@ const metadata: IconType = {
 };
 
 export const Cards = ({ children }: { children: React.ReactNode }) => {
-  return <div className="block md:flex gap-4 justify-center">{children}</div>;
+  return <div className="block md:grid md:grid-cols-3 gap-8 ">{children}</div>;
 };
 
 export const Card = (props: CardProps) => {
@@ -69,10 +69,10 @@ export const Card = (props: CardProps) => {
 
   return (
     <Link
-      className="border-2 mt-3 border-black dark:border-stone-500 dark:hover:border-stone-100 hover:border-indigo-600 transition-all font-inherit block no-underline p-8 rounded-md w-full md:w-1/3"
+      className="border-2 border-black mt-8 dark:border-stone-500 dark:hover:border-stone-100 hover:border-indigo-600 transition-all  block no-underline p-8 rounded-md w-full"
       href={props.href}
     >
-      <div className="flex gap-4">
+      <div className="flex items-center gap-4">
         <div className={`${boxClassName} ${metaStyle.default}`}>
           <Icon />
         </div>
