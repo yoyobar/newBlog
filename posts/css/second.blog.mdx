@@ -11,11 +11,28 @@ import { Counter } from '@/lib/mdx.tsx';
 
 This is my **first** blog post using _markdown_
 
-이건 `const numbers = [1, 2, 3]{:js}` 왜
+단어랑 섞어`const numbers = [1, 2, 3]{:js}`로 표현
+단어랑 섞어`const numbers = [1, 2, 3]{:js}`로 표현
 
 ```
 test
 ```
+
+<Callout type="info">Info Callout</Callout>
+<Callout type="danger">Danger Callout</Callout>
+<Callout type="warn">Warn Callout</Callout>
+<Callout type="default">Default Callout</Callout>
+
+<Cards>
+  <Card icon="html" href="/" title="HTML" />
+  <Card icon="css" href="/" title="CSS" />
+  <Card icon="js" href="/" title="JS" />
+</Cards>
+<Cards>
+  <Card icon="ts" href="/" title="TS" />
+  <Card icon="react" href="/" title="REACT" />
+  <Card icon="redux" href="/" title="REDUX" />
+</Cards>
 
 개행 테스트
 
@@ -25,7 +42,7 @@ Here are some code sniipet below:
 
 ```tsx showLineNumbers
 export function newComponent() {
-    return <p> new Component Test </p>;
+  return <p> new Component Test </p>;
 }
 ```
 
@@ -37,7 +54,7 @@ Here are some code sniipet below:
 
 ```jsx
 export function newComponent() {
-    return <p> new Component Test </p>;
+  return <p> new Component Test </p>;
 }
 ```
 
@@ -87,5 +104,5 @@ www.example.com, https://example.com, and contact@example.com.
 
 ## Tasklist
 
--   [ ] to do
--   [x] done
+- [ ] to do
+- [x] done
