@@ -2,6 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
+import { MdOpenInFull } from 'react-icons/md';
+import { IoMdClose } from 'react-icons/io';
 const PageContainer = ({
   children,
 }: Readonly<{
@@ -72,14 +74,13 @@ const PageContainer = ({
           className="flex select-none items-center gap-3 pl-2 rounded-t-md w-full h-[24px] bg-[#4b4b66]"
         >
           <div onClick={exitHandler} className="cursor-pointer relative w-5 h-5 rounded-full bg-[#ff5f57]">
-            <div className="left-[3px] bottom-[1px] absolute w-full h-full rounded-full font-bold scale-x-110 text-[#aa3e39]">X</div>
+            <IoMdClose className="absolute w-full h-full rounded-full font-bold scale-x-110 text-[#aa3e39]" />
           </div>
           <div onClick={exitHandler} className="cursor-pointer relative w-5 h-5 rounded-full bg-[#fabb2c]">
             <div className="top-[5px] left-[3px] absolute w-[7px] h-1 rounded-md bg-[#a87f1f]"></div>
           </div>
-          <div onClick={maximizeHandler} className="hidden md:block relative w-5 h-5 rounded-full bg-[#28c841]">
-            <div className="bottom-[3px] left-[2px] absolute w-5 h-5 font-bold -rotate-[40deg] text-xs text-[#146721]">▲</div>
-            <div className="top-[3px] right-[1px] absolute w-5 h-5 font-bold rotate-[130deg] text-xs text-[#146721]">▲</div>
+          <div onClick={maximizeHandler} className="cursor-pointer hidden md:block relative w-5 h-5 rounded-full bg-[#28c841]">
+            <MdOpenInFull className="left-[0.14rem] absolute w-4 h-5 font-bold text-xs text-[#146721]" />
           </div>
         </header>
         <div className="overflow-y-scroll p-6 bg-slate-100 dark:bg-background h-full rounded-b-md">
