@@ -16,6 +16,13 @@ type PostMatter = {
     date: string;
 };
 
+export async function generateStaticParams() {
+    const categories = fs.readdirSync(BASE_DIR);
+    return categories.map((category) => ({
+        category,
+    }));
+}
+
 export default async function Page({ params }: { params: { category: string } }) {
     const { category } = params;
 
