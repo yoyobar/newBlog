@@ -27,6 +27,12 @@ const Browse = ({ blogs, type }: { blogs: AllPostsProp; type: string }) => {
                     </Link>
                 ))}
             </div>
+            <div className='flex flex-col gap-4'>
+                <div>카테고리 연결 테스트</div>
+                <Link href='/posts/react'>react</Link>
+                <Link href='/posts/css'>css</Link>
+                <Link href='/posts/redux'>redux</Link>
+            </div>
         </>
     );
 };
