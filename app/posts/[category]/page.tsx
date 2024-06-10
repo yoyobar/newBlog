@@ -16,7 +16,7 @@ type PostMatter = {
     date: string;
 };
 
-export default function CategoryPage({ params }: { params: { category: string } }) {
+export default async function Page({ params }: { params: { category: string } }) {
     const { category } = params;
 
     const categoryPath = path.join(BASE_DIR, category);

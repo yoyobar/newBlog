@@ -1,5 +1,3 @@
-'use client';
-
 import { metaStyle, metadata } from '@/lib/metaData';
 
 const Title = ({ type }: { type: string }) => {
