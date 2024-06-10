@@ -5,7 +5,17 @@ import { IoLogoJavascript } from 'react-icons/io5';
 import { SiTypescript } from 'react-icons/si';
 import { FaReact } from 'react-icons/fa';
 import { TbBrandRedux } from 'react-icons/tb';
+import { AiOutlineAppstoreAdd } from 'react-icons/ai';
+import { IoIosWarning } from 'react-icons/io';
+import { FaInfoCircle } from 'react-icons/fa';
+import { BsLightbulbFill } from 'react-icons/bs';
+import { MdDangerous } from 'react-icons/md';
 
+export const WarnCallout = () => <IoIosWarning />;
+export const InfoCallout = () => <FaInfoCircle />;
+export const DangerCallout = () => <MdDangerous />;
+export const DefaultCallout = () => <BsLightbulbFill />;
+export const All = () => <AiOutlineAppstoreAdd />;
 export const Default = () => <FaArrowRight />;
 export const Html = () => <FaHtml5 />;
 export const Css = () => <FaCss3 />;

@@ -1,14 +1,31 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-import Link from 'next/link';
 import PageContainer from '@/components/PageContainer';
 import { allBrowseLoad, allFilesLoad } from '@/lib/parseData';
+import Category from '@/components/wiki/Category';
+import Browse from '@/components/wiki/Browse';
+import dayjs from 'dayjs';
+import readingTime from 'reading-time';
+import { headers } from 'next/headers';
+import Title from '@/components/wiki/Title';
 
 const BASE_DIR = 'posts';
 
+type PostMatter = {
+    title: string;
+    description: string;
+    tags: string[];
+    date: string;
+};
+
+type AllBrowse = {
+    category: string[];
+    mdx: string[];
+};
+
 export default function Home() {
-    const { category, mdx } = allBrowseLoad();
+    const { category, mdx }: AllBrowse = allBrowseLoad();
     const categoryFiles = allFilesLoad(category);
 
     const allFiles = [...mdx.map((file) => ({ category: '', file })), ...categoryFiles];
@@ -16,24 +33,24 @@ export default function Home() {
     const blogs = allFiles.map(({ category, file }) => {
         const filePath = category ? path.join(BASE_DIR, category, file) : path.join(BASE_DIR, file);
         const fileContent = fs.readFileSync(filePath, 'utf-8');
-        const { data: frontMatter } = matter(fileContent);
+        const { content, data } = matter(fileContent);
+        const grayMatter = data as PostMatter;
 
         return {
-            meta: frontMatter,
+            meta: {
+                title: grayMatter.title,
+                tags: grayMatter.tags,
+                date: dayjs(grayMatter.date).format('YYYY-MM-DD'),
+                readingMinutes: Math.ceil(readingTime(content).minutes),
+            },
             slug: category ? `${category}/${file.replace('.mdx', '')}` : file.replace('.mdx', ''),
         };
     });
 
     return (
         <PageContainer>
-            {blogs.map((blog) => (
-                <Link passHref key={blog.slug} href={`/posts/${blog.slug}`}>
-                    <article>
-                        <h2>{blog.meta.title}</h2>
-                        {blog.meta.category && <p>Category: {blog.meta.category}</p>}
-                    </article>
-                </Link>
-            ))}
+            <Title type={'all'} />
+            <Browse type={'all'} blogs={blogs} />
         </PageContainer>
     );
 }
