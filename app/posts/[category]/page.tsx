@@ -25,6 +25,7 @@ export async function generateStaticParams() {
 
 export default async function Page({ params }: { params: { category: string } }) {
     const { category } = params;
+    console.log(category);
 
     const categoryPath = path.join(BASE_DIR, category);
     const files = fs.readdirSync(categoryPath);

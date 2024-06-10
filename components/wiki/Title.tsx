@@ -1,8 +1,7 @@
 import { metaStyle, metadata } from '@/lib/metaData';
 
 const Title = ({ type }: { type: string }) => {
-    const icon = type || 'all';
-    const metaObj = metadata[icon];
+    const metaObj = metadata[type] || metadata['all'];
     const Icon = metaObj.icon;
     const boxClassName = metaObj.boxClass;
     const titleName = metaObj.title;
