@@ -1,19 +1,20 @@
 ---
-title: Test Blog
+title: Module Test
 data: 23th June 2023
 description: Welcome to my first blog in next.js app
 ---
 
-This is my **first** blog post using _markdown_
+<Callout type="info">Info Callout</Callout>
+<Callout type="danger">Danger Callout</Callout>
+<Callout type="warn">Warn Callout</Callout>
+<Callout type="default">Default Callout</Callout>
 
-### My subHeading
-
-Here are some code sniipet below:
-
-```
-export function newComponent() {
-    return(
-        <p> new Component Test </p>
-    )
-}
-```
+<Cards>
+  <Card icon="css" href="/" title="CSS" />
+  <Card icon="js" href="/" title="JS" />
+</Cards>
+<Cards>
+  <Card icon="ts" href="/" title="TS" />
+  <Card icon="react" href="/" title="REACT" />
+  <Card icon="redux" href="/" title="REDUX" />
+</Cards>
