@@ -6,6 +6,7 @@ import { MdOpenInFull } from 'react-icons/md';
 import { IoMdClose } from 'react-icons/io';
 import CategoryButton from './CategoryButton';
 import Category from './Category';
+import { useMaximize } from '@/config/store';
 const PageContainer = ({
     children,
 }: Readonly<{
@@ -15,7 +16,7 @@ const PageContainer = ({
     const [isDragging, setIsDragging] = useState(false);
     const [endPosition, setEndPosition] = useState({ x: 251, y: -23 });
     const [startPosition, setStartPosition] = useState({ x: 1192, y: 94 });
-    const [isMaximize, setIsMaximize] = useState(false);
+    const { data, setData } = useMaximize();
     const clickCount = useRef(0);
     const path = usePathname();
     const [selected, setSelected] = useState(false);
@@ -50,7 +51,7 @@ const PageContainer = ({
     };
 
     const maximizeHandler = () => {
-        setIsMaximize((prev) => !prev);
+        setData();
     };
 
     const doubleMaximizeHandler = () => {
@@ -72,7 +73,7 @@ const PageContainer = ({
                 style={{ left: endPosition.x, top: endPosition.y }}
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
-                className={`${!isMaximize && 'md:border-t-[80px] md:absolute md:w-4/6 md:h-[calc(100%-40px)]'} 
+                className={`${!data && 'md:border-t-[80px] md:absolute md:w-4/6 md:h-[calc(100%-40px)]'} 
                 static left-0 w-full h-full transition-width-height
                 border-transparent rounded-md z-10`}
             >

@@ -10,6 +10,11 @@ interface OptionStore {
     setData: (form: OptionForm) => void;
 }
 
+interface MaximizeStore {
+    data: boolean;
+    setData: () => void;
+}
+
 type Persist = (config: StateCreator<OptionStore>, options: PersistOptions<OptionStore>) => StateCreator<OptionStore>;
 
 const useOptions = create<OptionStore>(
@@ -27,3 +32,9 @@ const useOptions = create<OptionStore>(
     )
 );
 export default useOptions;
+
+export const useMaximize = create<MaximizeStore>((set) => ({
+    data: false,
+
+    setData: () => set((state) => ({ data: !state.data })),
+}));
