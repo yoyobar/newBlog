@@ -1,5 +1,7 @@
 import Link from 'next/link';
-
+import { CiCalendar } from 'react-icons/ci';
+import { CiTimer } from 'react-icons/ci';
+import Tag from './Tag';
 type AllPostsProp = {
     meta: {
         title: string;
@@ -17,13 +19,30 @@ const Browse = ({ blogs }: { blogs: AllPostsProp }) => {
 
     return (
         <>
-            <div className='w-full h-full flex flex-col gap-4'>
+            <div className='w-full h-full grid grid-cols-1 2xl:grid-cols-2 gap-4'>
                 {sortedBlogs.map((blog) => (
-                    <Link passHref href={`/posts/${blog.slug}`} key={blog.meta.title} className='w-full h-full bg-slate-600 rounded-md'>
-                        <div></div>
-                        <h2>{blog.meta.title}</h2>
-                        <h3>{blog.meta.date}</h3>
-                    </Link>
+                    <div
+                        key={blog.meta.title}
+                        className='shadow-slate-950 shadow-sm relative z-10 w-full h-full border border-slate-500 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-800 transition'
+                    >
+                        <Link href={`/posts/${blog.slug}`} className='no-underline p-8 flex flex-col gap-4'>
+                            <div className='text-4xl'>{blog.meta.title}</div>
+
+                            <article className='flex items-center gap-8'>
+                                <div className='flex gap-2'>
+                                    <CiCalendar className='text-gray-400' />
+                                    <div className='dark:text-gray-400 text-gray-600 w-[80px] text-xl'>{blog.meta.date}</div>
+                                </div>
+                                <div className='flex gap-2'>
+                                    <CiTimer className='dark:text-gray-400 text-gray-600' />
+                                    <div className='dark:text-gray-400 text-gray-600 w-[40px] text-xl'>{blog.meta.readingMinutes} min</div>
+                                </div>
+                            </article>
+                        </Link>
+                        <article className='absolute z-20 left-[220px] top-[50px]'>
+                            <Tag tags={blog.meta.tags} />
+                        </article>
+                    </div>
                 ))}
             </div>
         </>

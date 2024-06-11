@@ -31,7 +31,7 @@ export const metadata: metaType = {
     all: {
         icon: Icon.All,
         boxClass: metaStyle.all,
-        title: '전체 게시글',
+        title: '전체',
         link: '',
         visible: true,
     },

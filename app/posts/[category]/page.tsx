@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 import readingTime from 'reading-time';
 import Title from '@/components/posts/Title';
 import Category from '@/components/Category';
+import Browse from '@/components/posts/Browse';
 
 const BASE_DIR = 'posts';
 
@@ -47,15 +48,10 @@ export default async function Page({ params }: { params: { category: string } })
 
     return (
         <PageContainer>
-            <Title type={category} />
-            {blogs.map((blog) => (
-                <Link key={blog.slug} href={`/posts/${blog.slug}`}>
-                    <article>
-                        <h2>{blog.meta.title}</h2>
-                        <p>{blog.meta.date}</p>
-                    </article>
-                </Link>
-            ))}
+            <div className='w-full 2xl:w-[90%] m-auto'>
+                <Title type={category} length={files.length} />
+                <Browse blogs={blogs} />
+            </div>
         </PageContainer>
     );
 }

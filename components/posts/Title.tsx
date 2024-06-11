@@ -1,6 +1,6 @@
 import { metaStyle, metadata } from '@/lib/metaData';
 
-const Title = ({ type }: { type: string }) => {
+const Title = ({ type, length }: { type: string; length: number }) => {
     const metaObj = metadata[type] || metadata['all'];
     const Icon = metaObj.icon;
     const boxClassName = metaObj.boxClass;
@@ -12,7 +12,9 @@ const Title = ({ type }: { type: string }) => {
                 <div className={`${boxClassName} ${metaStyle.header}`}>
                     <Icon />
                 </div>
-                <div className='text-5xl'>{titleName}</div>
+                <div className='text-5xl'>
+                    {titleName} ({length})
+                </div>
             </div>
         </>
     );

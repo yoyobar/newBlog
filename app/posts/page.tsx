@@ -39,6 +39,7 @@ export default function Home() {
         return {
             meta: {
                 title: grayMatter.title,
+                length: allFiles.length,
                 tags: grayMatter.tags,
                 date: dayjs(grayMatter.date).format('YYYY-MM-DD'),
                 readingMinutes: Math.ceil(readingTime(content).minutes),
@@ -49,8 +50,8 @@ export default function Home() {
 
     return (
         <PageContainer>
-            <div className='w-full 2xl:w-[70%] m-auto'>
-                <Title type={'all'} />
+            <div className='w-full 2xl:w-[90%] m-auto'>
+                <Title type={'all'} length={allFiles.length} />
                 <Browse blogs={blogs} />
             </div>
         </PageContainer>
