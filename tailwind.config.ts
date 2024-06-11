@@ -24,7 +24,16 @@ const config: Config = {
                         opacity: '0.9',
                     },
                 },
-
+                slideCategory: {
+                    '0%': {
+                        left: '1rem',
+                        opacity: '0.1',
+                    },
+                    '100%': {
+                        left: '3rem',
+                        opacity: '1',
+                    },
+                },
                 pageOn: {
                     '0%': {
                         scale: '0%',
@@ -37,6 +46,7 @@ const config: Config = {
             animation: {
                 popUp: 'popUp 0.3s ease-out 1',
                 pageOn: 'pageOn 0.3s ease-out 1',
+                slideCategory: 'slideCategory 0.3s ease-out 1',
             },
             colors: {
                 background: {

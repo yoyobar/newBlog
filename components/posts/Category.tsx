@@ -9,11 +9,15 @@ interface CategoryProps {
 
 const Category = ({ blogs }: { blogs: CategoryProps[] }) => {
     const allCategory = blogs.map((meta) => meta.slug.split('/')[0]);
-    return allCategory.map((category) => (
-        <Link key={category} href={`/posts/${category}`}>
-            {category}
-        </Link>
-    ));
+    return (
+        <div className='hidden'>
+            {allCategory.map((category) => (
+                <Link className='no-underline' key={category} href={`/posts/${category}`}>
+                    {category}
+                </Link>
+            ))}
+        </div>
+    );
 };
 
 export default Category;

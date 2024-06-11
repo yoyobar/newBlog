@@ -3,12 +3,11 @@ import path from 'path';
 import matter from 'gray-matter';
 import PageContainer from '@/components/PageContainer';
 import { allBrowseLoad, allFilesLoad } from '@/lib/parseData';
-import Category from '@/components/wiki/Category';
-import Browse from '@/components/wiki/Browse';
+import Category from '@/components/posts/Category';
+import Browse from '@/components/posts/Browse';
 import dayjs from 'dayjs';
 import readingTime from 'reading-time';
-import { headers } from 'next/headers';
-import Title from '@/components/wiki/Title';
+import Title from '@/components/posts/Title';
 import Link from 'next/link';
 
 const BASE_DIR = 'posts';
@@ -50,14 +49,11 @@ export default function Home() {
 
     return (
         <PageContainer>
-            <Title type={'all'} />
-            <Browse blogs={blogs} />
-            <div className='flex flex-col gap-4'>
-                <div>카테고리 연결 테스트</div>
-                <Link href='/posts/react'>react</Link>
-                <Link href='/posts/css'>css</Link>
-                <Link href='/posts/redux'>redux</Link>
+            <div className='w-full 2xl:w-[70%] m-auto relative'>
+                <Title type={'all'} />
+                <Browse blogs={blogs} />
             </div>
+            <Category blogs={blogs} />
         </PageContainer>
     );
 }

@@ -47,7 +47,7 @@ const SettingPanel = () => {
     };
 
     return (
-        <div className='select-none p-10 flex flex-col dark:text-header-text'>
+        <div className='2xl:w-[70%] w-full m-auto select-none p-10 flex flex-col dark:text-header-text'>
             <div className='text-5xl font-bold'>홈페이지 옵션 설정</div>
 
             <div className='text-3xl mt-32 mb-10 bg-slate-300 dark:bg-slate-600 p-4 rounded-md'>애니메이션 설정</div>

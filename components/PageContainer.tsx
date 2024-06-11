@@ -1,9 +1,10 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { MdOpenInFull } from 'react-icons/md';
 import { IoMdClose } from 'react-icons/io';
+import CategoryButton from './posts/CategoryButton';
 const PageContainer = ({
     children,
 }: Readonly<{
@@ -15,6 +16,7 @@ const PageContainer = ({
     const [startPosition, setStartPosition] = useState({ x: 1192, y: 94 });
     const [isMaximize, setIsMaximize] = useState(false);
     const clickCount = useRef(0);
+    const path = usePathname();
 
     const exitHandler = () => {
         router.push('/');
@@ -71,7 +73,7 @@ const PageContainer = ({
                 <header
                     onClick={doubleMaximizeHandler}
                     onMouseDown={handleMouseDown}
-                    className='flex select-none items-center gap-3 pl-2 rounded-t-md w-full h-[24px] bg-[#4b4b66]'
+                    className='flex select-none items-center gap-3 pl-2 rounded-t-md w-full h-[38px] bg-[#4b4b66]'
                 >
                     <div onClick={exitHandler} className='cursor-pointer relative w-5 h-5 rounded-full bg-[#ff5f57]'>
                         <IoMdClose className='absolute w-full h-full rounded-full font-bold scale-x-110 text-[#aa3e39]' />
@@ -82,9 +84,12 @@ const PageContainer = ({
                     <div onClick={maximizeHandler} className='cursor-pointer hidden md:block relative w-5 h-5 rounded-full bg-[#28c841]'>
                         <MdOpenInFull className='left-[0.14rem] absolute w-4 h-5 font-bold text-xs text-[#146721]' />
                     </div>
+                    <nav className={path.includes('/posts') ? 'block ml-2 h-full' : 'hidden'}>
+                        <CategoryButton />
+                    </nav>
                 </header>
                 <div className='overflow-y-scroll p-6 bg-slate-100 dark:bg-background h-full rounded-b-md'>
-                    <div className='text-3xl prose dark:prose-invert m-auto min-w-[70%]'>{children}</div>
+                    <div className='text-3xl prose dark:prose-invert min-w-full'>{children}</div>
                 </div>
             </div>
         </>

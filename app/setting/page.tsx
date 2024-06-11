@@ -5,7 +5,9 @@ const Setting = () => {
     return (
         <>
             <PageContainer>
-                <SettingPanel />
+                <div className=''>
+                    <SettingPanel />
+                </div>
             </PageContainer>
         </>
     );

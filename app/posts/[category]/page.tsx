@@ -5,7 +5,7 @@ import Link from 'next/link';
 import PageContainer from '@/components/PageContainer';
 import dayjs from 'dayjs';
 import readingTime from 'reading-time';
-import Title from '@/components/wiki/Title';
+import Title from '@/components/posts/Title';
 
 const BASE_DIR = 'posts';
 
