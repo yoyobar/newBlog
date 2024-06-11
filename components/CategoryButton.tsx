@@ -1,16 +1,19 @@
 'use client';
 import { useState } from 'react';
 
-const CategoryButton = () => {
+interface CategoryButtonProps {
+    navHandler: () => void;
+}
+
+const CategoryButton = ({ navHandler }: CategoryButtonProps) => {
     const [hovered, setHovered] = useState(false);
-    const [selected, setSelected] = useState(false);
 
     return (
         <>
             <div
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
-                onClick={() => setSelected(true)}
+                onClick={navHandler}
                 className='h-full relative z-10 flex flex-col justify-center gap-[5px] cursor-pointer'
             >
                 <div className={`transition-width-height h-1 border-b border-2 ${hovered ? 'w-5' : 'w-7'}`}></div>

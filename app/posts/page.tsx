@@ -3,7 +3,7 @@ import path from 'path';
 import matter from 'gray-matter';
 import PageContainer from '@/components/PageContainer';
 import { allBrowseLoad, allFilesLoad } from '@/lib/parseData';
-import Category from '@/components/posts/Category';
+import Category from '@/components/Category';
 import Browse from '@/components/posts/Browse';
 import dayjs from 'dayjs';
 import readingTime from 'reading-time';
@@ -49,11 +49,10 @@ export default function Home() {
 
     return (
         <PageContainer>
-            <div className='w-full 2xl:w-[70%] m-auto relative'>
+            <div className='w-full 2xl:w-[70%] m-auto'>
                 <Title type={'all'} />
                 <Browse blogs={blogs} />
             </div>
-            <Category blogs={blogs} />
         </PageContainer>
     );
 }

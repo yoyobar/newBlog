@@ -1,10 +1,11 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { MdOpenInFull } from 'react-icons/md';
 import { IoMdClose } from 'react-icons/io';
-import CategoryButton from './posts/CategoryButton';
+import CategoryButton from './CategoryButton';
+import Category from './Category';
 const PageContainer = ({
     children,
 }: Readonly<{
@@ -17,6 +18,14 @@ const PageContainer = ({
     const [isMaximize, setIsMaximize] = useState(false);
     const clickCount = useRef(0);
     const path = usePathname();
+    const [selected, setSelected] = useState(false);
+    useEffect(() => {
+        setSelected(false);
+    }, [path]);
+
+    const navHandler = () => {
+        setSelected((prev) => !prev);
+    };
 
     const exitHandler = () => {
         router.push('/');
@@ -68,7 +77,7 @@ const PageContainer = ({
                 onMouseUp={handleMouseUp}
                 className={`${!isMaximize && 'md:border-t-[80px] md:absolute md:w-4/6 md:h-[calc(100%-40px)]'} 
                 static left-0 w-full h-full transition-width-height
-                border-transparent rounded-md z-10 `}
+                border-transparent rounded-md z-10`}
             >
                 <header
                     onClick={doubleMaximizeHandler}
@@ -84,11 +93,12 @@ const PageContainer = ({
                     <div onClick={maximizeHandler} className='cursor-pointer hidden md:block relative w-5 h-5 rounded-full bg-[#28c841]'>
                         <MdOpenInFull className='left-[0.14rem] absolute w-4 h-5 font-bold text-xs text-[#146721]' />
                     </div>
-                    <nav className={path.includes('/posts') ? 'block ml-2 h-full' : 'hidden'}>
-                        <CategoryButton />
+                    <nav className={path.includes('/posts') ? 'block ml-2 h-full w-full' : 'hidden'}>
+                        <CategoryButton navHandler={navHandler} />
                     </nav>
                 </header>
-                <div className='overflow-y-scroll p-6 bg-slate-100 dark:bg-background h-full rounded-b-md'>
+                <div className='overflow-y-scroll p-6 bg-slate-100 dark:bg-background h-full rounded-b-md relative'>
+                    {selected && <Category />}
                     <div className='text-3xl prose dark:prose-invert min-w-full'>{children}</div>
                 </div>
             </div>

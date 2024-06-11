@@ -6,6 +6,7 @@ import PageContainer from '@/components/PageContainer';
 import dayjs from 'dayjs';
 import readingTime from 'reading-time';
 import Title from '@/components/posts/Title';
+import Category from '@/components/Category';
 
 const BASE_DIR = 'posts';
 
@@ -25,7 +26,6 @@ export async function generateStaticParams() {
 
 export default async function Page({ params }: { params: { category: string } }) {
     const { category } = params;
-    console.log(category);
 
     const categoryPath = path.join(BASE_DIR, category);
     const files = fs.readdirSync(categoryPath);
