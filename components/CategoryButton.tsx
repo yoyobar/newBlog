@@ -2,10 +2,10 @@
 import { useState } from 'react';
 
 interface CategoryButtonProps {
-    navHandler: () => void;
+    onNav: () => void;
 }
 
-const CategoryButton = ({ navHandler }: CategoryButtonProps) => {
+const CategoryButton = ({ onNav }: CategoryButtonProps) => {
     const [hovered, setHovered] = useState(false);
 
     return (
@@ -13,7 +13,7 @@ const CategoryButton = ({ navHandler }: CategoryButtonProps) => {
             <div
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
-                onClick={navHandler}
+                onClick={onNav}
                 className='h-full w-[32px] relative z-10 flex flex-col justify-center gap-[5px] cursor-pointer'
             >
                 <div className={`transition-width-height h-1 border-b border-2 rounded-md ${hovered ? 'w-5' : 'w-7'}`}></div>

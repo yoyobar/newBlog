@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { MdOpenInFull } from 'react-icons/md';
 import { IoMdClose } from 'react-icons/io';
 import CategoryButton from './CategoryButton';
@@ -19,9 +19,6 @@ const PageContainer = ({
     const clickCount = useRef(0);
     const path = usePathname();
     const [selected, setSelected] = useState(false);
-    useEffect(() => {
-        setSelected(false);
-    }, [path]);
 
     const navHandler = () => {
         setSelected((prev) => !prev);
@@ -94,11 +91,11 @@ const PageContainer = ({
                         <MdOpenInFull className='left-[0.14rem] absolute w-4 h-5 font-bold text-xs text-[#146721]' />
                     </div>
                     <nav className={path.includes('/posts') ? 'block ml-2 h-full w-full' : 'hidden'}>
-                        <CategoryButton navHandler={navHandler} />
+                        <CategoryButton onNav={navHandler} />
                     </nav>
                 </header>
                 <div className='overflow-y-scroll p-6 bg-slate-100 dark:bg-background h-full rounded-b-md relative'>
-                    {selected && <Category />}
+                    {selected && <Category onNav={navHandler} />}
                     <div className='text-3xl prose dark:prose-invert min-w-full'>{children}</div>
                 </div>
             </div>
