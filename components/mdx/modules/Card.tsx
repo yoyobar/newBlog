@@ -9,7 +9,7 @@ export interface CardProps extends PropsWithChildren {
 }
 
 export const Cards = ({ children }: { children: React.ReactNode }) => {
-    return <div className='block md:grid md:grid-cols-3 gap-8 '>{children}</div>;
+    return <div className='block 2xl:grid 2xl:grid-cols-2 3xl:grid-cols-3 gap-8 '>{children}</div>;
 };
 
 export const Card = (props: CardProps) => {
@@ -20,14 +20,14 @@ export const Card = (props: CardProps) => {
 
     return (
         <Link
-            className='border-2 border-black mt-8 dark:border-stone-500 dark:hover:border-stone-100 hover:border-indigo-600 transition-all  block no-underline p-8 rounded-md w-full'
+            className=' border-2 border-black mt-8 dark:border-stone-500 dark:hover:border-stone-100 hover:border-indigo-600 transition-all  block no-underline p-8 rounded-md w-full'
             href={props.href!}
         >
             <div className='flex items-center gap-4'>
                 <div className={`${boxClassName}`}>
                     <Icon />
                 </div>
-                {props.title}
+                {props.children}
             </div>
         </Link>
     );

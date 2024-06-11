@@ -11,7 +11,6 @@ interface metaType {
 }
 
 export const metaStyle = {
-    header: 'text-5xl',
     all: 'text-sky-400',
     html: 'text-[#E34F26]',
     css: 'text-[#1572B6]',
@@ -19,6 +18,7 @@ export const metaStyle = {
     ts: 'text-[#3178C6]',
     react: 'text-[#61DAFB]',
     redux: 'text-[#764ABC]',
+    archive: 'text-sky-500',
 };
 
 export const metadata: metaType = {
@@ -75,6 +75,13 @@ export const metadata: metaType = {
         boxClass: metaStyle.redux,
         title: 'Redux',
         link: 'redux',
+        visible: true,
+    },
+    archive: {
+        icon: Icon.Archive,
+        boxClass: metaStyle.archive,
+        title: 'Archives',
+        link: 'archives',
         visible: true,
     },
 };

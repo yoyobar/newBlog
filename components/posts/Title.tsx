@@ -9,7 +9,7 @@ const Title = ({ type, length }: { type: string; length: number }) => {
     return (
         <>
             <div className='flex gap-4 ml-4 my-8 text-black dark:text-white'>
-                <div className={`${boxClassName} ${metaStyle.header}`}>
+                <div className={`${boxClassName} text-5xl`}>
                     <Icon />
                 </div>
                 <div className='text-5xl'>

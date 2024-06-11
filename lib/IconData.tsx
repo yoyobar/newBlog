@@ -10,6 +10,7 @@ import { IoIosWarning } from 'react-icons/io';
 import { FaInfoCircle } from 'react-icons/fa';
 import { BsLightbulbFill } from 'react-icons/bs';
 import { MdDangerous } from 'react-icons/md';
+import { FiArchive } from 'react-icons/fi';
 
 export const WarnCallout = () => <IoIosWarning />;
 export const InfoCallout = () => <FaInfoCircle />;
@@ -23,3 +24,4 @@ export const Js = () => <IoLogoJavascript />;
 export const Ts = () => <SiTypescript />;
 export const React = () => <FaReact />;
 export const Redux = () => <TbBrandRedux />;
+export const Archive = () => <FiArchive />;

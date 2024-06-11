@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+const defaultTheme = require('tailwindcss/defaultTheme');
 
 const config: Config = {
     darkMode: 'class',
@@ -9,6 +10,10 @@ const config: Config = {
         './lib/**/*.{js,jsx,ts,tsx}',
     ],
     theme: {
+        screens: {
+            ...defaultTheme.screens,
+            '3xl': '1920px',
+        },
         extend: {
             transitionProperty: {
                 'width-height': 'width, height',
@@ -34,18 +39,20 @@ const config: Config = {
                         opacity: '1',
                     },
                 },
-                pageOn: {
+                slide: {
                     '0%': {
-                        scale: '0%',
+                        width: '250px',
+                        opacity: '0.1',
                     },
                     '100%': {
-                        scale: '100%',
+                        width: '300px',
+                        opacity: '1',
                     },
                 },
             },
             animation: {
                 popUp: 'popUp 0.3s ease-out 1',
-                pageOn: 'pageOn 0.3s ease-out 1',
+                slide: 'slide 0.3s ease-out 1',
                 slideCategory: 'slideCategory 0.3s ease-out 1',
             },
             colors: {

@@ -19,13 +19,13 @@ const Browse = ({ blogs }: { blogs: AllPostsProp }) => {
 
     return (
         <>
-            <div className='w-full h-full grid grid-cols-1 2xl:grid-cols-2 gap-4'>
+            <div className='w-full h-full grid grid-cols-1 xl:grid-cols-2 gap-4'>
                 {sortedBlogs.map((blog) => (
                     <div
                         key={blog.meta.title}
                         className='shadow-slate-950 shadow-sm relative z-10 w-full h-full border border-slate-500 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-800 transition'
                     >
-                        <Link href={`/posts/${blog.slug}`} className='no-underline p-8 flex flex-col gap-4'>
+                        <Link href={`/posts/${blog.slug}`} className='no-underline p-8 flex flex-col gap-8'>
                             <div className='text-4xl'>{blog.meta.title}</div>
 
                             <article className='flex items-center gap-8'>
@@ -39,9 +39,6 @@ const Browse = ({ blogs }: { blogs: AllPostsProp }) => {
                                 </div>
                             </article>
                         </Link>
-                        <article className='absolute z-20 left-[220px] top-[50px]'>
-                            <Tag tags={blog.meta.tags} />
-                        </article>
                     </div>
                 ))}
             </div>
