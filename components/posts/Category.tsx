@@ -2,7 +2,10 @@ import Link from 'next/link';
 
 interface CategoryProps {
     meta: {
-        [key: string]: string;
+        title: string;
+        tags: string[];
+        date: string;
+        readingMinutes: number;
     };
     slug: string;
 }
