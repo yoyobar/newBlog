@@ -41,11 +41,9 @@ const config: Config = {
                 },
                 slide: {
                     '0%': {
-                        width: '250px',
                         opacity: '0.1',
                     },
                     '100%': {
-                        width: '300px',
                         opacity: '1',
                     },
                 },

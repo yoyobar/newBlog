@@ -75,7 +75,7 @@ const PageContainer = ({
                 onMouseUp={handleMouseUp}
                 className={`${!data && 'md:border-t-[80px] md:absolute md:w-4/6 md:h-[calc(100%-40px)]'} 
                 static left-0 w-full h-full transition-width-height
-                border-transparent rounded-md z-10`}
+                border-transparent rounded-md z-10 `}
             >
                 <header
                     onClick={doubleMaximizeHandler}
@@ -95,9 +95,13 @@ const PageContainer = ({
                         <CategoryButton onNav={navHandler} />
                     </nav>
                 </header>
-                <nav className='overflow-y-scroll overflow-x-hidden p-6 bg-slate-100 dark:bg-background h-full rounded-b-md relative'>
+                <nav className='relative overflow-y-scroll overflow-x-hidden p-6 bg-slate-100 dark:bg-background h-full rounded-b-md'>
                     {selected && <Category onNav={navHandler} />}
-                    <div className={`${selected && 'blur-sm'} text-3xl prose dark:prose-invert min-w-full pb-16`}>{children}</div>
+                    <div
+                        className={`${selected && 'blur-[2px] opacity-30'} transition duration-300 text-3xl prose dark:prose-invert min-w-full pb-16`}
+                    >
+                        {children}
+                    </div>
                 </nav>
             </div>
         </>

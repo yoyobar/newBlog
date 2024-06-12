@@ -12,8 +12,8 @@ const Category = ({ onNav }: CategoryProps) => {
 
     return (
         <>
-            <div className='absolute top-0 left-0'>
-                <div className='z-40 animate-slide fixed flex flex-col gap-4 p-8 w-[300px] h-full md:h-[1208px] bg-[rgba(255,255,255,0.98)]  dark:bg-slate-800 text-black border-r dark:border-r-black shadow-gray-400 dark:shadow-black shadow-sm'>
+            <div className='absolute top-5 left-5 select-none'>
+                <div className='z-40 animate-slide fixed flex flex-col gap-4 p-8 w-[300px] rounded-md bg-[rgba(255,255,255,0.98)]  dark:bg-slate-800 text-black border dark:border-black shadow-gray-400 dark:shadow-black shadow-sm'>
                     {category.map((item) => (
                         <Link onClick={onNav} className='no-underline' key={item.key} href={`/posts/${item.link}`}>
                             <SubTitle type={item.key} />
