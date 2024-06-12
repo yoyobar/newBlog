@@ -1,16 +1,18 @@
 interface TagProps {
     tags: string[];
+    type?: string;
 }
-const Tag = ({ tags }: TagProps) => {
-    if (tags.length === 0) {
+
+const Tag = ({ tags, type }: TagProps) => {
+    if (!tags) {
         return <div className=' text-xl bg-slate-600 rounded-md p-2 text-gray-300 hover:bg-white hover:text-black transition'>None</div>;
     } else {
         return (
-            <div className='flex gap-2'>
+            <div className={`${type ? 'gap-4 grid grid-cols-3 w-full p-16 text-5xl text-center' : 'flex gap-2 text-xl'}`}>
                 {tags.map((tag) => {
                     return (
                         <div
-                            className='no-underline text-xl bg-slate-300 dark:bg-slate-600 rounded-md p-2 text-gray-950 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-white dark:hover:text-black transition'
+                            className={`${type && 'p-4'} no-underline bg-slate-300 dark:bg-slate-600 rounded-md p-2 text-gray-950 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-white dark:hover:text-black transition`}
                             key={tag}
                         >
                             {tag}

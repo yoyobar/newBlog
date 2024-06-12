@@ -1,4 +1,4 @@
-import { getMetadataValues } from '@/lib/metaData';
+import { getMetadataValues } from '@/utils/metaData';
 import Link from 'next/link';
 import SubTitle from './posts/SubTitle';
 

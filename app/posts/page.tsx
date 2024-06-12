@@ -2,24 +2,23 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import PageContainer from '@/components/PageContainer';
-import { allBrowseLoad, allFilesLoad } from '@/lib/parseData';
-import Category from '@/components/Category';
+import { allBrowseLoad, allFilesLoad } from '@/utils/parseData';
 import Browse from '@/components/posts/Browse';
 import dayjs from 'dayjs';
 import readingTime from 'reading-time';
 import Title from '@/components/posts/Title';
-import Link from 'next/link';
+import Tag from '@/components/posts/Tag';
 
 const BASE_DIR = 'posts';
 
-type PostMatter = {
+export type PostMatter = {
     title: string;
     description: string;
     tags: string[];
     date: string;
 };
 
-type AllBrowse = {
+export type AllBrowse = {
     category: string[];
     mdx: string[];
 };
@@ -27,7 +26,6 @@ type AllBrowse = {
 export default function Home() {
     const { category, mdx }: AllBrowse = allBrowseLoad();
     const categoryFiles = allFilesLoad(category);
-
     const allFiles = [...mdx.map((file) => ({ category: '', file })), ...categoryFiles];
 
     const blogs = allFiles.map(({ category, file }) => {

@@ -11,14 +11,13 @@ interface metaType {
 }
 
 export const metaStyle = {
-    all: 'text-sky-400',
+    default: 'text-sky-400',
     html: 'text-[#E34F26]',
     css: 'text-[#1572B6]',
     js: 'text-[#F7DF1E]',
     ts: 'text-[#3178C6]',
     react: 'text-[#61DAFB]',
     redux: 'text-[#764ABC]',
-    archive: 'text-sky-500',
 };
 
 export const metadata: metaType = {
@@ -30,7 +29,7 @@ export const metadata: metaType = {
     },
     all: {
         icon: Icon.All,
-        boxClass: metaStyle.all,
+        boxClass: metaStyle.default,
         title: '전체',
         link: '',
         visible: true,
@@ -77,9 +76,9 @@ export const metadata: metaType = {
         link: 'redux',
         visible: true,
     },
-    archive: {
-        icon: Icon.Archive,
-        boxClass: metaStyle.archive,
+    tags: {
+        icon: Icon.Default,
+        boxClass: metaStyle.default,
         title: 'Archives',
         link: 'archives',
         visible: true,

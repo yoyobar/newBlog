@@ -1,4 +1,4 @@
-import { calloutData } from '@/lib/calloutData';
+import { calloutData } from '@/utils/calloutData';
 import { PropsWithChildren } from 'react';
 
 interface CalloutProps extends PropsWithChildren {

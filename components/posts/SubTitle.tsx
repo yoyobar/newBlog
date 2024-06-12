@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { metadata } from '@/lib/metaData';
+import { metadata } from '@/utils/metaData';
 
 const SubTitle = ({ type }: { type: string }) => {
     const metaObj = metadata[type] || metadata['all'];
