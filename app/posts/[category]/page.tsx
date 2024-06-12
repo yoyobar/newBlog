@@ -1,12 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-import Link from 'next/link';
 import PageContainer from '@/components/PageContainer';
 import dayjs from 'dayjs';
 import readingTime from 'reading-time';
 import Title from '@/components/posts/Title';
-import Category from '@/components/Category';
 import Browse from '@/components/posts/Browse';
 
 const BASE_DIR = 'posts';
