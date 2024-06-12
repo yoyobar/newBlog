@@ -17,34 +17,37 @@ export type PostMatter = {
     date: string;
 };
 
-export type AllBrowse = {
-    category: string[];
-    mdx: string[];
-};
+export default async function Home({ searchParams }: { searchParams?: { [key: string]: string | string[] | undefined } }) {
+    async function fetchData() {
+        const { category, mdx } = allBrowseLoad();
+        const categoryFiles = allFilesLoad(category);
+        const allFiles = [...mdx.map((file) => ({ category: '', file })), ...categoryFiles];
+        const tag = searchParams?.tag === undefined ? '' : String(searchParams.tag);
 
-export default function Home({ searchParams }: { searchParams?: { [key: string]: string | string[] | undefined } }) {
-    const { category, mdx }: AllBrowse = allBrowseLoad();
-    const categoryFiles = allFilesLoad(category);
-    const allFiles = [...mdx.map((file) => ({ category: '', file })), ...categoryFiles];
-    const tag = searchParams?.tag === undefined ? '' : String(searchParams.tag);
+        const blogs = await Promise.all(
+            allFiles.map(async ({ category, file }) => {
+                const filePath = category ? path.join(BASE_DIR, category, file) : path.join(BASE_DIR, file);
+                const fileContent = fs.readFileSync(filePath, 'utf-8');
+                const { content, data } = matter(fileContent);
+                const grayMatter = data as PostMatter;
 
-    const blogs = allFiles.map(({ category, file }) => {
-        const filePath = category ? path.join(BASE_DIR, category, file) : path.join(BASE_DIR, file);
-        const fileContent = fs.readFileSync(filePath, 'utf-8');
-        const { content, data } = matter(fileContent);
-        const grayMatter = data as PostMatter;
+                return {
+                    meta: {
+                        title: grayMatter.title,
+                        length: allFiles.length,
+                        tags: grayMatter.tags,
+                        date: dayjs(grayMatter.date).format('YYYY-MM-DD'),
+                        readingMinutes: Math.ceil(readingTime(content).minutes),
+                    },
+                    slug: category ? `${category}/${file.replace('.mdx', '')}` : file.replace('.mdx', ''),
+                };
+            })
+        );
 
-        return {
-            meta: {
-                title: grayMatter.title,
-                length: allFiles.length,
-                tags: grayMatter.tags,
-                date: dayjs(grayMatter.date).format('YYYY-MM-DD'),
-                readingMinutes: Math.ceil(readingTime(content).minutes),
-            },
-            slug: category ? `${category}/${file.replace('.mdx', '')}` : file.replace('.mdx', ''),
-        };
-    });
+        return { blogs, tag };
+    }
+
+    const { blogs, tag } = await fetchData();
 
     return (
         <PageContainer>
