@@ -22,10 +22,11 @@ export type AllBrowse = {
     mdx: string[];
 };
 
-export default function Home() {
+export default function Home({ searchParams }: { searchParams?: { [key: string]: string | string[] | undefined } }) {
     const { category, mdx }: AllBrowse = allBrowseLoad();
     const categoryFiles = allFilesLoad(category);
     const allFiles = [...mdx.map((file) => ({ category: '', file })), ...categoryFiles];
+    const tag = searchParams?.tag === undefined ? '' : String(searchParams.tag);
 
     const blogs = allFiles.map(({ category, file }) => {
         const filePath = category ? path.join(BASE_DIR, category, file) : path.join(BASE_DIR, file);
@@ -47,9 +48,9 @@ export default function Home() {
 
     return (
         <PageContainer>
-            <div className='w-full xl:w-[90%] m-auto'>
+            <div className='w-full xl:w-[90%] m-auto select-none'>
                 <Title type={'tags'} />
-                <Archives blogs={blogs} />
+                <Archives tag={tag} blogs={blogs} />
             </div>
         </PageContainer>
     );
