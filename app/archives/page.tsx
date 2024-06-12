@@ -22,7 +22,7 @@ export type AllBrowse = {
     mdx: string[];
 };
 
-export default async function Home({ searchParams }: { searchParams?: { [key: string]: string | string[] | undefined } }) {
+export default function Home({ searchParams }: { searchParams?: { [key: string]: string | string[] | undefined } }) {
     const { category, mdx }: AllBrowse = allBrowseLoad();
     const categoryFiles = allFilesLoad(category);
     const allFiles = [...mdx.map((file) => ({ category: '', file })), ...categoryFiles];

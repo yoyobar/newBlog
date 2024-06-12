@@ -13,7 +13,7 @@ const Tag = ({ tags }: TagProps) => {
                 {tags.map((tag) => {
                     return (
                         <Link
-                            href={`/posts/archives?tag=${tag}`}
+                            href={`/archives?tag=${tag}`}
                             className={`no-underline bg-slate-300 dark:bg-slate-600 rounded-md p-2 text-gray-950 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-white dark:hover:text-black transition`}
                             key={tag}
                         >
