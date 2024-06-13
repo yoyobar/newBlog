@@ -66,25 +66,31 @@ const config: Config = {
                         p: {
                             marginTop: '2rem',
                             marginBottom: '2rem',
+                            wordWrap: 'break-word',
+                            fontSize: '1.8rem',
                         },
 
                         // ! 인라인 코드 블럭
                         ':not(pre) > code': {
                             display: 'inline-block',
-                            color: 'tomato',
                             fontWeight: 'inherit',
-                            margin: '0.2rem 1rem',
-                            backgroundColor: '#ededed',
-                            fontFamily: '"SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace',
-                            borderRadius: 3,
-                            padding: '0.2rem 0.4rem',
-                            overflowWrap: 'break-word',
+                            fontFamily: 'Consolas, Courier New, Courier, monospace',
+                            wordWrap: 'break-word',
+                            backgroundColor: '#e0e0e0',
+                            borderRadius: '3px',
                             textAlign: 'center',
+                        },
+
+                        ':not(pre) > code > span > span': {
+                            color: 'var(--shiki-light)',
+                        },
+
+                        '.dark :not(pre) > code > span > span': {
+                            color: 'var(--shiki-dark)',
                         },
 
                         '.dark :not(pre) > code': {
                             backgroundColor: '#282a37',
-                            color: 'orange',
                         },
 
                         'code::before': {
