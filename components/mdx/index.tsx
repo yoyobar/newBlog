@@ -10,8 +10,8 @@ import { Preview } from './modules/Preview';
 import { Image } from './modules/Image';
 import { Callout } from './modules/Callout';
 import { Card, Cards } from './modules/Card';
-import { Blockquote } from './modules/BlockQuote';
 import { CodeBlock } from './modules/CodeBlock';
+import { Blockquote } from './modules/Blockquote';
 
 const Mdx_Module = {
     Preview,
