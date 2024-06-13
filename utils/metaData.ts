@@ -11,6 +11,7 @@ interface metaType {
 }
 
 export const metaStyle = {
+    archives: 'text-sky-400',
     default: 'text-sky-400',
     html: 'text-[#E34F26]',
     css: 'text-[#1572B6]',
@@ -22,7 +23,7 @@ export const metaStyle = {
 
 export const metadata: metaType = {
     default: {
-        icon: Icon.Tag,
+        icon: Icon.All,
         title: 'ETC',
         link: '/posts',
         visible: false,
@@ -77,8 +78,8 @@ export const metadata: metaType = {
         visible: true,
     },
     archives: {
-        icon: Icon.Tag,
-        boxClass: metaStyle.default,
+        icon: Icon.Archives,
+        boxClass: metaStyle.archives,
         title: 'Archives',
         link: '/archives',
         visible: true,

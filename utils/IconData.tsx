@@ -18,7 +18,7 @@ export const InfoCallout = () => <FaInfoCircle />;
 export const DangerCallout = () => <MdDangerous />;
 export const DefaultCallout = () => <BsLightbulbFill />;
 export const All = () => <AiOutlineAppstoreAdd />;
-export const Tag = () => <AiFillTags />;
+export const Archives = () => <AiFillTags />;
 export const Html = () => <FaHtml5 />;
 export const Css = () => <FaCss3 />;
 export const Js = () => <IoLogoJavascript />;

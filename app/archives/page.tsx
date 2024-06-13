@@ -50,7 +50,7 @@ export default function ArchivesPage() {
     return (
         <PageContainer>
             <div className='w-full xl:w-[90%] m-auto select-none'>
-                <Title type={'tags'} />
+                <Title type={'archives'} />
                 <Suspense fallback={<div>Loading...</div>}>
                     <Archives blogs={blogs} tag={sortedTags} />
                 </Suspense>
