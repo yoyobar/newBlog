@@ -10,20 +10,24 @@ import { Preview } from './modules/Preview';
 import { Image } from './modules/Image';
 import { Callout } from './modules/Callout';
 import { Card, Cards } from './modules/Card';
+import { Blockquote } from './modules/BlockQuote';
+import { CodeBlock } from './modules/CodeBlock';
 
 const Mdx_Module = {
     Preview,
-    Image,
+    img: Image as any,
     Callout,
     Card,
     Cards,
+    blockquote: Blockquote,
+    pre: CodeBlock,
 };
 
 const options = {
     keepBackground: true,
     theme: {
-        dark: 'dracula',
-        light: 'one-dark-pro',
+        dark: 'material-theme-darker',
+        light: 'material-theme-lighter',
     },
     defaultLang: {
         block: 'js',

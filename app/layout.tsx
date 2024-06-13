@@ -4,6 +4,14 @@ import Snowfall from '@/components/home/SnowFall';
 import Dock from '@/components/home/Dock';
 import Provider from './Provider';
 import { Metadata } from 'next';
+import localFont from 'next/font/local';
+
+const pretendard = localFont({
+    src: '../public/fonts/PretendardVariable.woff2',
+    display: 'swap',
+    weight: '45, 920',
+    variable: '--font-pretendard',
+});
 
 export const metadata: Metadata = {
     title: 'Trouble Wiki',
@@ -20,14 +28,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang='ko' suppressHydrationWarning>
+        <html lang='ko' suppressHydrationWarning className={`${pretendard.variable}`}>
             <body
                 style={{
                     backgroundImage: `url(/logo/main-bg.webp)`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                 }}
-                className='fixed overflow-hidden w-full h-full bg-background'
+                className={`${pretendard.className} fixed overflow-hidden w-full h-full bg-background`}
             >
                 <Provider>
                     <Header />

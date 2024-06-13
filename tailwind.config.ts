@@ -71,10 +71,10 @@ const config: Config = {
                         // ! 인라인 코드 블럭
                         ':not(pre) > code': {
                             display: 'inline-block',
-                            color: 'red',
+                            color: 'tomato',
                             fontWeight: 'inherit',
                             margin: '0.2rem 1rem',
-                            backgroundColor: '#bae6fd',
+                            backgroundColor: '#ededed',
                             fontFamily: '"SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace',
                             borderRadius: 3,
                             padding: '0.2rem 0.4rem',
@@ -123,12 +123,8 @@ const config: Config = {
                         pre: {
                             backgroundColor: 'var(--shiki-light-bg)',
                             border: '1px solid #e5e7eb',
-
-                            '@media (max-width: 1024px)': {
-                                pre: {
-                                    width: '100%',
-                                },
-                            },
+                            margin: 'auto',
+                            overflow: 'scroll',
                         },
 
                         '.dark pre': {

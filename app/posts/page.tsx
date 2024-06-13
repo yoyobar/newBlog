@@ -7,8 +7,6 @@ import Browse from '@/components/posts/Browse';
 import dayjs from 'dayjs';
 import readingTime from 'reading-time';
 import Title from '@/components/posts/Title';
-import Tag from '@/components/posts/Tag';
-
 const BASE_DIR = 'posts';
 
 export type PostMatter = {

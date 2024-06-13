@@ -97,10 +97,12 @@ const PageContainer = ({
                         <CategoryButton onNav={navHandler} />
                     </nav>
                 </header>
-                <nav className='relative overflow-y-scroll overflow-x-hidden p-6 bg-slate-100 dark:bg-background h-full rounded-b-md'>
+                <nav className='relative overflow-y-scroll overflow-x-hidden p-6 bg-white dark:bg-background h-full rounded-b-md'>
                     {selected && <Category selected={selected} onNav={navHandler} />}
                     <div
-                        className={`${selected && 'blur-[2px] opacity-30'} transition duration-300 text-3xl prose dark:prose-invert min-w-full pb-16`}
+                        className={`${
+                            selected && 'blur-[2px] opacity-30'
+                        } transition duration-300 text-3xl prose dark:prose-invert min-w-full pb-16`}
                     >
                         {children}
                     </div>

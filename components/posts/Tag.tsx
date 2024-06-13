@@ -1,6 +1,3 @@
-// components/Tag.tsx
-import Link from 'next/link';
-
 interface TagProps {
     tags: string[];
 }
@@ -11,16 +8,14 @@ const Tag = ({ tags }: TagProps) => {
     }
 
     return (
-        <div className='flex gap-2 text-x z-10'>
+        <div className='gap-2 text-xl z-10 absolute bottom-4 left-10 flex'>
             {tags.map((tag) => (
-                <Link
+                <div
                     className='no-underline cursor-pointer bg-slate-300 dark:bg-slate-600 rounded-md p-2 text-gray-950 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-white dark:hover:text-black transition`'
                     key={tag}
-                    href={`/archives?tag=${tag}`}
-                    passHref
                 >
                     {tag}
-                </Link>
+                </div>
             ))}
         </div>
     );
