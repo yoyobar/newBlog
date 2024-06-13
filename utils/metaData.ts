@@ -22,7 +22,7 @@ export const metaStyle = {
 
 export const metadata: metaType = {
     default: {
-        icon: Icon.Default,
+        icon: Icon.Tag,
         title: 'ETC',
         link: '/posts',
         visible: false,
@@ -76,11 +76,18 @@ export const metadata: metaType = {
         link: '/posts/redux',
         visible: true,
     },
-    tags: {
-        icon: Icon.Default,
+    archives: {
+        icon: Icon.Tag,
         boxClass: metaStyle.default,
         title: 'Archives',
         link: '/archives',
+        visible: true,
+    },
+    book: {
+        icon: Icon.Book,
+        boxClass: metaStyle.default,
+        title: 'Book',
+        link: '/book',
         visible: true,
     },
 };

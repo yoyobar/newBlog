@@ -23,12 +23,14 @@ const Browse = ({ blogs, selected }: { blogs: AllPostsProp; selected?: string })
     return (
         <div className='w-full h-full grid grid-cols-1 xl:grid-cols-2 gap-4'>
             {filteredBlogs.map((blog) => (
-                <div
+                <Link
+                    passHref
+                    href={`/posts/${blog.slug}`}
                     key={blog.meta.title}
-                    className='shadow-slate-950 shadow-sm relative z-10 w-full h-full border border-slate-500 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-800 transition'
+                    className='shadow-slate-950 no-underline shadow-sm relative z-0 w-full h-full border border-slate-500 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-800 transition'
                 >
                     <div className='p-8 flex flex-col gap-8 w-full'>
-                        <Link href={`/posts/${blog.slug}`} className='no-underline flex flex-col gap-8'>
+                        <div className=' flex flex-col gap-8'>
                             <div className='text-4xl'>{blog.meta.title}</div>
                             <article className='flex items-center gap-8'>
                                 <div className='flex gap-2'>
@@ -40,10 +42,10 @@ const Browse = ({ blogs, selected }: { blogs: AllPostsProp; selected?: string })
                                     <div className='dark:text-gray-400 text-gray-600 w-[40px] text-xl'>{blog.meta.readingMinutes} min</div>
                                 </div>
                             </article>
-                        </Link>
-                        <Tag tags={blog.meta.tags} />
+                            <Tag tags={blog.meta.tags} />
+                        </div>
                     </div>
-                </div>
+                </Link>
             ))}
         </div>
     );

@@ -7,6 +7,7 @@ import { IoMdClose } from 'react-icons/io';
 import CategoryButton from './CategoryButton';
 import Category from './Category';
 import { useMaximize } from '@/config/store';
+import { motion } from 'framer-motion';
 const PageContainer = ({
     children,
 }: Readonly<{
@@ -69,13 +70,14 @@ const PageContainer = ({
 
     return (
         <>
-            <div
+            <motion.div
+                animate={{ filter: ['blur(2px)', 'blur(0px)'] }}
                 style={{ left: endPosition.x, top: endPosition.y }}
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
                 className={`${!data && 'md:border-t-[80px] md:absolute md:w-4/6 md:h-[calc(100%-40px)]'} 
                 static left-0 w-full h-full transition-width-height
-                border-transparent rounded-md z-10 `}
+                border-transparent rounded-md z-10 blur-[2px]`}
             >
                 <header
                     onClick={doubleMaximizeHandler}
@@ -96,14 +98,14 @@ const PageContainer = ({
                     </nav>
                 </header>
                 <nav className='relative overflow-y-scroll overflow-x-hidden p-6 bg-slate-100 dark:bg-background h-full rounded-b-md'>
-                    {selected && <Category onNav={navHandler} />}
+                    {selected && <Category selected={selected} onNav={navHandler} />}
                     <div
                         className={`${selected && 'blur-[2px] opacity-30'} transition duration-300 text-3xl prose dark:prose-invert min-w-full pb-16`}
                     >
                         {children}
                     </div>
                 </nav>
-            </div>
+            </motion.div>
         </>
     );
 };

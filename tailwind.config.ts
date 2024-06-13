@@ -3,12 +3,7 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 
 const config: Config = {
     darkMode: 'class',
-    content: [
-        './pages/**/*.{js,ts,jsx,tsx,mdx}',
-        './components/**/*.{js,ts,jsx,tsx,mdx}',
-        './app/**/*.{js,ts,jsx,tsx,mdx}',
-        './utils/**/*.{js,jsx,ts,tsx}',
-    ],
+    content: ['./components/**/*.{js,ts,jsx,tsx,mdx}', './app/**/*.{js,ts,jsx,tsx,mdx}', './utils/**/*.{js,jsx,ts,tsx}'],
     theme: {
         screens: {
             ...defaultTheme.screens,
@@ -41,10 +36,12 @@ const config: Config = {
                 },
                 slide: {
                     '0%': {
-                        opacity: '0.1',
+                        opacity: '0',
+                        height: '0px',
                     },
                     '100%': {
                         opacity: '1',
+                        height: '100%',
                     },
                 },
             },
