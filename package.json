@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "dev": "next dev",
-        "build": "next build && next export && next-export-optimize-images",
+        "build": "next build",
         "start": "next start",
         "lint": "next lint"
     },
@@ -40,7 +40,6 @@
         "eslint": "^8",
         "eslint-config-next": "14.2.3",
         "glob": "^10.4.1",
-        "next-export-optimize-images": "^4.5.0",
         "postcss": "^8",
         "tailwindcss": "^3.4.1",
         "typescript": "^5"

@@ -1,8 +1,5 @@
-const withExportImages = require('next-export-optimize-images');
-
 /** @type {import('next').NextConfig} */
-const nextConfig = withExportImages({
-    //...
-});
+const nextConfig = {};
 
-module.exports = nextConfig;
+// Merge MDX config with Next.js config
+export default nextConfig;
