@@ -1,29 +1,31 @@
 'use client';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { FaArrowLeft } from 'react-icons/fa';
 
-interface CategoryButtonProps {
-    onNav: () => void;
-}
+const CategoryButton = () => {
+    const router = useRouter();
+    const [hover, setHover] = useState(false);
+    const path = usePathname();
 
-const CategoryButton = ({ onNav }: CategoryButtonProps) => {
-    const [hovered, setHovered] = useState(false);
+    const routerBackHandler = () => {
+        router.back();
+    };
 
     return (
-        <>
-            <div
-                onMouseEnter={() => setHovered(true)}
-                onMouseLeave={() => setHovered(false)}
-                onClick={onNav}
-                className='h-full w-[32px] relative z-10 flex flex-col justify-center gap-[5px] cursor-pointer'
-            >
-                <div className={`transition-width-height h-1 border-b border-2 rounded-md ${hovered ? 'w-5' : 'w-7'}`}></div>
-                <div className={`transition-width-height h-1 border-b border-2 rounded-md ${hovered ? 'w-8' : 'w-5'}`}></div>
-                <div className={`transition-width-height h-1 border-b border-2 rounded-md ${hovered ? 'w-5' : 'w-8'}`}></div>
-            </div>
-            <div className={` text-white animate-slideCategory left-[3rem] text-2xl -top-[3rem] ${hovered ? 'relative' : 'hidden'}`}>
-                Posts
-            </div>
-        </>
+        <div className='flex h-full items-center gap-4 pr-8'>
+            <FaArrowLeft
+                onMouseEnter={() => setHover(true)}
+                onMouseLeave={() => setHover(false)}
+                onClick={path.includes('/posts/') ? routerBackHandler : undefined}
+                className={
+                    path.includes('/posts/')
+                        ? 'cursor-pointer scale-75 text-4xl hover:scale-100 text-slate-100 transition'
+                        : 'scale-75 text-4xl text-gray-500'
+                }
+            />
+            <div className={hover ? 'block text-3xl' : 'invisible text-3xl'}>Back</div>
+        </div>
     );
 };
 

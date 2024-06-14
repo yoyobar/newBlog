@@ -7,21 +7,14 @@ import readingTime from 'reading-time';
 import Title from '@/components/posts/Title';
 import Archives from '@/components/posts/Archives';
 import { allBrowseLoad, allFilesLoad } from '@/utils/parseData';
-import { AllBrowse } from '../posts/page';
+import { AllBrowseType, FrontMatterTypes } from '@/config/types';
 import { Suspense } from 'react';
 
 const BASE_DIR = 'posts';
 
-export type PostMatter = {
-    title: string;
-    description: string;
-    tags: string[];
-    date: string;
-};
-
 // 홈 컴포넌트
 export default function ArchivesPage() {
-    const { category, mdx }: AllBrowse = allBrowseLoad();
+    const { category, mdx }: AllBrowseType = allBrowseLoad();
     const categoryFiles = allFilesLoad(category);
     const allFiles = [...mdx.map((file) => ({ category: '', file })), ...categoryFiles];
 
@@ -29,7 +22,7 @@ export default function ArchivesPage() {
         const filePath = category ? path.join(BASE_DIR, category, file) : path.join(BASE_DIR, file);
         const fileContent = fs.readFileSync(filePath, 'utf-8');
         const { content, data } = matter(fileContent);
-        const grayMatter = data as PostMatter;
+        const grayMatter = data as FrontMatterTypes;
 
         return {
             meta: {

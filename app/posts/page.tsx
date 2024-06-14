@@ -3,26 +3,16 @@ import path from 'path';
 import matter from 'gray-matter';
 import PageContainer from '@/components/PageContainer';
 import { allBrowseLoad, allFilesLoad } from '@/utils/parseData';
+import { FrontMatterTypes } from '@/config/types';
 import Browse from '@/components/posts/Browse';
 import dayjs from 'dayjs';
 import readingTime from 'reading-time';
 import Title from '@/components/posts/Title';
+import { AllBrowseType } from '@/config/types';
 const BASE_DIR = 'posts';
 
-export type PostMatter = {
-    title: string;
-    description: string;
-    tags: string[];
-    date: string;
-};
-
-export type AllBrowse = {
-    category: string[];
-    mdx: string[];
-};
-
 export default function Home() {
-    const { category, mdx }: AllBrowse = allBrowseLoad();
+    const { category, mdx }: AllBrowseType = allBrowseLoad();
     const categoryFiles = allFilesLoad(category);
     const allFiles = [...mdx.map((file) => ({ category: '', file })), ...categoryFiles];
 
@@ -30,7 +20,7 @@ export default function Home() {
         const filePath = category ? path.join(BASE_DIR, category, file) : path.join(BASE_DIR, file);
         const fileContent = fs.readFileSync(filePath, 'utf-8');
         const { content, data } = matter(fileContent);
-        const grayMatter = data as PostMatter;
+        const grayMatter = data as FrontMatterTypes;
 
         return {
             meta: {

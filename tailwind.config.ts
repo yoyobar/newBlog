@@ -26,11 +26,11 @@ const config: Config = {
                 },
                 slideCategory: {
                     '0%': {
-                        left: '1rem',
+                        left: '7rem',
                         opacity: '0.1',
                     },
                     '100%': {
-                        left: '3rem',
+                        left: '10rem',
                         opacity: '1',
                     },
                 },

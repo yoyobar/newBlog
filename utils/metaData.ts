@@ -62,7 +62,7 @@ export const metadata: metaType = {
         icon: Icon.Dev,
         boxClass: metaStyle.dev,
         title: '개발',
-        link: 'posts/dev',
+        link: '/posts/dev',
         visible: true,
     },
     archives: {

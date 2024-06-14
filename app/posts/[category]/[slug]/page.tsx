@@ -3,13 +3,15 @@ import path from 'path';
 import matter from 'gray-matter';
 import PageContainer from '@/components/PageContainer';
 import Mdx_Body from '@/components/mdx';
-
+import Mdx_Header from '@/components/mdx/Header';
+import { FrontMatterTypes } from '@/config/types';
 const BASE_DIR = 'posts';
 
 async function getPost(category: string, slug: string) {
     const filePath = path.join(BASE_DIR, category, `${slug}.mdx`);
     const fileContent = fs.readFileSync(filePath, 'utf-8');
-    const { data: frontMatter, content } = matter(fileContent);
+    const { data, content } = matter(fileContent);
+    const frontMatter = data as FrontMatterTypes;
 
     return {
         frontMatter,
@@ -38,8 +40,8 @@ export default async function Page({ params }: { params: { category: string; slu
 
     return (
         <PageContainer>
-            <h1>{frontMatter.title}</h1>
             <div className='m-auto w-[95%] xl:w-[70%] 3xl:w-[50%]'>
+                <Mdx_Header frontMatter={frontMatter} />
                 <Mdx_Body content={content} />
             </div>
         </PageContainer>

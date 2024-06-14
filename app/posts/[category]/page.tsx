@@ -6,15 +6,9 @@ import dayjs from 'dayjs';
 import readingTime from 'reading-time';
 import Title from '@/components/posts/Title';
 import Browse from '@/components/posts/Browse';
+import { FrontMatterTypes } from '@/config/types';
 
 const BASE_DIR = 'posts';
-
-type PostMatter = {
-    title: string;
-    description: string;
-    tags: string[];
-    date: string;
-};
 
 export async function generateStaticParams() {
     const categories = fs.readdirSync(BASE_DIR);
@@ -32,7 +26,7 @@ export default async function Page({ params }: { params: { category: string } })
         const filePath = path.join(categoryPath, file);
         const fileContent = fs.readFileSync(filePath, 'utf-8');
         const { content, data } = matter(fileContent);
-        const grayMatter = data as PostMatter;
+        const grayMatter = data as FrontMatterTypes;
         return {
             meta: {
                 title: grayMatter.title,

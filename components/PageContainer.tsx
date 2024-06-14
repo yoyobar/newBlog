@@ -1,10 +1,10 @@
 'use client';
 
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { MdOpenInFull } from 'react-icons/md';
 import { IoMdClose } from 'react-icons/io';
-import CategoryButton from './CategoryButton';
+import CategoryNav from './CategoryNav';
 import Category from './Category';
 import { useMaximize } from '@/config/store';
 import { motion } from 'framer-motion';
@@ -19,7 +19,6 @@ const PageContainer = ({
     const [startPosition, setStartPosition] = useState({ x: 1192, y: 94 });
     const { data, setData } = useMaximize();
     const clickCount = useRef(0);
-    const path = usePathname();
     const [selected, setSelected] = useState(false);
 
     const navHandler = () => {
@@ -94,8 +93,8 @@ const PageContainer = ({
                         <MdOpenInFull className='left-[0.14rem] absolute w-4 h-5 font-bold text-xs text-[#146721]' />
                     </div>
                     {/* 카테고리 버튼 컨트롤 */}
-                    <nav className={'block ml-2 h-full w-full'}>
-                        <CategoryButton onNav={navHandler} />
+                    <nav className={'flex ml-2 h-full w-full justify-between'}>
+                        <CategoryNav onNav={navHandler} />
                     </nav>
                 </header>
                 <nav className='relative overflow-y-scroll overflow-x-hidden p-6 bg-white dark:bg-background h-full rounded-b-md'>
