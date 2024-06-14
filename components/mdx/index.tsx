@@ -14,6 +14,7 @@ import { CodeBlock } from './modules/CodeBlock';
 import { Blockquote } from './modules/Blockquote';
 import { Table, Td, Th, Tr } from './modules/Table';
 import { Hr } from './modules/Hr';
+import rehypeSlug from 'rehype-slug';
 
 const Mdx_Module = {
     Preview,
@@ -58,6 +59,7 @@ const Mdx_Body = async ({ content }: { content: string }) => {
                     rehypePlugins: [
                         // Pretty Code Block (Shiki)
                         [rehypePrettyCode, options],
+                        rehypeSlug,
                     ],
                     format: 'mdx',
                 },

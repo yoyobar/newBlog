@@ -37,12 +37,12 @@ const Category = ({ onNav, selected }: CategoryProps) => {
 
     return (
         <>
-            <div className='absolute -top-5 left-0 select-none'>
+            <div className='absolute'>
                 <motion.div
                     variants={container}
                     initial='hidden'
                     animate='visible'
-                    className='z-40 h-fit fixed flex flex-col gap-4 p-8 w-[300px] rounded-md bg-[rgba(255,255,255,0.98)]  dark:bg-slate-800 text-black border dark:border-black shadow-gray-400 dark:shadow-black shadow-sm'
+                    className='h-fit z-40 fixed flex flex-col gap-4 p-8 w-[300px] rounded-md bg-[rgba(255,255,255,0.98)]  dark:bg-slate-800 text-black border dark:border-black shadow-gray-400 dark:shadow-black shadow-sm'
                 >
                     {category.map((item) => (
                         <Link onClick={onNav} className='no-underline transition-all' key={item.key} href={`${item.link}`}>
@@ -53,7 +53,7 @@ const Category = ({ onNav, selected }: CategoryProps) => {
                     ))}
                 </motion.div>
             </div>
-            <div onClick={onNav} className='absolute top-0 w-full h-full z-30'></div>
+            <div onClick={onNav} className='fixed top-0 w-full h-full z-30'></div>
         </>
     );
 };

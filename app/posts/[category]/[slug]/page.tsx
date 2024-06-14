@@ -5,6 +5,7 @@ import PageContainer from '@/components/PageContainer';
 import Mdx_Body from '@/components/mdx';
 import { FrontMatterTypes } from '@/config/types';
 import Mdx_Header from '@/components/mdx/header/Mdx_Header';
+import Mdx_Toc from '@/components/mdx/toc';
 const BASE_DIR = 'posts';
 
 async function getPost(category: string, slug: string) {
@@ -39,6 +40,7 @@ export default async function Page({ params }: { params: { category: string; slu
     const { frontMatter, content } = await getPost(category, slug);
     return (
         <PageContainer>
+            <Mdx_Toc />
             <div className='m-auto w-[95%] xl:w-[70%] 3xl:w-[50%]'>
                 <Mdx_Header frontMatter={{ ...frontMatter, category: category }} />
                 <Mdx_Body content={content} />
