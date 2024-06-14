@@ -19,6 +19,8 @@ export const metaStyle = {
     ts: 'text-[#3178C6]',
     react: 'text-[#61DAFB]',
     redux: 'text-[#764ABC]',
+    setting: 'text-gray-400',
+    dev: 'text-rose-400',
 };
 
 export const metadata: metaType = {
@@ -56,25 +58,11 @@ export const metadata: metaType = {
         link: '/posts/react',
         visible: true,
     },
-    css: {
-        icon: Icon.Css,
-        boxClass: metaStyle.css,
-        title: 'CSS',
-        link: '/posts/css',
-        visible: true,
-    },
-    html: {
-        icon: Icon.Html,
-        boxClass: metaStyle.html,
-        title: 'HTML',
-        link: '/posts/html',
-        visible: true,
-    },
-    redux: {
-        icon: Icon.Redux,
-        boxClass: metaStyle.redux,
-        title: 'Redux',
-        link: '/posts/redux',
+    dev: {
+        icon: Icon.Dev,
+        boxClass: metaStyle.dev,
+        title: '개발',
+        link: 'posts/dev',
         visible: true,
     },
     archives: {
@@ -89,6 +77,13 @@ export const metadata: metaType = {
         boxClass: metaStyle.default,
         title: 'Book',
         link: '/book',
+        visible: true,
+    },
+    setting: {
+        icon: Icon.Setting,
+        boxClass: metaStyle.setting,
+        title: 'Setting',
+        link: '/setting',
         visible: true,
     },
 };

@@ -13,6 +13,7 @@ import { Card, Cards } from './modules/Card';
 import { CodeBlock } from './modules/CodeBlock';
 import { Blockquote } from './modules/Blockquote';
 import { Table, Td, Th, Tr } from './modules/Table';
+import { Hr } from './modules/Hr';
 
 const Mdx_Module = {
     Preview,
@@ -26,6 +27,7 @@ const Mdx_Module = {
     th: Th,
     td: Td,
     table: Table,
+    hr: Hr,
 };
 
 const options = {

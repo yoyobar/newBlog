@@ -93,7 +93,8 @@ const PageContainer = ({
                     <div onClick={maximizeHandler} className='cursor-pointer hidden md:block relative w-5 h-5 rounded-full bg-[#28c841]'>
                         <MdOpenInFull className='left-[0.14rem] absolute w-4 h-5 font-bold text-xs text-[#146721]' />
                     </div>
-                    <nav className={path.includes('/posts') || path.includes('/archives') ? 'block ml-2 h-full w-full' : 'hidden'}>
+                    {/* 카테고리 버튼 컨트롤 */}
+                    <nav className={'block ml-2 h-full w-full'}>
                         <CategoryButton onNav={navHandler} />
                     </nav>
                 </header>
