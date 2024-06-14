@@ -60,7 +60,7 @@ const Dock = () => {
         <>
             <motion.div
                 className='
-                border border-[#565656] relative top-[50%] 
+                border border-[#565656] relative top-[40%] 
                 left-10 px-3 py-4 rounded-3xl bg-header
                 w-fit shadow-sm shadow-[#3f3f3f]
                 gap-5 select-none skew-y-[5deg] flex flex-col items-center

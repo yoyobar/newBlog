@@ -10,7 +10,7 @@ import { Preview } from './modules/Preview';
 import { Image } from './modules/Image';
 import { Callout } from './modules/Callout';
 import { Card, Cards } from './modules/Card';
-import { CodeBlock, FigCaption } from './modules/CodeBlock';
+import { CodeBlock } from './modules/CodeBlock';
 import { Blockquote } from './modules/Blockquote';
 import { Table, Td, Th, Tr } from './modules/Table';
 
@@ -22,7 +22,6 @@ const Mdx_Module = {
     Cards,
     blockquote: Blockquote,
     pre: CodeBlock,
-    figcaption: FigCaption,
     tr: Tr,
     th: Th,
     td: Td,

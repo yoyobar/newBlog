@@ -64,21 +64,28 @@ const config: Config = {
                     css: {
                         // ! <p> 태그
                         p: {
-                            marginTop: '2rem',
-                            marginBottom: '2rem',
-                            wordWrap: 'break-word',
+                            lineHeight: '3rem',
                             fontSize: '1.8rem',
+
+                            '@media screen and (max-width: 768px)': {
+                                lineHeight: '2.5rem',
+                                fontSize: '1.6rem',
+                            },
                         },
 
                         // ! 인라인 코드 블럭
                         ':not(pre) > code': {
                             display: 'inline-block',
+                            padding: '0',
                             fontWeight: 'inherit',
                             fontFamily: 'Consolas, Courier New, Courier, monospace',
-                            wordWrap: 'break-word',
                             backgroundColor: '#e0e0e0',
                             borderRadius: '3px',
-                            textAlign: 'center',
+                            textWarp: 'break-words',
+                        },
+
+                        ':not(pre) > p > span > code': {
+                            textWarp: 'break-words',
                         },
 
                         ':not(pre) > code > span > span': {
@@ -130,26 +137,10 @@ const config: Config = {
                             backgroundColor: 'var(--shiki-light-bg)',
                             border: '1px solid #e5e7eb',
                             margin: 'auto',
-                            overflow: 'scroll',
-                        },
 
-                        '.dark pre': {
-                            backgroundColor: 'var(--shiki-dark-bg)',
-                            color: 'var(--shiki-dark)',
-                            border: '1px solid #374151',
-                        },
-                        'pre > code > span': {
-                            padding: '1.1rem',
-                            paddingRight: '1.1rem',
-                        },
-                        'pre code span': {
-                            color: 'var(--shiki-light)',
-                        },
-                        '.dark pre code span': {
-                            color: 'var(--shiki-dark)',
-                        },
-                        '[data-highlighted-line]': {
-                            backgroundColor: 'rgba(253, 224, 71, 0.2)',
+                            '@media screen and (max-width: 768px)': {
+                                fontSize: '1.4rem',
+                            },
                         },
 
                         //! 언더라인
@@ -157,6 +148,10 @@ const config: Config = {
                             textUnderlineOffset: '4px',
                             textDecorationThickness: 1,
                             fontWeight: 600,
+                        },
+
+                        'li::marker': {
+                            color: 'tomato',
                         },
                     },
                 },

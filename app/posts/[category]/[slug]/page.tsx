@@ -39,7 +39,7 @@ export default async function Page({ params }: { params: { category: string; slu
     return (
         <PageContainer>
             <h1>{frontMatter.title}</h1>
-            <div className='m-auto w-[90%] xl:w-[70%]'>
+            <div className='m-auto w-[95%] xl:w-[70%] 3xl:w-[50%]'>
                 <Mdx_Body content={content} />
             </div>
         </PageContainer>

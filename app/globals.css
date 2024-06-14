@@ -16,19 +16,20 @@ html {
 /* Webkit (Chrome, Safari) */
 *::-webkit-scrollbar {
     width: 9px;
+    height: 7px;
 }
 
 *::-webkit-scrollbar-track {
     background: #565656;
     border-radius: 5px;
-    margin: 10px 0;
+    margin: 10px;
+    border: 1px solid transparent;
+    background-clip: content-box;
 }
 
 *::-webkit-scrollbar-thumb {
-    background-color: #ddd;
+    background-color: #dad0ea;
     border-radius: 10px;
-    /* border: 2px solid transparent;
-    background-clip: content-box; */
 }
 
 @layer utilities {

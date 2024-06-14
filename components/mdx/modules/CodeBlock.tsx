@@ -1,23 +1,9 @@
 'use client';
-import { FaCopy } from 'react-icons/fa';
-import { useCallback, useRef, useState, type ComponentProps, type ReactElement } from 'react';
+import { FaRegClipboard } from 'react-icons/fa6';
+import React, { useCallback, useRef, useState, type ReactNode, type ComponentProps, type ReactElement } from 'react';
 import { motion } from 'framer-motion';
 import { useCopyToClipboard } from 'react-use';
 import { FaCheck } from 'react-icons/fa';
-import { FaRegFileLines } from 'react-icons/fa6';
-
-export const FigCaption = ({
-    children,
-}: ComponentProps<'figcaption'> & {
-    filename?: string;
-}): ReactElement => {
-    return (
-        <div className=' w-full md:w-[80%] select-none flex gap-2 items-center text-2xl px-10 p-1 border border-b-0 border-[#e5e7eb] bg-[#fafafa] dark:bg-[#1f1f1f] dark:border-[#3a4150] rounded-t-md'>
-            <FaRegFileLines />
-            <div>{children}</div>
-        </div>
-    );
-};
 
 export const CodeBlock = ({
     children,
@@ -25,9 +11,11 @@ export const CodeBlock = ({
     ...props
 }: ComponentProps<'pre'> & {
     filename?: string;
+    children?: ReactNode;
 }): ReactElement => {
     const preRef = useRef<HTMLPreElement | null>(null);
     const [copy, setCopy] = useState(false);
+    const [visible, setVisible] = useState(false);
     const [state, copyToClipboard] = useCopyToClipboard();
     const handleCopy = useCallback(() => {
         if (preRef.current) {
@@ -41,30 +29,43 @@ export const CodeBlock = ({
         }
     }, [copyToClipboard]);
 
-    return (
-        <div className=' relative z-10 w-full md:w-[80%]'>
-            {!copy && (
-                <motion.div
-                    onClick={handleCopy}
-                    className='cursor-pointer bg-[#fafafa] dark:bg-[#1f1f1f] absolute z-50 right-5 top-5 p-2 rounded-md border dark:border-gray-600 '
-                    animate={{ opacity: [0, 1] }}
-                    whileHover={{ opacity: 0.7 }}
-                >
-                    <FaCopy className='text-indigo-400 dark:text-indigo-600' />
-                </motion.div>
-            )}
-            {copy && (
-                <motion.div
-                    className='cursor-pointer bg-[#fafafa] dark:bg-[#1f1f1f] absolute z-50 right-5 top-5 p-2 rounded-md border dark:border-gray-600'
-                    animate={{ opacity: [0, 1] }}
-                >
-                    <FaCheck className='text-green-400' />
-                </motion.div>
-            )}
+    const language = React.isValidElement(children) ? children.props['data-language'] : null;
 
-            <pre className='w-full rounded-b-md rounded-t-none overflow-x-visible' ref={preRef} {...props}>
-                {children}
-            </pre>
-        </div>
+    return (
+        <>
+            <div onMouseEnter={() => setVisible(true)} onMouseLeave={() => setVisible(false)} className='relative z-10 overflow-x-visible'>
+                <div className='w-auto bg-[#3a3b45] h-[30px] rounded-t-md flex justify-between items-center px-6'>
+                    <div className='flex gap-3'>
+                        <div className='w-[12px] h-[12px] rounded-full bg-[#e57061]'></div>
+                        <div className='w-[12px] h-[12px] rounded-full bg-[#f0bf4f]'></div>
+                        <div className='w-[12px] h-[12px] rounded-full bg-[#6fc855]'></div>
+                    </div>
+                    <div className='text-orange-500'>{language}</div>
+                </div>
+                <pre className='p-0 m-0 w-full rounded-b-md rounded-t-none border dark:border-[#3a3b45]' ref={preRef} {...props}>
+                    {!copy && visible && (
+                        <motion.div
+                            onClick={handleCopy}
+                            className='cursor-pointer bg-[#fafafa] dark:bg-[#1f1f1f] absolute z-50 right-5 top-20 p-2 rounded-md border dark:border-gray-600 '
+                            animate={{ opacity: [0, 1], y: [10, 0] }}
+                            whileHover={{ opacity: 0.7 }}
+                        >
+                            <FaRegClipboard className='dark:text-gray-300 text-gray-700' />
+                        </motion.div>
+                    )}
+                    {copy && visible && (
+                        <motion.div
+                            className='cursor-pointer bg-[#fafafa] dark:bg-[#1f1f1f] absolute z-50 right-5 top-20 p-2 rounded-md border dark:border-gray-600'
+                            animate={{ opacity: [0, 1], y: [10, 0] }}
+                        >
+                            <FaCheck className='text-green-400' />
+                        </motion.div>
+                    )}
+                    <code className='bg-[#e0e0e0] dark:bg-[#292a36]'>
+                        <div className='overflow-x-auto p-4 xl:p-8'>{children}</div>
+                    </code>
+                </pre>
+            </div>
+        </>
     );
 };
