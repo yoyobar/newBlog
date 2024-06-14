@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { CiCalendar } from 'react-icons/ci';
 import { CiTimer } from 'react-icons/ci';
-import Tag from './Tag';
+import BrowseTag from './BrowseTag';
 
 type AllPostsProp = {
     meta: {
@@ -21,7 +21,7 @@ const Browse = ({ blogs, selected }: { blogs: AllPostsProp; selected?: string })
     const filteredBlogs = selected ? sortedBlogs.filter((item) => item.meta.tags.includes(selected)) : sortedBlogs;
 
     return (
-        <div className='w-full h-full grid grid-cols-1 xl:grid-cols-2 gap-4 relative mb-10'>
+        <div className='w-full px-2 grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4 relative mb-10'>
             {filteredBlogs.map((blog) => (
                 <>
                     <div
@@ -45,7 +45,7 @@ const Browse = ({ blogs, selected }: { blogs: AllPostsProp; selected?: string })
                                 </article>
                             </div>
                         </Link>
-                        <Tag tags={blog.meta.tags} />
+                        <BrowseTag tags={blog.meta.tags} />
                     </div>
                 </>
             ))}

@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import TagList from './TagList';
+import ArchivesTag from './ArchivesTag';
 import Browse from './Browse';
 import { MdSort } from 'react-icons/md';
 import { MdClose } from 'react-icons/md';
@@ -37,7 +37,7 @@ const Archives = ({ tag, blogs }: { tag: string[]; blogs: AllPostsProp }) => {
         <>
             <div className='flex flex-col gap-8'>
                 <div className='text-sky-200xl'>태그에 해당하는 게시글을 조회합니다.</div>
-                <TagList onSelect={selectHandler} tags={tag} />
+                <ArchivesTag onSelect={selectHandler} tags={tag} />
                 <div className='flex gap-2 text-4xl items-center'>
                     <MdSort className='text-sky-600' />
                     {selected === '' ? 'ALL' : selected}

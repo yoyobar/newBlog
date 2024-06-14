@@ -3,8 +3,8 @@ import path from 'path';
 import matter from 'gray-matter';
 import PageContainer from '@/components/PageContainer';
 import Mdx_Body from '@/components/mdx';
-import Mdx_Header from '@/components/mdx/Header';
 import { FrontMatterTypes } from '@/config/types';
+import Mdx_Header from '@/components/mdx/header/Mdx_Header';
 const BASE_DIR = 'posts';
 
 async function getPost(category: string, slug: string) {
@@ -37,11 +37,10 @@ export async function generateStaticParams() {
 export default async function Page({ params }: { params: { category: string; slug: string } }) {
     const { category, slug } = params;
     const { frontMatter, content } = await getPost(category, slug);
-
     return (
         <PageContainer>
             <div className='m-auto w-[95%] xl:w-[70%] 3xl:w-[50%]'>
-                <Mdx_Header frontMatter={frontMatter} />
+                <Mdx_Header frontMatter={{ ...frontMatter, category: category }} />
                 <Mdx_Body content={content} />
             </div>
         </PageContainer>

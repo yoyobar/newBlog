@@ -4,7 +4,7 @@ interface TagProps {
     tags: string[];
 }
 
-const Tag = ({ tags }: TagProps) => {
+const BrowseTag = ({ tags }: TagProps) => {
     if (!tags || tags.length === 0) {
         return <div className='text-xl bg-slate-600 rounded-md p-2 text-gray-300 hover:bg-white hover:text-black transition'>None</div>;
     }
@@ -24,4 +24,4 @@ const Tag = ({ tags }: TagProps) => {
     );
 };
 
-export default Tag;
+export default BrowseTag;

@@ -5,12 +5,12 @@ interface TagProps {
     onSelect: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-const TagTest = ({ tags, onSelect }: TagProps) => {
+const ArchivesTag = ({ tags, onSelect }: TagProps) => {
     if (!tags) {
         return <div>Loading...</div>;
     } else {
         return (
-            <div className={'grid grid-cols-4 lg:grid-cols-8 2xl:grid-cols-12 gap-4 text-2xl '}>
+            <div className={'px-2 grid grid-cols-4 lg:grid-cols-6 2xl:grid-cols-8 gap-4 text-2xl '}>
                 {tags.map((tag) => {
                     return (
                         <button
@@ -28,4 +28,4 @@ const TagTest = ({ tags, onSelect }: TagProps) => {
     }
 };
 
-export default TagTest;
+export default ArchivesTag;

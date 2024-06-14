@@ -27,6 +27,7 @@
         "react-use": "^17.5.0",
         "reading-time": "^1.5.0",
         "rehype-pretty-code": "^0.13.2",
+        "rehype-slug": "^6.0.0",
         "remark-breaks": "^4.0.0",
         "remark-gfm": "^4.0.0",
         "shiki": "^1.6.3",
