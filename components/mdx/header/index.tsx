@@ -19,7 +19,7 @@ const Mdx_Header = ({ frontMatter }: { frontMatter: FrontMatterTypes }) => {
     return (
         <div className='select-none'>
             {frontMatter?.image && (
-                <div className='relative min-w-full min-h-[400px] mt-4'>
+                <div className='relative min-w-full min-h-[350px] mt-4'>
                     <Image className='rounded-md m-0 p-0' fill alt={frontMatter.description} src={frontMatter.image} />
                 </div>
             )}

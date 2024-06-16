@@ -34,7 +34,7 @@ const Mdx_Toc = () => {
 
     return (
         <div className='relative'>
-            <div className='absolute right-[55px] 3xl:hidden z-50'>
+            <div className='absolute right-[55px] z-50 3xl:right-[100px]'>
                 <motion.button
                     initial={false}
                     onClick={setCollapse}
@@ -47,14 +47,10 @@ const Mdx_Toc = () => {
             </div>
 
             {collapse && (
-                <div className='toc-content right-[215px] top-24 z-20 absolute 3xl:hidden'>
+                <div className='toc-content right-[215px] 3xl:right-[365px] top-24 z-20 absolute'>
                     <TocContent currentId={currentId} headingEls={headingEls} />
                 </div>
             )}
-
-            <div className='toc-content right-[400px] top-24 z-20 hidden 3xl:block 3xl:absolute'>
-                <TocContent currentId={currentId} headingEls={headingEls} />
-            </div>
         </div>
     );
 };

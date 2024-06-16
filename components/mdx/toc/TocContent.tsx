@@ -23,8 +23,8 @@ const TocContent = ({ headingEls, currentId }: TocProps) => {
             initial='collapsed'
             exit='collapsed'
             variants={{
-                open: { opacity: 0.75, height: 'auto' },
-                collapsed: { opacity: 0, height: 0 },
+                open: { opacity: 0.75, translateY: 0 },
+                collapsed: { opacity: 0, translateY: 10 },
             }}
             className='fixed w-[200px] 3xl:w-[300px] max-h-[500px] overflow-y-scroll overflow-x-hidden border dark:border-none dark:bg-[#383838] rounded-md'
         >

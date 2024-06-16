@@ -11,6 +11,17 @@ export interface FrontMatterTypes {
     tags: string[];
     date: Date;
     [key: string]: any;
+    toc?: boolean;
+}
+
+export interface FootMatterTypes {
+    title: string;
+    description: string;
+    image: '';
+    tags: string[];
+    date: Date;
+    slug: string;
+    [key: string]: any;
 }
 
 export interface AllBrowseType {
