@@ -1,21 +1,31 @@
 'use client';
 import React from 'react';
 import { FootMatterTypes } from '@/config/types';
-import { usePathname } from 'next/navigation';
-
+import { usePathname, useRouter } from 'next/navigation';
 import { FaShareAlt } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import Giscus from './Giscus';
+import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
+
 const Mdx_Footer = ({ footMatter }: { footMatter: FootMatterTypes[] }) => {
     const path = usePathname();
-    const nowPath = path.split('/').pop();
+    const folderPath = path.split('/')[2];
+    const nowPath = path.split('/')[3];
+    const router = useRouter();
 
-    const currentIndex = footMatter.findIndex((matter) => matter.slug === nowPath);
+    //? footMatter 배열을 날짜 기준으로 오름차순 정렬
+    const sortedFootMatter = [...footMatter].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
-    const previousPost = currentIndex > 0 ? footMatter[currentIndex - 1] : null;
-    const nextPost = currentIndex < footMatter.length - 1 ? footMatter[currentIndex + 1] : null;
+    //? 날짜를 기준으로 현재 게시물의 인덱스를 찾기
+    const currentIndex = sortedFootMatter.findIndex((matter) => matter.slug === nowPath);
 
-    console.log('Previous Post:', previousPost);
-    console.log('Next Post:', nextPost);
+    //? 이전 및 다음 게시물 가져오기
+    const previousPost = currentIndex > 0 ? sortedFootMatter[currentIndex - 1] : null;
+    const nextPost = currentIndex < sortedFootMatter.length - 1 ? sortedFootMatter[currentIndex + 1] : null;
+
+    const routerHandler = (slug: string) => {
+        router.push(`/posts/${folderPath}/${slug}`);
+    };
 
     return (
         <>
@@ -28,25 +38,38 @@ const Mdx_Footer = ({ footMatter }: { footMatter: FootMatterTypes[] }) => {
             </motion.button>
             <div className='border-b-2 border-dashed border-[#4e5552] mt-6 mb-6'></div>
             <div>
-                <div className='w-full h-[100px] border'>댓글</div>
-                <div className='w-full grid grid-cols-2 gap-4 mb-20 mt-20'>
+                <div className='w-full grid grid-cols-2 gap-8 mb-10 mt-10'>
                     {previousPost ? (
-                        <div className='border rounded-md'>
-                            <div>이전 포스트</div>
-                            <p>{previousPost.title}</p>
-                        </div>
+                        <motion.div
+                            style={{ backgroundImage: `url(${previousPost.image ? previousPost.image : '/logo/template.webp'})` }}
+                            onClick={() => routerHandler(previousPost.slug)}
+                            whileHover={{ scale: 1.05 }}
+                            animate={{ translateX: [2, 0] }}
+                            className='bg-cover brightness-75 cursor-pointer relative rounded-md py-6 border dark:border-[#3a3b45] flex flex-col gap-2'
+                        >
+                            <div className='text-left font-bold'>이전 포스트</div>
+                            <div className='mt-2 text-center mb-6 text-white'>{previousPost.title}</div>
+
+                            <MdNavigateBefore className='border rounded-full absolute left-4 top-[35%] text-5xl' />
+                        </motion.div>
                     ) : (
-                        <div className='border rounded-md'></div>
+                        <div className=''></div>
                     )}
                     {nextPost ? (
-                        <div className='border rounded-md p-2'>
-                            <div>다음 포스트</div>
-                            <p>{nextPost.title}</p>
+                        <div className='relative w-full flex justify-between cursor-pointer rounded-md border dark:border-[#3a3b45]'>
+                            <div className='w-1/2 h-full inset-0 z-20 bg-black skew-x-12'></div>
+                            <div
+                                style={{ backgroundImage: `url(${nextPost.image ? nextPost.image : '/logo/template.webp'})` }}
+                                className='bg-cover w-1/2 h-full'
+                            >
+                                <MdNavigateNext className='border rounded-full absolute right-4 top-[35%] text-5xl' />
+                            </div>
                         </div>
                     ) : (
-                        <div></div>
+                        <div className=''></div>
                     )}
                 </div>
+                <Giscus />
             </div>
         </>
     );
