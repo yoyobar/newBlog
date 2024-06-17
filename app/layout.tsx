@@ -6,6 +6,7 @@ import Provider from './Provider';
 import { Metadata, MetadataRoute } from 'next';
 import localFont from 'next/font/local';
 import { siteConfig } from '@/config/siteconfig';
+import Script from 'next/script';
 const pretendard = localFont({
     src: '../public/fonts/PretendardVariable.woff2',
     display: 'swap',
@@ -35,6 +36,10 @@ export const metadata: Metadata = {
     openGraph: siteConfig.openGraph,
     twitter: siteConfig.twitter,
     verification: siteConfig.verification,
+
+    alternates: {
+        canonical: siteConfig.canonical,
+    },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -49,6 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 className={`${pretendard.className} fixed overflow-hidden w-full h-full bg-background`}
             >
                 <Provider>
+                    <Analytics />
                     <Header />
                     {children}
                     <Snowfall />
@@ -56,5 +62,30 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </Provider>
             </body>
         </html>
+    );
+}
+
+export function Analytics() {
+    return (
+        <>
+            {/* <!-- Google Tag Manager (noscript) --> */}
+            <noscript>
+                <iframe
+                    src={`https://www.googletagmanager.com/ns.html?id=G-5ET7D32N8M`}
+                    height='0'
+                    width='0'
+                    className='hidden invisible'
+                ></iframe>
+            </noscript>
+            {/* <!-- End Google Tag Manager (noscript) --> */}
+            {/* <!-- Google Tag Manager --> */}
+            <Script id='google-tag-management'>{`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer',"G-5ET7D32N8M");
+  
+  `}</Script>
+        </>
     );
 }

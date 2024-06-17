@@ -21,6 +21,8 @@ export const siteConfig = {
     since: 2024,
 
     openGraph: {
+        url: 'https://trouble-wiki.vercel.app/',
+        siteName: 'Trouble Wiki',
         images: ['/logo/template_og.webp'],
         description: 'Trouble Wiki, 개인 블로그. 다양한 개발정보를 다룹니다.',
         type: 'article',
@@ -39,4 +41,5 @@ export const siteConfig = {
             'naver-site-verification': '7f959e68f00cadb5b2a462dd0bd29ceed877ad91',
         },
     },
+    canonical: 'https://trouble-wiki.vercel.app/',
 };
