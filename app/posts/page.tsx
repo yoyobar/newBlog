@@ -9,7 +9,13 @@ import dayjs from 'dayjs';
 import readingTime from 'reading-time';
 import Title from '@/components/posts/Title';
 import { AllBrowseType } from '@/config/types';
+import type { Metadata } from 'next';
 const BASE_DIR = 'posts';
+
+export const metadata: Metadata = {
+    title: '전체 | Trouble Wiki',
+    description: `Trouble Wiki, 개인 블로그. 전체 게시물`,
+};
 
 export default function Home() {
     const { category, mdx }: AllBrowseType = allBrowseLoad();

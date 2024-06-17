@@ -5,7 +5,7 @@ import Dock from '@/components/home/Dock';
 import Provider from './Provider';
 import { Metadata, MetadataRoute } from 'next';
 import localFont from 'next/font/local';
-
+import { siteConfig } from '@/config/siteconfig';
 const pretendard = localFont({
     src: '../public/fonts/PretendardVariable.woff2',
     display: 'swap',
@@ -25,42 +25,16 @@ export const robots = (): MetadataRoute.Robots => {
 };
 
 export const metadata: Metadata = {
-    metadataBase: new URL('https://trouble-wiki.vercel.app/'),
-    manifest: '/favicon/site.webmanifest',
-    icons: {
-        icon: [
-            { rel: 'apple-touch-icon', sizes: '180x180', url: '/favicon/apple-touch-icon.png' },
-            { rel: 'icon', type: 'image/png', sizes: '32x32', url: '/favicon/favicon-32x32.png' },
-            { rel: 'icon', type: 'image/png', sizes: '16x16', url: '/favicon/favicon-16x16.png' },
-        ],
-    },
-
-    title: `Trouble Wiki`,
-    description: 'Trouble Wiki, 개인 블로그. 다양한 개발정보를 다룹니다.',
-    keywords: ['자바스크립트, 타입스크립트, 개발블로그, 개발정보, 개발, js, ts, typescript, javascript, react, next.js'],
-    creator: 'Minsu Kim',
-
-    openGraph: {
-        images: ['/logo/template_og.webp'],
-        description: 'Trouble Wiki, 개인 블로그. 다양한 개발정보를 다룹니다.',
-        type: 'article',
-        authors: ['Minsu Kim', 'yoyobar'],
-    },
-
-    twitter: {
-        card: 'summary_large_image',
-        title: `Trouble Wiki`,
-        description: 'Trouble Wiki, 개인 블로그. 다양한 개발정보를 다룹니다.',
-        creator: 'yoyobar',
-        images: ['/logo/template_og.webp'],
-    },
-
-    verification: {
-        google: 'onSmWbcZS5c26LUgdJ5abeBG1dpO8frURYsfGxofS78',
-        other: {
-            'naver-site-verification': '7f959e68f00cadb5b2a462dd0bd29ceed877ad91',
-        },
-    },
+    metadataBase: new URL(siteConfig.url),
+    manifest: siteConfig.manifest,
+    icons: siteConfig.icons,
+    title: siteConfig.title,
+    description: siteConfig.description,
+    keywords: siteConfig.keywords,
+    creator: siteConfig.author.creator,
+    openGraph: siteConfig.openGraph,
+    twitter: siteConfig.twitter,
+    verification: siteConfig.verification,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

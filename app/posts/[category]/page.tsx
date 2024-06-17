@@ -1,14 +1,31 @@
 import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
 import PageContainer from '@/components/PageContainer';
-import dayjs from 'dayjs';
-import readingTime from 'reading-time';
 import Title from '@/components/posts/Title';
 import Browse from '@/components/posts/Browse';
-import { FrontMatterTypes } from '@/config/types';
+import { getPosts } from '@/lib/postData';
+import { metadata } from '@/utils/metaData';
 
 const BASE_DIR = 'posts';
+export async function generateMetadata({ params }: { params: { category: string; slug: string } }) {
+    const { category } = params;
+    const metaObj = metadata[category] || metadata['all'];
+    const titleName = metaObj.title;
+
+    return {
+        title: `${titleName} | Trouble Wiki`,
+        keywords: [category, titleName],
+        openGraph: {
+            title: `${titleName} | Trouble Wiki`,
+            images: ['/logo/template_og_browse.webp'],
+            description: '게시글 목록 | Trouble Wiki',
+        },
+        twitter: {
+            title: `${titleName} | Trouble Wiki`,
+            images: ['/logo/template_og_browse.webp'],
+            description: `Trouble Wiki, 개인 블로그. ${titleName} 카테고리의 게시물`,
+        },
+    };
+}
 
 export async function generateStaticParams() {
     const categories = fs.readdirSync(BASE_DIR);
@@ -19,29 +36,12 @@ export async function generateStaticParams() {
 
 export default async function Page({ params }: { params: { category: string } }) {
     const { category } = params;
-
-    const categoryPath = path.join(BASE_DIR, category);
-    const files = fs.readdirSync(categoryPath);
-    const blogs = files.map((file) => {
-        const filePath = path.join(categoryPath, file);
-        const fileContent = fs.readFileSync(filePath, 'utf-8');
-        const { content, data } = matter(fileContent);
-        const grayMatter = data as FrontMatterTypes;
-        return {
-            meta: {
-                title: grayMatter.title,
-                tags: grayMatter.tags,
-                date: dayjs(grayMatter.date).format('YYYY-MM-DD'),
-                readingMinutes: Math.ceil(readingTime(content).minutes),
-            },
-            slug: `${category}/${file.replace('.mdx', '')}`,
-        };
-    });
+    const blogs = await getPosts(category);
 
     return (
         <PageContainer>
             <div className='w-full xl:w-[90%] m-auto'>
-                <Title type={category} length={files.length} />
+                <Title type={category} length={blogs.length} />
                 <Browse blogs={blogs} />
             </div>
         </PageContainer>

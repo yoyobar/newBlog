@@ -2,6 +2,8 @@ import path from 'path';
 import fs from 'fs';
 import matter from 'gray-matter';
 import { FrontMatterTypes } from '@/config/types';
+import dayjs from 'dayjs';
+import readingTime from 'reading-time';
 const BASE_DIR = 'posts';
 
 export async function getPost(category: string, slug: string) {
@@ -32,4 +34,26 @@ export async function getCategoryPost(category: string) {
     }
 
     return posts;
+}
+
+export async function getPosts(category: string) {
+    const categoryPath = path.join(BASE_DIR, category);
+    const files = fs.readdirSync(categoryPath);
+    const blogs = files.map((file) => {
+        const filePath = path.join(categoryPath, file);
+        const fileContent = fs.readFileSync(filePath, 'utf-8');
+        const { content, data } = matter(fileContent);
+        const grayMatter = data as FrontMatterTypes;
+        return {
+            meta: {
+                title: grayMatter.title,
+                tags: grayMatter.tags,
+                date: dayjs(grayMatter.date).format('YYYY-MM-DD'),
+                readingMinutes: Math.ceil(readingTime(content).minutes),
+            },
+            slug: `${category}/${file.replace('.mdx', '')}`,
+            length: files.length,
+        };
+    });
+    return blogs;
 }

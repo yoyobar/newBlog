@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import Giscus from './Giscus';
 import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
 import { useCopyToClipboard } from 'react-use';
+import CopyRight from './CopyRight';
 
 const Mdx_Footer = ({ footMatter }: { footMatter: FootMatterTypes[] }) => {
     const [copiedText, copy] = useCopyToClipboard();
@@ -50,7 +51,7 @@ const Mdx_Footer = ({ footMatter }: { footMatter: FootMatterTypes[] }) => {
     };
 
     return (
-        <div className='mt-8'>
+        <div className='mt-8 mb-20'>
             <div className='flex gap-4 items-center'>
                 <motion.button
                     onClick={copyHandler}
@@ -115,9 +116,10 @@ const Mdx_Footer = ({ footMatter }: { footMatter: FootMatterTypes[] }) => {
                     )}
                 </div>
                 <Giscus />
+                <div className='border-b mt-10 mb-10 dark:border-gray-600'></div>
+                <CopyRight />
             </div>
         </div>
     );
 };
-
 export default Mdx_Footer;

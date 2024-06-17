@@ -9,10 +9,25 @@ import Archives from '@/components/posts/Archives';
 import { allBrowseLoad, allFilesLoad } from '@/utils/parseData';
 import { AllBrowseType, FrontMatterTypes } from '@/config/types';
 import { Suspense } from 'react';
+import type { Metadata } from 'next';
 
 const BASE_DIR = 'posts';
 
-// 홈 컴포넌트
+export const metadata: Metadata = {
+    title: 'Archives | Trouble Wiki',
+    description: `Trouble Wiki, 개인 블로그. 태그별로 조회합니다.`,
+    openGraph: {
+        title: `Archives | Trouble Wiki`,
+        images: ['/logo/template_og_archives.webp'],
+        description: 'Trouble Wiki, 개인 블로그. 태그별로 조회합니다.',
+    },
+    twitter: {
+        title: `Archives | Trouble Wiki`,
+        images: ['/logo/template_og_archives.webp'],
+        description: 'Trouble Wiki, 개인 블로그. 태그별로 조회합니다.',
+    },
+};
+
 export default function ArchivesPage() {
     const { category, mdx }: AllBrowseType = allBrowseLoad();
     const categoryFiles = allFilesLoad(category);

@@ -13,36 +13,17 @@ export async function generateMetadata({ params }: { params: { category: string;
     const { category, slug } = params;
     const { frontMatter } = await getPost(category, slug);
     return {
-        url: 'https://trouble-wiki.vercel.app/',
-        metadataBase: new URL('https://trouble-wiki.vercel.app/'),
-        manifest: '/favicon/site.webmanifest',
-        icons: {
-            icon: [
-                { rel: 'apple-touch-icon', sizes: '180x180', url: '/favicon/apple-touch-icon.png' },
-                { rel: 'icon', type: 'image/png', sizes: '32x32', url: '/favicon/favicon-32x32.png' },
-                { rel: 'icon', type: 'image/png', sizes: '16x16', url: '/favicon/favicon-16x16.png' },
-            ],
-        },
-
         title: `${frontMatter.title} | Trouble Wiki`,
-        description: 'Trouble Wiki, 개인 블로그. 다양한 개발정보를 다룹니다.',
         keywords: frontMatter.tags,
-        creator: 'Minsu Kim',
-
         openGraph: {
             images: [frontMatter.image ? frontMatter.image : '/logo/template_og.webp'],
             description: frontMatter.description,
-            type: 'article',
             publishedTime: frontMatter.date,
-            authors: ['Minsu Kim', 'yoyobar'],
         },
-
         twitter: {
-            card: 'summary_large_image',
-            title: `${frontMatter.title} | Trouble Wiki`,
-            description: 'Trouble Wiki, 개인 블로그. 다양한 개발정보를 다룹니다.',
-            creator: 'yoyobar',
             images: [frontMatter.image ? frontMatter.image : '/logo/template_og.webp'],
+            description: frontMatter.description,
+            title: `${frontMatter.title} | Trouble Wiki`,
         },
     };
 }
