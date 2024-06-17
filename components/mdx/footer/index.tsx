@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FootMatterTypes } from '@/config/types';
 import { usePathname, useRouter } from 'next/navigation';
 import { FaShareAlt } from 'react-icons/fa';
@@ -56,7 +56,7 @@ const Mdx_Footer = ({ footMatter }: { footMatter: FootMatterTypes[] }) => {
                     onClick={copyHandler}
                     whileHover={{ opacity: 0.8, translateY: 2 }}
                     whileTap={{ translateY: -3 }}
-                    className='p-2 bg-slate-800 text-sky-300 border border-gray-400 rounded-md'
+                    className='p-2 dark:bg-slate-800 text-sky-300 border border-gray-400 rounded-md'
                 >
                     <FaShareAlt />
                 </motion.button>
@@ -66,7 +66,7 @@ const Mdx_Footer = ({ footMatter }: { footMatter: FootMatterTypes[] }) => {
                     </motion.div>
                 )}
             </div>
-            <div className='border-b-2 border-dashed border-[#4e5552] mt-6 mb-6'></div>
+            <div className='border-b-2 border-dashed border-gray-300 dark:border-[#4e5552] mt-6 mb-6'></div>
             <div>
                 <div className='w-full grid grid-cols-2 gap-8 mb-10 mt-10'>
                     {previousPost ? (
@@ -74,9 +74,9 @@ const Mdx_Footer = ({ footMatter }: { footMatter: FootMatterTypes[] }) => {
                             style={{ backgroundImage: `url(${previousPost.image ? previousPost.image : '/logo/template.webp'})` }}
                             onClick={() => routerHandler(previousPost.slug)}
                             whileHover={{ scale: 1.05, opacity: 1 }}
-                            className='bg-cover cursor-pointer relative rounded-md py-6 border dark:border-[#3a3b45] flex flex-col gap-2'
+                            className='bg-cover cursor-pointer relative rounded-2xl py-6 border dark:border-gray-500 flex flex-col gap-2'
                         >
-                            <div className='mr-8 text-right font-bold text-orange-500 relative z-10'>이전 포스트</div>
+                            <div className='ml-20 text-left font-bold text-orange-500 relative  z-10'>이전 포스트</div>
                             <div className='mt-2 text-center mb-6 text-white relative z-10 text-2xl md:text-3xl'>{previousPost.title}</div>
 
                             <motion.div
@@ -86,7 +86,7 @@ const Mdx_Footer = ({ footMatter }: { footMatter: FootMatterTypes[] }) => {
                             >
                                 <MdNavigateBefore />
                             </motion.div>
-                            <div className='w-full h-full absolute top-0 opacity-50 bg-black' />
+                            <div className='w-full h-full absolute top-0 opacity-25 dark:opacity-50 rounded-2xl bg-black' />
                         </motion.div>
                     ) : (
                         <div className=''></div>
@@ -96,19 +96,19 @@ const Mdx_Footer = ({ footMatter }: { footMatter: FootMatterTypes[] }) => {
                             style={{ backgroundImage: `url(${nextPost.image ? nextPost.image : '/logo/template.webp'})` }}
                             onClick={() => routerHandler(nextPost.slug)}
                             whileHover={{ scale: 1.05, opacity: 1 }}
-                            className='bg-cover cursor-pointer relative rounded-md py-6 border dark:border-[#3a3b45] flex flex-col gap-2'
+                            className='bg-cover cursor-pointer relative rounded-2xl py-6 border dark:border-gray-500 flex flex-col gap-2'
                         >
                             <div className='ml-8 text-left font-bold text-orange-500 relative z-10'>다음 포스트</div>
                             <div className='mt-2 text-center mb-6 text-white relative z-10 text-2xl md:text-3xl'>{nextPost.title}</div>
 
                             <motion.div
-                                className='absolute right-4 top-4 text-5xl z-10 text-sky-400'
+                                className='absolute left-[110px] top-4 text-5xl z-10 text-sky-400'
                                 transition={{ repeat: Infinity }}
                                 animate={{ translateX: [5, 0, 5] }}
                             >
                                 <MdNavigateNext />
                             </motion.div>
-                            <div className='w-full h-full absolute top-0 opacity-50 bg-black' />
+                            <div className='w-full h-full absolute top-0 opacity-25 dark:opacity-50 rounded-2xl bg-black' />
                         </motion.div>
                     ) : (
                         <div className=''></div>

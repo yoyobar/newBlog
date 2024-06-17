@@ -9,6 +9,46 @@ import { getCategoryPost, getPost } from '@/lib/postData';
 import { FootMatterTypes } from '@/config/types';
 const BASE_DIR = 'posts';
 
+export async function generateMetadata({ params }: { params: { category: string; slug: string } }) {
+    const { category, slug } = params;
+    const { frontMatter } = await getPost(category, slug);
+    return {
+        url: 'https://trouble-wiki.vercel.app/',
+        metadataBase: new URL('https://trouble-wiki.vercel.app/'),
+
+        icons: {
+            icon: '/logo/main-logo.png',
+            shortcut: '/logo/main-logo.png',
+            apple: '/logo/main-logo.png',
+            other: {
+                rel: 'main-logo',
+                url: '/logo/main-logo.png',
+            },
+        },
+
+        title: `${frontMatter.title} | Trouble Wiki`,
+        description: 'Trouble Wiki, 개인 블로그. 다양한 개발정보를 다룹니다.',
+        keywords: frontMatter.tags,
+        creator: 'Minsu Kim',
+
+        openGraph: {
+            images: [frontMatter.image ? frontMatter.image : '/logo/template_og.webp'],
+            description: frontMatter.description,
+            type: 'article',
+            publishedTime: frontMatter.date,
+            authors: ['Minsu Kim', 'yoyobar'],
+        },
+
+        twitter: {
+            card: 'summary_large_image',
+            title: `${frontMatter.title} | Trouble Wiki`,
+            description: 'Trouble Wiki, 개인 블로그. 다양한 개발정보를 다룹니다.',
+            creator: 'yoyobar',
+            images: [frontMatter.image ? frontMatter.image : '/logo/template_og.webp'],
+        },
+    };
+}
+
 export async function generateStaticParams() {
     const allItems = fs.readdirSync(BASE_DIR);
     const categories = allItems.filter((item) => !item.includes('.mdx') && fs.lstatSync(path.join(BASE_DIR, item)).isDirectory());
