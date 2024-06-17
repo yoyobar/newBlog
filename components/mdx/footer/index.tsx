@@ -1,13 +1,16 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FootMatterTypes } from '@/config/types';
 import { usePathname, useRouter } from 'next/navigation';
 import { FaShareAlt } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import Giscus from './Giscus';
 import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
+import { useCopyToClipboard } from 'react-use';
 
 const Mdx_Footer = ({ footMatter }: { footMatter: FootMatterTypes[] }) => {
+    const [copiedText, copy] = useCopyToClipboard();
+    const [copyStatus, setCopyStatus] = useState<boolean>(false);
     const path = usePathname();
     const folderPath = path.split('/')[2];
     const nowPath = path.split('/')[3];
@@ -27,15 +30,42 @@ const Mdx_Footer = ({ footMatter }: { footMatter: FootMatterTypes[] }) => {
         router.push(`/posts/${folderPath}/${slug}`);
     };
 
+    const copyHandler = () => {
+        try {
+            copy(`https://trouble-wiki.vercel.app${path}`);
+
+            if (!copyStatus) {
+                setCopyStatus(true);
+                const timeout = setTimeout(() => {
+                    setCopyStatus(false);
+                }, 2000);
+
+                return () => {
+                    clearTimeout(timeout);
+                };
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
-        <>
-            <motion.button
-                whileHover={{ opacity: 0.8, translateY: 2 }}
-                whileTap={{ translateY: -3 }}
-                className='p-2 bg-slate-800 text-sky-300 border border-gray-400 rounded-md'
-            >
-                <FaShareAlt />
-            </motion.button>
+        <div className='mt-8'>
+            <div className='flex gap-4 items-center'>
+                <motion.button
+                    onClick={copyHandler}
+                    whileHover={{ opacity: 0.8, translateY: 2 }}
+                    whileTap={{ translateY: -3 }}
+                    className='p-2 bg-slate-800 text-sky-300 border border-gray-400 rounded-md'
+                >
+                    <FaShareAlt />
+                </motion.button>
+                {copyStatus && (
+                    <motion.div transition={{ duration: 2 }} animate={{ opacity: [0, 1, 0] }}>
+                        Copied!
+                    </motion.div>
+                )}
+            </div>
             <div className='border-b-2 border-dashed border-[#4e5552] mt-6 mb-6'></div>
             <div>
                 <div className='w-full grid grid-cols-2 gap-8 mb-10 mt-10'>
@@ -43,35 +73,50 @@ const Mdx_Footer = ({ footMatter }: { footMatter: FootMatterTypes[] }) => {
                         <motion.div
                             style={{ backgroundImage: `url(${previousPost.image ? previousPost.image : '/logo/template.webp'})` }}
                             onClick={() => routerHandler(previousPost.slug)}
-                            whileHover={{ scale: 1.05 }}
-                            animate={{ translateX: [2, 0] }}
-                            className='bg-cover brightness-75 cursor-pointer relative rounded-md py-6 border dark:border-[#3a3b45] flex flex-col gap-2'
+                            whileHover={{ scale: 1.05, opacity: 1 }}
+                            className='bg-cover cursor-pointer relative rounded-md py-6 border dark:border-[#3a3b45] flex flex-col gap-2'
                         >
-                            <div className='text-left font-bold'>이전 포스트</div>
-                            <div className='mt-2 text-center mb-6 text-white'>{previousPost.title}</div>
+                            <div className='mr-8 text-right font-bold text-orange-500 relative z-10'>이전 포스트</div>
+                            <div className='mt-2 text-center mb-6 text-white relative z-10 text-2xl md:text-3xl'>{previousPost.title}</div>
 
-                            <MdNavigateBefore className='border rounded-full absolute left-4 top-[35%] text-5xl' />
+                            <motion.div
+                                className='absolute left-4 top-4 text-5xl z-10 text-sky-400'
+                                transition={{ repeat: Infinity }}
+                                animate={{ translateX: [5, 0, 5] }}
+                            >
+                                <MdNavigateBefore />
+                            </motion.div>
+                            <div className='w-full h-full absolute top-0 opacity-50 bg-black' />
                         </motion.div>
                     ) : (
                         <div className=''></div>
                     )}
                     {nextPost ? (
-                        <div className='relative w-full flex justify-between cursor-pointer rounded-md border dark:border-[#3a3b45]'>
-                            <div className='w-1/2 h-full inset-0 z-20 bg-black skew-x-12'></div>
-                            <div
-                                style={{ backgroundImage: `url(${nextPost.image ? nextPost.image : '/logo/template.webp'})` }}
-                                className='bg-cover w-1/2 h-full'
+                        <motion.div
+                            style={{ backgroundImage: `url(${nextPost.image ? nextPost.image : '/logo/template.webp'})` }}
+                            onClick={() => routerHandler(nextPost.slug)}
+                            whileHover={{ scale: 1.05, opacity: 1 }}
+                            className='bg-cover cursor-pointer relative rounded-md py-6 border dark:border-[#3a3b45] flex flex-col gap-2'
+                        >
+                            <div className='ml-8 text-left font-bold text-orange-500 relative z-10'>다음 포스트</div>
+                            <div className='mt-2 text-center mb-6 text-white relative z-10 text-2xl md:text-3xl'>{nextPost.title}</div>
+
+                            <motion.div
+                                className='absolute right-4 top-4 text-5xl z-10 text-sky-400'
+                                transition={{ repeat: Infinity }}
+                                animate={{ translateX: [5, 0, 5] }}
                             >
-                                <MdNavigateNext className='border rounded-full absolute right-4 top-[35%] text-5xl' />
-                            </div>
-                        </div>
+                                <MdNavigateNext />
+                            </motion.div>
+                            <div className='w-full h-full absolute top-0 opacity-50 bg-black' />
+                        </motion.div>
                     ) : (
                         <div className=''></div>
                     )}
                 </div>
                 <Giscus />
             </div>
-        </>
+        </div>
     );
 };
 
