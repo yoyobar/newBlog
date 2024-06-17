@@ -5,18 +5,9 @@ import Browse from './Browse';
 import { MdSort } from 'react-icons/md';
 import { MdClose } from 'react-icons/md';
 import { useSearchParams } from 'next/navigation';
+import { AllPostsProp } from '@/config/types';
 
-type AllPostsProp = {
-    meta: {
-        title: string;
-        tags: string[];
-        date: string;
-        readingMinutes: number;
-    };
-    slug: string;
-}[];
-
-const Archives = ({ tag, blogs }: { tag: string[]; blogs: AllPostsProp }) => {
+const Archives = ({ tag, blogs }: { tag: string[]; blogs: AllPostsProp[] }) => {
     const [selected, setSelected] = useState('');
     const params = useSearchParams();
     const tagData = params.get('tag');
@@ -36,7 +27,7 @@ const Archives = ({ tag, blogs }: { tag: string[]; blogs: AllPostsProp }) => {
     return (
         <>
             <div className='flex flex-col gap-8'>
-                <div className='text-sky-200xl'>태그에 해당하는 게시글을 조회합니다.</div>
+                <div className=''>태그에 해당하는 게시글을 조회합니다.</div>
                 <ArchivesTag onSelect={selectHandler} tags={tag} />
                 <div className='flex gap-2 text-4xl items-center'>
                     <MdSort className='text-sky-600' />

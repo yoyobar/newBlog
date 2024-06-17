@@ -28,3 +28,14 @@ export interface AllBrowseType {
     category: string[];
     mdx: string[];
 }
+
+export interface AllPostsProp {
+    meta: {
+        title: string;
+        tags: string[];
+        date: string;
+        readingMinutes: number;
+        toc?: boolean;
+    };
+    slug: string;
+}

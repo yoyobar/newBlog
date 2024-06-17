@@ -10,27 +10,33 @@ const Dock = () => {
 
     enum DataType {
         WIKI = 'Wiki',
-        CALENDAR = 'Calendar',
-        COMMENTS = 'Comments',
+        ARCHIVE = 'Archives',
+        MESSAGE = 'Message',
+        MUSIC = 'music',
         SETTING = 'Setting',
     }
 
+    //? 개발 진행단계에 따라 차차 visible을 헤제하여 dock을 늘릴 예정임
     const dockData = [
         {
-            src: 'https://upload.wikimedia.org/wikipedia/commons/e/e9/Notion-logo.svg',
-            text: 'Wiki',
+            src: '/icon/wiki.svg',
+            text: DataType.WIKI,
         },
         {
-            src: 'https://upload.wikimedia.org/wikipedia/commons/a/a5/Google_Calendar_icon_%282020%29.svg',
-            text: 'Calendar',
+            src: '/icon/archive.svg',
+            text: DataType.ARCHIVE,
         },
         {
-            src: 'https://upload.wikimedia.org/wikipedia/commons/5/51/IMessage_logo.svg',
-            text: 'Comments',
+            src: '/icon/message.svg',
+            text: DataType.MESSAGE,
         },
         {
-            src: 'https://upload.wikimedia.org/wikipedia/commons/a/ac/Windows_Settings_icon.svg',
-            text: 'Setting',
+            src: '/icon/music.svg',
+            text: DataType.MUSIC,
+        },
+        {
+            src: '/icon/setting.svg',
+            text: DataType.SETTING,
         },
     ];
 
@@ -42,14 +48,18 @@ const Dock = () => {
                 if (path === '/posts') return router.push('/');
                 router.push('/posts');
                 break;
-            case DataType.CALENDAR:
-                if (path === '/calendar') return router.push('/');
-                router.push('/calendar');
+            case DataType.ARCHIVE:
+                if (path === '/archives') return router.push('/');
+                router.push('/archives');
                 break;
-            case DataType.COMMENTS:
-                if (path === '/comment') return router.push('/');
-                router.push('/comment');
-                break;
+            // case DataType.MESSAGE:
+            //     if (path === '/message') return router.push('/');
+            //     router.push('/message');
+            //     break;
+            // case DataType.MUSIC:
+            //     if (path === '/music') return router.push('/');
+            //     router.push('/music');
+            //     break;
             case DataType.SETTING:
                 if (path === '/setting') return router.push('/');
                 router.push('/setting');
@@ -60,8 +70,8 @@ const Dock = () => {
         <>
             <motion.div
                 className='
-                border border-[#565656] relative top-[40%] 
-                left-10 px-3 py-4 rounded-3xl bg-header
+                border border-[#565656] relative top-[25%] md:top-[30%] 
+                left-10 px-3 py-4 rounded-3xl bg-slate-800
                 w-fit shadow-sm shadow-[#3f3f3f]
                 gap-5 select-none flex flex-col items-center
                 '
@@ -70,7 +80,7 @@ const Dock = () => {
                 dragMomentum={false}
                 dragPropagation={false}
             >
-                <TiArrowMove className='text-header-text cursor-grab absolute -top-4 -left-4 text-5xl' />
+                <TiArrowMove className='text-slate-300 cursor-grab absolute -top-4 -left-4 text-5xl' />
                 {dockData.map((item) => (
                     <motion.div
                         whileHover={{ scale: 1.5 }}
@@ -81,7 +91,7 @@ const Dock = () => {
                         className='relative hover:z-10 mt-4'
                         key={item.text}
                     >
-                        <Image className='w-[50px] h-[50px]' src={item.src} alt={item.text} width={50} height={50}></Image>
+                        {<Image className={` w-[50px] h-[50px] rounded-md`} src={item.src} alt={item.text} width={50} height={50}></Image>}
                         <p className='text-header-text text-center p-2 font-bold ml-6 absolute top-[50%] left-[100%] translate-y-[-50%] rounded-md bg-header text-xl'>
                             {item.text}
                         </p>

@@ -6,6 +6,8 @@ interface LoadingProps {
 }
 
 const Loading = ({ type }: LoadingProps) => {
+    const skeletons = new Array(8).fill(null);
+
     return (
         <>
             {type === LOADING_ENUM.SMALL && (

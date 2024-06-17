@@ -72,13 +72,6 @@ export const metadata: metaType = {
         link: '/archives',
         visible: true,
     },
-    book: {
-        icon: Icon.Book,
-        boxClass: metaStyle.default,
-        title: 'Book',
-        link: '/book',
-        visible: true,
-    },
     setting: {
         icon: Icon.Setting,
         boxClass: metaStyle.setting,

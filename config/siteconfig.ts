@@ -10,7 +10,9 @@ export const siteConfig = {
     },
     title: 'Trouble Wiki',
     description: 'Trouble Wiki, 개인 블로그. 다양한 개발정보를 다룹니다.',
-    keywords: ['자바스크립트, 타입스크립트, 개발블로그, 개발정보, 개발, js, ts, typescript, javascript, react, next.js'],
+    keywords: [
+        'trouble Wiki, 트러블 위키, 위키, 트러블위키, 자바스크립트, 타입스크립트, 개발블로그, 개발정보, 개발, js, ts, typescript, javascript, react, next.js',
+    ],
     icons: {
         icon: [
             { rel: 'apple-touch-icon', sizes: '180x180', url: '/favicon/apple-touch-icon.png' },
