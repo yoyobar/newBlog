@@ -15,15 +15,13 @@ export async function generateMetadata({ params }: { params: { category: string;
     return {
         url: 'https://trouble-wiki.vercel.app/',
         metadataBase: new URL('https://trouble-wiki.vercel.app/'),
-
+        manifest: '/favicon/site.webmanifest',
         icons: {
-            icon: '/logo/main-logo.png',
-            shortcut: '/logo/main-logo.png',
-            apple: '/logo/main-logo.png',
-            other: {
-                rel: 'main-logo',
-                url: '/logo/main-logo.png',
-            },
+            icon: [
+                { rel: 'apple-touch-icon', sizes: '180x180', url: '/favicon/apple-touch-icon.png' },
+                { rel: 'icon', type: 'image/png', sizes: '32x32', url: '/favicon/favicon-32x32.png' },
+                { rel: 'icon', type: 'image/png', sizes: '16x16', url: '/favicon/favicon-16x16.png' },
+            ],
         },
 
         title: `${frontMatter.title} | Trouble Wiki`,

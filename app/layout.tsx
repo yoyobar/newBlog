@@ -14,8 +14,8 @@ const pretendard = localFont({
 });
 
 export const metadata: Metadata = {
-    title: 'Trouble Wiki',
-    description: 'Next.js로 구현하는 인터랙티브 블로그 프로젝트',
+    metadataBase: new URL('https://trouble-wiki.vercel.app/'),
+    manifest: '/favicon/site.webmanifest',
     icons: {
         icon: [
             { rel: 'apple-touch-icon', sizes: '180x180', url: '/favicon/apple-touch-icon.png' },
@@ -23,7 +23,26 @@ export const metadata: Metadata = {
             { rel: 'icon', type: 'image/png', sizes: '16x16', url: '/favicon/favicon-16x16.png' },
         ],
     },
-    manifest: '/favicon/site.webmanifest',
+
+    title: `Trouble Wiki`,
+    description: 'Trouble Wiki, 개인 블로그. 다양한 개발정보를 다룹니다.',
+    keywords: ['자바스크립트, 타입스크립트, 개발블로그, 개발정보, 개발, js, ts, typescript, javascript, react, next.js'],
+    creator: 'Minsu Kim',
+
+    openGraph: {
+        images: ['/logo/template_og.webp'],
+        description: 'Trouble Wiki, 개인 블로그. 다양한 개발정보를 다룹니다.',
+        type: 'article',
+        authors: ['Minsu Kim', 'yoyobar'],
+    },
+
+    twitter: {
+        card: 'summary_large_image',
+        title: `Trouble Wiki`,
+        description: 'Trouble Wiki, 개인 블로그. 다양한 개발정보를 다룹니다.',
+        creator: 'yoyobar',
+        images: ['/logo/template_og.webp'],
+    },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
