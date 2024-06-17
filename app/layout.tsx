@@ -3,7 +3,7 @@ import Header from '@/components/header/Header';
 import Snowfall from '@/components/home/SnowFall';
 import Dock from '@/components/home/Dock';
 import Provider from './Provider';
-import { Metadata } from 'next';
+import { Metadata, MetadataRoute } from 'next';
 import localFont from 'next/font/local';
 
 const pretendard = localFont({
@@ -12,6 +12,17 @@ const pretendard = localFont({
     weight: '45, 920',
     variable: '--font-pretendard',
 });
+
+export const robots = (): MetadataRoute.Robots => {
+    return {
+        rules: {
+            userAgent: '*',
+            allow: '/',
+            disallow: '/private/',
+        },
+        sitemap: 'https://trouble-wiki.vercel.app/sitemap.xml',
+    };
+};
 
 export const metadata: Metadata = {
     metadataBase: new URL('https://trouble-wiki.vercel.app/'),
