@@ -43,6 +43,10 @@ export const metadata: Metadata = {
         creator: 'yoyobar',
         images: ['/logo/template_og.webp'],
     },
+
+    verification: {
+        google: 'onSmWbcZS5c26LUgdJ5abeBG1dpO8frURYsfGxofS78',
+    },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
