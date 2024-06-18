@@ -56,10 +56,10 @@ const Dock = () => {
             //     if (path === '/message') return router.push('/');
             //     router.push('/message');
             //     break;
-            // case DataType.MUSIC:
-            //     if (path === '/music') return router.push('/');
-            //     router.push('/music');
-            //     break;
+            case DataType.MUSIC:
+                if (path === '/music') return router.push('/');
+                router.push('/music');
+                break;
             case DataType.SETTING:
                 if (path === '/setting') return router.push('/');
                 router.push('/setting');
