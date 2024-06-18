@@ -21,22 +21,27 @@ const Dock = () => {
         {
             src: '/icon/wiki.svg',
             text: DataType.WIKI,
+            class: 'block',
         },
         {
             src: '/icon/archive.svg',
             text: DataType.ARCHIVE,
+            class: 'block',
         },
         {
             src: '/icon/message.svg',
             text: DataType.MESSAGE,
+            class: 'block',
         },
         {
             src: '/icon/music.svg',
             text: DataType.MUSIC,
+            class: 'hidden md:block ',
         },
         {
             src: '/icon/setting.svg',
             text: DataType.SETTING,
+            class: 'block',
         },
     ];
 
@@ -73,7 +78,7 @@ const Dock = () => {
                 border border-[#565656] relative top-[25%] md:top-[30%] 
                 left-10 px-3 py-4 rounded-3xl bg-slate-800
                 w-fit shadow-sm shadow-[#3f3f3f]
-                gap-5 select-none flex flex-col items-center
+                select-none flex flex-col items-center gap-4
                 '
                 drag={true}
                 whileDrag={{ opacity: 0.5, scale: 0.9 }}
@@ -88,11 +93,21 @@ const Dock = () => {
                         onClick={() => {
                             selectHandler(item.text);
                         }}
-                        className='relative hover:z-10 mt-4'
+                        className='relative hover:z-10'
                         key={item.text}
                     >
-                        {<Image className={` w-[50px] h-[50px] rounded-md`} src={item.src} alt={item.text} width={50} height={50}></Image>}
-                        <p className='text-header-text text-center p-2 font-bold ml-6 absolute top-[50%] left-[100%] translate-y-[-50%] rounded-md bg-header text-xl'>
+                        {
+                            <Image
+                                className={`${item.class} w-[50px] h-[50px] rounded-md`}
+                                src={item.src}
+                                alt={item.text}
+                                width={50}
+                                height={50}
+                            ></Image>
+                        }
+                        <p
+                            className={`${item.class} text-header-text text-center p-2 font-bold ml-6 absolute top-[50%] left-[100%] translate-y-[-50%] rounded-md bg-header text-xl`}
+                        >
                             {item.text}
                         </p>
                     </motion.div>

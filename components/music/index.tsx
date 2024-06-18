@@ -65,25 +65,6 @@ const MusicContainer = () => {
     const [seek, setSeek] = useState(0);
 
     useEffect(() => {
-        async function fetchVideoDuration(videoId: string) {
-            try {
-                const response = await fetch(`/api/playdetail?videoId=${videoId}`);
-                if (!response.ok) {
-                    throw new Error(`Error fetching video duration: ${response.statusText}`);
-                }
-                const data = await response.json();
-                const videoDuration = parseISODuration(data.items[0].contentDetails.duration);
-                setDuration(videoDuration);
-            } catch (error) {
-                console.error(error);
-            }
-        }
-        if (selectItem) {
-            fetchVideoDuration(selectItem.snippet.resourceId.videoId);
-        }
-    }, [selectItem]);
-
-    useEffect(() => {
         async function fetchPlaylistItems() {
             try {
                 const response = await fetch('../api/playlist');
@@ -152,15 +133,28 @@ const MusicContainer = () => {
     }, [initializePlayer]);
 
     const playVideo = useCallback(
-        (videoId: string) => {
+        async (videoId: string) => {
             if (paused) {
                 playerRef.current?.playVideo();
                 setPaused(false);
                 return;
             }
-            if (playerRef.current) {
-                playerRef.current.loadVideoById(videoId);
-                playerRef.current.playVideo();
+
+            try {
+                const response = await fetch(`/api/playdetail?videoId=${videoId}`);
+                if (!response.ok) {
+                    throw new Error(`Error fetching video duration: ${response.statusText}`);
+                }
+                const data = await response.json();
+                const videoDuration = parseISODuration(data.items[0].contentDetails.duration);
+
+                if (playerRef.current) {
+                    playerRef.current.loadVideoById(videoId);
+                    playerRef.current.playVideo();
+                    setDuration(videoDuration); // Update duration after video is loaded
+                }
+            } catch (error) {
+                console.error(error);
             }
         },
         [paused]
