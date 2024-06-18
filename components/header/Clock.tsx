@@ -3,18 +3,20 @@
 import { useEffect, useState } from 'react';
 import Loading from '../Loading';
 import { LOADING_ENUM } from '@/config/types';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
+
+dayjs.locale('ko');
 
 const formatTime = (date: Date) => {
-    //? 월 일 시 분 데이터
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hour = String(date.getHours()).padStart(2, '0');
-    const minute = String(date.getMinutes()).padStart(2, '0');
-    //? 요일 데이터
-    const weeks = ['일', '월', '화', '수', '목', '금', '토'];
-    const week = weeks[date.getDay()];
-    //? AM/PM 데이터
-    const ampm = Number(hour) >= 12 ? '오후' : '오전';
+    const formattedDate = dayjs(date);
+
+    const month = formattedDate.format('MM');
+    const day = formattedDate.format('DD');
+    const week = formattedDate.format('ddd');
+    const ampm = formattedDate.format('A');
+    const hour = formattedDate.format('hh');
+    const minute = formattedDate.format('mm');
 
     return `${month}월 ${day}일 (${week}) ${ampm} ${hour}:${minute}`;
 };
@@ -24,11 +26,16 @@ const Clock = () => {
 
     useEffect(() => {
         const timeInterval = setInterval(() => {
-            setTime(formatTime(new Date()));
+            const newTime = formatTime(new Date());
+            if (newTime !== time) {
+                setTime(newTime);
+            }
         }, 1000);
 
-        return () => clearInterval(timeInterval);
-    }, []);
+        return () => {
+            clearInterval(timeInterval);
+        };
+    }, [time]);
 
     return (
         <div>
