@@ -39,3 +39,33 @@ export interface AllPostsProp {
     };
     slug: string;
 }
+
+export interface PlaylistItem {
+    snippet: {
+        title: string;
+        description: string;
+        resourceId: {
+            videoId: string;
+        };
+        thumbnails: {
+            default: {
+                url: string;
+            };
+            medium: {
+                url: string;
+            };
+            high: {
+                url: string;
+            };
+        };
+    };
+    id: string;
+    etag: string;
+    contentDetails: {
+        duration: string;
+    };
+}
+
+export interface PlaylistResponse {
+    items: PlaylistItem[];
+}

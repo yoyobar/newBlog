@@ -7,12 +7,12 @@ export const metadata: Metadata = {
     description: `Trouble Wiki, 개인 블로그. 음악 플레이어 리스트`,
     openGraph: {
         title: `Musics | Trouble Wiki`,
-        images: ['/logo/template_og_archives.webp'],
+        images: ['/logo/template_og_music.webp'],
         description: 'Trouble Wiki, 개인 블로그. 음악 플레이어 리스트',
     },
     twitter: {
         title: `Musics | Trouble Wiki`,
-        images: ['/logo/template_og_archives.webp'],
+        images: ['/logo/template_og_music.webp'],
         description: 'Trouble Wiki, 개인 블로그. 음악 플레이어 리스트',
     },
 };
