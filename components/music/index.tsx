@@ -2,15 +2,14 @@
 
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { FaPlay } from 'react-icons/fa';
-import { IoPlaySkipForward } from 'react-icons/io5';
-import { IoPlaySkipBack } from 'react-icons/io5';
+import { IoPlaySkipForward, IoPlaySkipBack } from 'react-icons/io5';
 import { FaPause } from 'react-icons/fa6';
-import { IoMdVolumeHigh } from 'react-icons/io';
-import { IoMdVolumeOff } from 'react-icons/io';
+import { IoMdVolumeHigh, IoMdVolumeOff } from 'react-icons/io';
 
 declare global {
     interface Window {
-        onYouTubeIframeAPIReady: { (): void } | null;
+        onYouTubeIframeAPIReady: (() => void) | null;
+        YT: any;
     }
 }
 
@@ -63,6 +62,7 @@ const MusicContainer = () => {
     const [duration, setDuration] = useState<number>(0);
     const [volume, setVolume] = useState(50);
     const [isLoading, setLoading] = useState(true);
+    const [isPlayerReady, setPlayerReady] = useState(false);
 
     useEffect(() => {
         async function fetchPlaylistItems() {
@@ -108,6 +108,7 @@ const MusicContainer = () => {
                 width: '640',
                 events: {
                     onStateChange: onPlayerStateChange,
+                    onReady: () => setPlayerReady(true),
                 },
             });
         }
@@ -118,14 +119,7 @@ const MusicContainer = () => {
         script.src = 'https://www.youtube.com/iframe_api';
         script.async = true;
 
-        const onScriptLoad = () => {
-            console.log('YouTube Player API script loaded');
-            if (window.YT && typeof window.YT.Player === 'function') {
-                initializePlayer();
-            } else window.onYouTubeIframeAPIReady = initializePlayer;
-        };
-
-        script.addEventListener('load', onScriptLoad);
+        window.onYouTubeIframeAPIReady = initializePlayer;
 
         document.body.appendChild(script);
         return () => {
@@ -159,10 +153,14 @@ const MusicContainer = () => {
                 console.error(error);
             }
         },
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        []
+        [paused]
     );
+
+    useEffect(() => {
+        if (!isLoading && isPlayerReady && playlistItems.length > 0 && selectItem) {
+            playVideo(selectItem.snippet.resourceId.videoId);
+        }
+    }, [isLoading, isPlayerReady, playlistItems, selectItem, playVideo]);
 
     const pauseVideo = useCallback(() => {
         if (playerRef.current) {
@@ -214,8 +212,7 @@ const MusicContainer = () => {
         }
 
         return () => clearInterval(interval);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [playerState]);
+    }, [playerState, playNext]);
 
     useEffect(() => {
         if (playerRef.current) {
@@ -238,12 +235,11 @@ const MusicContainer = () => {
         const displaySeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
         return `${displayMinutes}:${displaySeconds}`;
     };
-
     return (
         <div className='flex w-full h-full'>
             {isLoading ? (
                 <div className='flex items-center justify-center w-full h-full'>
-                    <p>Loading...</p>
+                    <p className='text-white mt-8'>Loading...</p>
                 </div>
             ) : (
                 <>
