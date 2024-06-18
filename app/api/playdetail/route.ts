@@ -5,7 +5,6 @@ export async function GET(req: NextRequest) {
     if (!query) {
         throw new Error('query data missing');
     }
-    console.log(query);
     const apiKey = process.env.YOUTUBE_API_KEY as string;
     const videoId = query; // 조회하고자 하는 비디오의 ID를 입력합니다.
     const apiUrl = `https://www.googleapis.com/youtube/v3/videos`; // API URL
@@ -18,7 +17,6 @@ export async function GET(req: NextRequest) {
             throw new Error(`Error fetching data: ${response.statusText}`);
         }
         const data = await response.json();
-        console.log(data);
         return NextResponse.json(data);
     } catch (error: any) {
         return NextResponse.json({ error: error.message }, { status: 500 });
