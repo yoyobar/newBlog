@@ -92,11 +92,8 @@ const PageContainerSmall = ({
                         <MdOpenInFull className='left-[0.14rem] absolute w-4 h-5 font-bold text-xs text-[#146721]' />
                     </div>
                 </header>
-                <nav className='page-container relative overflow-hidden bg-background dark:bg-background h-full rounded-b-md pb-24'>
-                    {selected && <Category selected={selected} onNav={navHandler} />}
-                    <div className={`${selected && `blur-sm `} transition duration-300 text-3xl prose dark:prose-invert min-w-full`}>
-                        {children}
-                    </div>
+                <nav className='page-container overflow-hidden bg-background dark:bg-background h-full rounded-b-md pb-24'>
+                    <div className={`transition duration-300 text-3xl prose dark:prose-invert min-w-full`}>{children}</div>
                 </nav>
             </motion.div>
         </>

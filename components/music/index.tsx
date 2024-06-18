@@ -5,6 +5,8 @@ import { FaPlay } from 'react-icons/fa';
 import { IoPlaySkipForward } from 'react-icons/io5';
 import { IoPlaySkipBack } from 'react-icons/io5';
 import { FaPause } from 'react-icons/fa6';
+import { IoMdVolumeHigh } from 'react-icons/io';
+import { IoMdVolumeOff } from 'react-icons/io';
 
 declare global {
     interface Window {
@@ -55,9 +57,12 @@ const MusicContainer = () => {
     const [selectItem, setSelectItem] = useState<PlaylistItem | null>(null);
     const [currentPlaylistIndex, setCurrentPlaylistIndex] = useState<number>(0);
     const [playerState, setPlayerState] = useState<'playing' | 'paused' | 'ended'>('paused');
+    const [paused, setPaused] = useState(false);
     const playerRef = useRef<YT.Player | null>(null);
     const [currentTime, setCurrentTime] = useState<number>(0);
     const [duration, setDuration] = useState<number>(0);
+    const [volume, setVolume] = useState(50);
+    const [seek, setSeek] = useState(0);
 
     useEffect(() => {
         async function fetchVideoDuration(videoId: string) {
@@ -146,16 +151,25 @@ const MusicContainer = () => {
         };
     }, [initializePlayer]);
 
-    const playVideo = useCallback((videoId: string) => {
-        if (playerRef.current) {
-            playerRef.current.loadVideoById(videoId);
-            playerRef.current.playVideo();
-        }
-    }, []);
+    const playVideo = useCallback(
+        (videoId: string) => {
+            if (paused) {
+                playerRef.current?.playVideo();
+                setPaused(false);
+                return;
+            }
+            if (playerRef.current) {
+                playerRef.current.loadVideoById(videoId);
+                playerRef.current.playVideo();
+            }
+        },
+        [paused]
+    );
 
     const pauseVideo = useCallback(() => {
         if (playerRef.current) {
             playerRef.current.pauseVideo();
+            setPaused(true);
         }
     }, []);
 
@@ -197,8 +211,35 @@ const MusicContainer = () => {
             }
         }, 1000);
 
+        if (playerState === 'ended') {
+            playNext();
+        }
+
         return () => clearInterval(interval);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [playerState]);
+
+    useEffect(() => {
+        if (playerRef.current) {
+            playerRef.current.setVolume(volume);
+        }
+    }, [volume]);
+
+    const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const time = parseFloat(e.target.value);
+        if (playerRef.current) {
+            playerRef.current.seekTo(time, true);
+            setCurrentTime(time);
+        }
+    };
+
+    const formatTime = (time: number): string => {
+        const minutes = Math.floor(time / 60);
+        const seconds = Math.floor(time % 60);
+        const displayMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
+        const displaySeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
+        return `${displayMinutes}:${displaySeconds}`;
+    };
 
     return (
         <div className='flex w-full h-full'>
@@ -208,44 +249,68 @@ const MusicContainer = () => {
                         <div
                             className='h-full min-w-[100%] xl:min-w-[50%] bg-cover absolute opacity-15'
                             style={{ backgroundImage: `url(${selectItem.snippet.thumbnails.high.url})` }}
-                        ></div>
+                        >
+                            <div className='w-full h-full'></div>
+                        </div>
 
-                        <div className='relative w-full h-full flex flex-col items-center justify-center mt-[20%] gap-8 px-20'>
+                        <div className='relative w-full h-full flex flex-col items-center justify-center mt-[20%] px-20'>
                             <div
                                 className='w-[240px] h-[240px] bg-cover rounded-full border-4 border-white shadow-sm shadow-white'
                                 style={{ backgroundImage: `url(${selectItem.snippet.thumbnails.medium.url})` }}
                             ></div>
-                            <div className='slider-container mt-4 w-full h-2 bg-gray-400 rounded'>
-                                <div
-                                    className='slider-progress h-2 bg-red-500 rounded'
-                                    style={{ width: `${(currentTime / duration) * 100}%` }}
-                                ></div>
+
+                            <input
+                                type='range'
+                                className='slider-progress h-8 w-full accent-white mt-8'
+                                min={0}
+                                max={duration}
+                                step={1}
+                                value={currentTime}
+                                onChange={handleSeek}
+                            />
+                            <div className='w-full flex justify-between text-white'>
+                                <div className=''>{selectItem && formatTime(currentTime)}</div>
+                                <div>{selectItem && formatTime(duration)}</div>
                             </div>
-                            <div className='p-8 text-white text-4xl h-[100px] md:h-[80px]'>{selectItem.snippet.title}</div>
-                            <div className='w-[150px] flex justify-between items-center mt-4 text-white'>
-                                <button onClick={playPrevious}>
-                                    <IoPlaySkipBack className='text-6xl' />
-                                </button>
-                                {playerState === 'playing' && (
-                                    <button onClick={pauseVideo}>
-                                        <FaPause className='text-6xl' />
+
+                            <div className='p-8 text-white text-4xl h-[100px] md:h-[80px] mt-6'>{selectItem.snippet.title}</div>
+                            <div className='flex flex-col justify-between items-center mt-8 text-white'>
+                                <div className='w-[150px] flex justify-between items-center'>
+                                    <button onClick={playPrevious}>
+                                        <IoPlaySkipBack className='text-6xl' />
                                     </button>
-                                )}
-                                {playerState === 'paused' && (
-                                    <button onClick={() => playVideo(selectItem.snippet.resourceId.videoId)}>
-                                        <FaPlay className='text-5xl' />
+
+                                    {playerState === 'playing' && (
+                                        <button onClick={pauseVideo}>
+                                            <FaPause className='text-6xl' />
+                                        </button>
+                                    )}
+                                    {playerState === 'paused' && (
+                                        <button onClick={() => playVideo(selectItem.snippet.resourceId.videoId)}>
+                                            <FaPlay className='text-5xl' />
+                                        </button>
+                                    )}
+                                    <button onClick={playNext}>
+                                        <IoPlaySkipForward className='text-6xl' />
                                     </button>
-                                )}
-                                <button onClick={playNext}>
-                                    <IoPlaySkipForward className='text-6xl' />
-                                </button>
+                                </div>
+                                <div className='flex gap-4 mt-8'>
+                                    {volume ? <IoMdVolumeHigh className='text-5xl' /> : <IoMdVolumeOff className='text-5xl' />}
+
+                                    <input
+                                        className='accent-white '
+                                        type='range'
+                                        value={volume}
+                                        onChange={(e) => setVolume(Number(e.target.value))}
+                                    ></input>
+                                </div>
                             </div>
                             <div className='hidden' id='player'></div>
                         </div>
                     </>
                 )}
             </div>
-            <nav className='overflow-y-auto w-1/2 h-full flex-col hidden xl:flex cursor-pointer select-none'>
+            <nav className='w-1/2 flex-col hidden xl:flex cursor-pointer select-none'>
                 <h1 className='mt-8 text-white text-4xl font-normal m-0 p-0'>Play List</h1>
                 <div className='text-gray-400 text-2xl mb-8'>유튜브로 재생되므로 유튜브 프리미엄이 있어야 광고가 나오지 않습니다.</div>
                 {playlistItems.map((item) => (
