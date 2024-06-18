@@ -36,7 +36,7 @@ const Dock = () => {
         {
             src: '/icon/music.svg',
             text: DataType.MUSIC,
-            class: 'block',
+            class: 'hidden md:block',
         },
         {
             src: '/icon/setting.svg',

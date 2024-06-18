@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { FaPlay } from 'react-icons/fa';
 import { IoPlaySkipForward, IoPlaySkipBack } from 'react-icons/io5';
 import { FaPause } from 'react-icons/fa6';
@@ -120,6 +120,7 @@ const MusicContainer = () => {
         if (!playerRef.current) return;
         if (!selectItem) return;
 
+        setCurrentTime(0);
         setSelectItem(item);
 
         playerRef.current.loadVideoById(item.snippet.resourceId.videoId);
@@ -163,6 +164,7 @@ const MusicContainer = () => {
     const playNextHandler = () => {
         if (!playerRef.current) return;
         if (!selectItem) return;
+        setCurrentTime(0);
 
         let nextIndex;
         if (currentPlaylistIndex < playlistItems.length - 1) {
@@ -182,6 +184,7 @@ const MusicContainer = () => {
     const playPreviousHandler = () => {
         if (!playerRef.current) return;
         if (!selectItem) return;
+        setCurrentTime(0);
 
         let previousIndex;
         if (currentPlaylistIndex > 0) {
@@ -213,6 +216,13 @@ const MusicContainer = () => {
                 setCurrentTime(playerRef.current.getCurrentTime());
             }
         }, 1000);
+
+        if (playerState === 'ended') {
+            setCurrentTime(0);
+            setPlayerState('playing');
+
+            playNextHandler();
+        }
 
         return () => clearInterval(interval);
     }, [playerState]);
