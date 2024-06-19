@@ -1,3 +1,5 @@
+import ExportedImage from 'next-image-export-optimizer';
+
 /* eslint-disable @next/next/no-img-element */
 interface ImageProps {
     src: string;
@@ -7,7 +9,7 @@ interface ImageProps {
 export const Image = ({ src, alt }: ImageProps) => {
     return (
         <>
-            <img src={src} alt={alt} className='mx-auto mb-0 mt-8 rounded-md' />
+            <ExportedImage width={400} height={300} src={src} alt={alt} className='mx-auto mb-0 mt-8 rounded-md' />
         </>
     );
 };
