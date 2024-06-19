@@ -94,7 +94,7 @@ const config: Config = {
                             padding: '0 5px',
                             lineHeight: '1.5em',
                             fontWeight: 'inherit',
-                            fontFamily: 'Consolas, Courier New, Courier, monospace',
+                            fontFamily: 'inherit',
                             backgroundColor: '#eaeef4',
                             borderRadius: '3px',
                             textWarp: 'break-words',

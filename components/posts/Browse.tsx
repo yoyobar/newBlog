@@ -13,7 +13,7 @@ const Browse = ({ blogs, selected }: { blogs: AllPostsProp[]; selected?: string 
     const filteredBlogs = selected ? sortedBlogs.filter((item) => item.meta.tags.includes(selected)) : sortedBlogs;
 
     return (
-        <div className='w-full px-2 grid grid-cols-1 xl:grid-cols-2 3xl:grid-cols-3 gap-8 relative mb-10'>
+        <div className='w-full px-2 grid grid-cols-1 2xl:grid-cols-2 gap-8 relative mb-10'>
             {filteredBlogs.map((blog) => (
                 <>
                     <div
