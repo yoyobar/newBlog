@@ -3,10 +3,10 @@ import { FrontMatterTypes } from '@/config/types';
 import { TbCategoryFilled } from 'react-icons/tb';
 import { CiShoppingTag } from 'react-icons/ci';
 import { CiCalendar } from 'react-icons/ci';
-import Image from 'next/image';
 import Mdx_Tag from './Mdx_Tag';
 import dayjs from 'dayjs';
 import Link from 'next/link';
+import ExportedImage from 'next-image-export-optimizer';
 
 const Mdx_Header = ({ frontMatter }: { frontMatter: FrontMatterTypes }) => {
     const formatDate = (date: Date) => {
@@ -20,7 +20,7 @@ const Mdx_Header = ({ frontMatter }: { frontMatter: FrontMatterTypes }) => {
         <div className='select-none'>
             {frontMatter?.image && (
                 <div className='relative min-w-full min-h-[350px] mt-4'>
-                    <Image className='rounded-md m-0 p-0' fill alt={frontMatter.description} src={frontMatter.image} />
+                    <ExportedImage className='rounded-md m-0 p-0' fill alt={frontMatter.description} src={frontMatter.image} />
                 </div>
             )}
             <div className='flex flex-col justify-center items-center mt-10'>

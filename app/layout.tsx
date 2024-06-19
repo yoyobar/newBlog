@@ -7,6 +7,7 @@ import { Metadata, MetadataRoute } from 'next';
 import localFont from 'next/font/local';
 import { siteConfig } from '@/config/siteconfig';
 import Script from 'next/script';
+import ExportedImage from 'next-image-export-optimizer';
 const pretendard = localFont({
     src: '../public/fonts/PretendardVariable.woff2',
     display: 'swap',

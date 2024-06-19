@@ -42,3 +42,6 @@ next-env.d.ts
 
 # CUSTOM
 old
+/public/img/nextImageExportOptimizer
+/public/img/next-image-export-optimizer-hashes.json
+/public/img,public

@@ -1,9 +1,10 @@
 'use client';
 import Link from 'next/link';
 import Clock from './Clock';
-import Image from 'next/image';
+
 import UserCount from './UserCount';
 import { useState } from 'react';
+import ExportedImage from 'next-image-export-optimizer';
 
 const Header = () => {
     const [showMenu, setShowMenu] = useState(false);
@@ -40,7 +41,7 @@ const Header = () => {
                         </Link>
                     </div>
                 )}
-                <Image
+                <ExportedImage
                     onClick={() => {
                         setShowMenu(!showMenu);
                     }}

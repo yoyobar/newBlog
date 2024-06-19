@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Image from 'next/image';
+import ExportedImage from 'next-image-export-optimizer';
 import { usePathname, useRouter } from 'next/navigation';
 import { TiArrowMove } from 'react-icons/ti';
 
@@ -97,13 +97,13 @@ const Dock = () => {
                         key={item.text}
                     >
                         {
-                            <Image
+                            <ExportedImage
                                 className={`${item.class} w-[50px] h-[50px] rounded-md`}
                                 src={item.src}
                                 alt={item.text}
                                 width={50}
                                 height={50}
-                            ></Image>
+                            ></ExportedImage>
                         }
                         <p
                             className={`${item.class} text-header-text text-center p-2 font-bold ml-6 absolute top-[50%] left-[100%] translate-y-[-50%] rounded-md bg-header text-xl`}
