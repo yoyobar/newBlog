@@ -11,8 +11,8 @@ interface OptionStore {
 }
 
 interface MaximizeStore {
-    data: boolean;
-    setData: () => void;
+    maximize: boolean;
+    setMaximize: () => void;
 }
 
 interface CollapseStore {
@@ -20,10 +20,11 @@ interface CollapseStore {
     setCollapse: () => void;
 }
 
-type Persist = (config: StateCreator<OptionStore>, options: PersistOptions<OptionStore>) => StateCreator<OptionStore>;
+type OptionPersist = (config: StateCreator<OptionStore>, options: PersistOptions<OptionStore>) => StateCreator<OptionStore>;
+type MaxiMizePersist = (config: StateCreator<MaximizeStore>, options: PersistOptions<MaximizeStore>) => StateCreator<MaximizeStore>;
 
 const useOptions = create<OptionStore>(
-    (persist as Persist)(
+    (persist as OptionPersist)(
         (set) => ({
             data: {
                 animation: true,
@@ -38,11 +39,17 @@ const useOptions = create<OptionStore>(
 );
 export default useOptions;
 
-export const useMaximize = create<MaximizeStore>((set) => ({
-    data: false,
-
-    setData: () => set((state) => ({ data: !state.data })),
-}));
+export const useMaximize = create<MaximizeStore>(
+    (persist as MaxiMizePersist)(
+        (set) => ({
+            maximize: false,
+            setMaximize: () => set((state) => ({ maximize: !state.maximize })),
+        }),
+        {
+            name: 'maximize',
+        }
+    )
+);
 
 export const useCollapse = create<CollapseStore>((set) => ({
     collapse: false,
