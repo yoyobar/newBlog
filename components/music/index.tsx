@@ -33,7 +33,7 @@ const MusicContainer = () => {
 
     //? ETC DATA
     const playerRef = useRef<YT.Player | null>(null);
-    const { data } = useMaximize();
+    const { maximize } = useMaximize();
 
     //! STATE HANDLER (youtube status 추적)
     const onPlayerStateChange = (event: YT.OnStateChangeEvent) => {
@@ -319,7 +319,7 @@ const MusicContainer = () => {
                             유튜브로 재생되므로 유튜브 프리미엄이 있어야 광고가 나오지 않습니다.
                         </div>
                     </div>
-                    <div className={`${data ? 'h-[700px]' : 'h-[700px]'} mt-[100px] overflow-y-scroll`}>
+                    <div className={`${maximize ? 'h-[700px]' : 'h-[700px]'} mt-[100px] overflow-y-scroll`}>
                         {playlistItems.map((item) => (
                             <motion.div
                                 onClick={() => selectHandler(item)}

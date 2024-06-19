@@ -42,7 +42,7 @@ export default useOptions;
 export const useMaximize = create<MaximizeStore>(
     (persist as MaxiMizePersist)(
         (set) => ({
-            maximize: false,
+            maximize: true,
             setMaximize: () => set((state) => ({ maximize: !state.maximize })),
         }),
         {
