@@ -3,7 +3,7 @@ import SettingPanel from '@/components/setting/SettingPanel';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Trouble Wiki | Settings',
+    title: 'Settings | Trouble Wiki',
     description: `Trouble Wiki, 개인 블로그. 설정을 관리합니다.`,
     openGraph: {
         title: `Settings | Trouble Wiki`,

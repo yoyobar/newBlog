@@ -3,9 +3,10 @@ import { useState } from 'react';
 
 interface CategoryButtonProps {
     onNav: () => void;
+    text: string;
 }
 
-const CategoryNav = ({ onNav }: CategoryButtonProps) => {
+const CategoryNav = ({ onNav, text }: CategoryButtonProps) => {
     const [hovered, setHovered] = useState(false);
 
     return (
@@ -20,7 +21,7 @@ const CategoryNav = ({ onNav }: CategoryButtonProps) => {
                 <div className={`transition-width-height h-1 border-b border-2 rounded-md ${hovered ? 'w-8' : 'w-5'}`}></div>
                 <div className={`transition-width-height h-1 border-b border-2 rounded-md ${hovered ? 'w-5' : 'w-8'}`}></div>
             </div>
-            <div className={` text-white animate-slideCategory left-[10rem] text-2xl top-4 ${hovered ? 'absolute' : 'hidden'}`}>Posts</div>
+            <div className={` text-white animate-slideCategory left-[10rem] text-2xl top-4 ${hovered ? 'absolute' : 'hidden'}`}>{text}</div>
         </>
     );
 };

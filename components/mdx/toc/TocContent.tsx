@@ -26,7 +26,7 @@ const TocContent = ({ headingEls, currentId }: TocProps) => {
                 open: { opacity: 0.75, translateY: 0 },
                 collapsed: { opacity: 0, translateY: 10 },
             }}
-            className='fixed w-[200px] 3xl:w-[300px] max-h-[500px] overflow-y-scroll overflow-x-hidden border dark:border-none bg-slate-200 dark:bg-[#383838] rounded-md'
+            className='fixed w-[200px] 3xl:w-[300px] max-h-[400px] overflow-y-scroll overflow-x-hidden border dark:border-none bg-slate-200 dark:bg-[#383838] rounded-md'
         >
             {headingEls.map((headingEl) => {
                 const tagName = headingEl.tagName.toLowerCase();
@@ -36,12 +36,12 @@ const TocContent = ({ headingEls, currentId }: TocProps) => {
 
                 switch (tagName) {
                     case 'h2':
-                        headingStyle += 'text-2xl xl:text-3xl 3xl:text-4xl 3xl:font-bold';
+                        headingStyle += 'text-2xl font-bold ';
                         showDot = true;
                         showDash = false;
                         break;
                     case 'h3':
-                        headingStyle += 'text-xl xl:text-2xl pl-8 3xl:text-3xl';
+                        headingStyle += 'text-xl pl-8 ';
                         showDot = false;
                         showDash = true;
                         break;

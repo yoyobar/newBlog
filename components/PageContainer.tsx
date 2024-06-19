@@ -94,7 +94,7 @@ const PageContainer = ({
                     </div>
                     {/* 카테고리 버튼 컨트롤 */}
                     <nav className={'flex ml-2 h-full w-full justify-between'}>
-                        <CategoryNav onNav={navHandler} />
+                        <CategoryNav text='Posts' onNav={navHandler} />
                     </nav>
                 </header>
                 <nav className='page-container relative overflow-y-scroll overflow-x-hidden bg-white dark:bg-background h-full rounded-b-md pb-24'>

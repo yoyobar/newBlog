@@ -51,7 +51,7 @@ const Mdx_Footer = ({ footMatter }: { footMatter: FootMatterTypes[] }) => {
     };
 
     return (
-        <div className='mt-8 mb-20'>
+        <div className='mt-[150px] mb-20'>
             <div className='flex gap-4 items-center'>
                 <motion.button
                     onClick={copyHandler}

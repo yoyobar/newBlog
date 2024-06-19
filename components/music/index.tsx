@@ -7,6 +7,8 @@ import { FaPause } from 'react-icons/fa6';
 import { IoMdVolumeHigh, IoMdVolumeOff } from 'react-icons/io';
 import { fetchDetailItems, fetchPlaylistItems, formatTime } from '@/lib/fetchMusic';
 import { PlaylistItem } from '@/config/types';
+import { motion } from 'framer-motion';
+import { useMaximize } from '@/config/store';
 
 declare global {
     interface Window {
@@ -16,17 +18,22 @@ declare global {
 }
 
 const MusicContainer = () => {
+    //? PLAYER DATA STATE
     const [playlistItems, setPlaylistItems] = useState<PlaylistItem[]>([]);
     const [selectItem, setSelectItem] = useState<PlaylistItem | null>(null);
+
+    //? CONTROLLER DATA STATE
     const [duration, setDuration] = useState<number>(0);
     const [currentPlaylistIndex, setCurrentPlaylistIndex] = useState<number>(0);
     const [playerState, setPlayerState] = useState<'playing' | 'paused' | 'ended'>('paused');
     const [paused, setPaused] = useState(false);
-    const playerRef = useRef<YT.Player | null>(null);
     const [currentTime, setCurrentTime] = useState<number>(0);
-
     const [volume, setVolume] = useState(50);
     const [isPlayerReady, setPlayerReady] = useState(false);
+
+    //? ETC DATA
+    const playerRef = useRef<YT.Player | null>(null);
+    const { data } = useMaximize();
 
     //! STATE HANDLER (youtube status 추적)
     const onPlayerStateChange = (event: YT.OnStateChangeEvent) => {
@@ -101,6 +108,7 @@ const MusicContainer = () => {
     useEffect(() => {
         if (isPlayerReady && duration) {
             console.log('3. 유튜브 플레이어 초기화');
+
             if (!playerRef.current) {
                 playerRef.current = new window.YT.Player('player', {
                     height: '360',
@@ -120,6 +128,8 @@ const MusicContainer = () => {
         if (!playerRef.current) return;
         if (!selectItem) return;
 
+        const currIndex = playlistItems.indexOf(item);
+        setCurrentPlaylistIndex(currIndex);
         setCurrentTime(0);
         setSelectItem(item);
 
@@ -161,7 +171,7 @@ const MusicContainer = () => {
     };
 
     //? NEXT MUSIC
-    const playNextHandler = () => {
+    const playNextHandler = useCallback(() => {
         if (!playerRef.current) return;
         if (!selectItem) return;
         setCurrentTime(0);
@@ -178,7 +188,7 @@ const MusicContainer = () => {
 
         playerRef.current.loadVideoById(nextItem.snippet.resourceId.videoId);
         playerRef.current.playVideo();
-    };
+    }, [currentPlaylistIndex, playlistItems, selectItem]);
 
     //? PREVIOUS MUSIC
     const playPreviousHandler = () => {
@@ -225,9 +235,9 @@ const MusicContainer = () => {
         }
 
         return () => clearInterval(interval);
-    }, [playerState]);
+    }, [playerState, playNextHandler]);
     return (
-        <div className='flex w-full h-full'>
+        <div className='flex w-full h-full select-none'>
             <div className='w-full xl:w-1/2 h-full'>
                 {selectItem && (
                     <>
@@ -239,10 +249,15 @@ const MusicContainer = () => {
                         </div>
 
                         <div className='relative w-full h-full flex flex-col items-center justify-center mt-[20%] px-20'>
-                            <div
+                            <motion.div
+                                animate={{
+                                    translateY: playerState === 'playing' ? [0, 5, 0] : [0, 0],
+                                    opacity: playerState === 'playing' ? [0.7, 1, 0.7] : [1, 1],
+                                }}
+                                transition={{ duration: 2, repeat: Infinity }}
                                 className='w-[240px] h-[240px] bg-cover rounded-full border-4 border-white shadow-sm shadow-white'
                                 style={{ backgroundImage: `url(${selectItem.snippet.thumbnails.medium.url})` }}
-                            ></div>
+                            ></motion.div>
 
                             <input
                                 type='range'
@@ -261,24 +276,24 @@ const MusicContainer = () => {
                             <div className='p-8 text-white text-4xl h-[100px] md:h-[80px] mt-6'>{selectItem.snippet.title}</div>
                             <div className='flex flex-col justify-between items-center mt-8 text-white'>
                                 <div className='w-[150px] flex justify-between items-center'>
-                                    <button onClick={playPreviousHandler}>
+                                    <motion.button whileHover={{ opacity: 0.6 }} onClick={playPreviousHandler}>
                                         <IoPlaySkipBack className='text-6xl' />
-                                    </button>
+                                    </motion.button>
 
                                     {playerState === 'playing' && (
-                                        <button onClick={pauseHandler}>
+                                        <motion.button whileHover={{ opacity: 0.6 }} onClick={pauseHandler}>
                                             <FaPause className='text-6xl' />
-                                        </button>
+                                        </motion.button>
                                     )}
                                     {playerState !== 'playing' && (
-                                        <button onClick={playHandler}>
+                                        <motion.button whileHover={{ opacity: 0.6 }} onClick={playHandler}>
                                             <FaPlay className='text-5xl' />
-                                        </button>
+                                        </motion.button>
                                     )}
 
-                                    <button onClick={playNextHandler}>
+                                    <motion.button whileHover={{ opacity: 0.6 }} onClick={playNextHandler}>
                                         <IoPlaySkipForward className='text-6xl' />
-                                    </button>
+                                    </motion.button>
                                 </div>
                                 <div className='flex gap-4 mt-2'>
                                     {volume ? <IoMdVolumeHigh className='text-5xl' /> : <IoMdVolumeOff className='text-5xl' />}
@@ -296,24 +311,32 @@ const MusicContainer = () => {
                     </>
                 )}
             </div>
-            <nav className='w-1/2 flex-col hidden xl:flex cursor-pointer select-none'>
-                <h1 className='mt-8 text-white text-4xl font-normal m-0 p-0'>Play List</h1>
-                <div className='text-gray-400 text-2xl mb-8'>유튜브로 재생되므로 유튜브 프리미엄이 있어야 광고가 나오지 않습니다.</div>
-                {playlistItems.map((item) => (
-                    <div
-                        onClick={() => selectHandler(item)}
-                        className='p-4 flex items-center gap-8 hover:bg-slate-100 text-white hover:text-black'
-                        key={item.id}
-                    >
-                        <div
-                            className='min-w-[180px] min-h-[100px] bg-cover rounded-md'
-                            style={{ backgroundImage: `url(${item.snippet.thumbnails.medium.url})` }}
-                        ></div>
-
-                        <div className=''>{item.snippet.title}</div>
+            <>
+                <nav className='w-1/2 relative h-full flex-col hidden xl:flex'>
+                    <div className='fixed h-fit w-full'>
+                        <h1 className='mx-4 mt-8 text-white text-4xl font-normal m-0 p-0'>Play List</h1>
+                        <div className='mx-4 text-gray-400 text-2xl mb-8'>
+                            유튜브로 재생되므로 유튜브 프리미엄이 있어야 광고가 나오지 않습니다.
+                        </div>
                     </div>
-                ))}
-            </nav>
+                    <div className={`${data ? 'h-[700px]' : 'h-[700px]'} mt-[100px] overflow-y-scroll`}>
+                        {playlistItems.map((item) => (
+                            <motion.div
+                                onClick={() => selectHandler(item)}
+                                className=' cursor-pointer p-4 flex items-center gap-8 hover:bg-slate-100 text-white hover:text-black'
+                                key={item.id}
+                            >
+                                <div
+                                    className='min-w-[180px] min-h-[100px] bg-cover rounded-md'
+                                    style={{ backgroundImage: `url(${item.snippet.thumbnails.medium.url})` }}
+                                ></div>
+
+                                <div className=''>{item.snippet.title}</div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </nav>
+            </>
         </div>
     );
 };

@@ -10,6 +10,7 @@ import readingTime from 'reading-time';
 import Title from '@/components/posts/Title';
 import { AllBrowseType } from '@/config/types';
 import type { Metadata } from 'next';
+
 const BASE_DIR = 'posts';
 
 export const metadata: Metadata = {
@@ -22,6 +23,7 @@ export default function Home() {
     const categoryFiles = allFilesLoad(category);
     const allFiles = [...mdx.map((file) => ({ category: '', file })), ...categoryFiles];
 
+    //TODO : 비동기 처리 해보기
     const blogs = allFiles.map(({ category, file }) => {
         const filePath = category ? path.join(BASE_DIR, category, file) : path.join(BASE_DIR, file);
         const fileContent = fs.readFileSync(filePath, 'utf-8');

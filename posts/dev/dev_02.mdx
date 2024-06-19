@@ -1,0 +1,448 @@
+---
+title: 'CSS 회고록'
+description: '과거 공부하였던 CSS의 기본구성요소를 정리합니다.'
+image: ''
+tags: [CSS]
+date: 2024-05-20 14:43:44
+update: 2024-06-19 14:43:44
+---
+
+> CSS (Cascading Style Sheets)는 사용자에게 문서를 표시하는 방법을 지정하는  Style sheet 언어입니다.
+
+
+## 요소의 유형
+
+우선 **요소**의 정의를 알아보자.  계속해서 등장하는 **요소**라는 단어는 `<div></div>`
+즉 태그의 묶음 자체를 **요소** 라고 칭한다. 이런 요소의 표현 방식에는 여러가지가 존재한다.
+
+| display        | 설명 |
+| :-: | :-: |
+| `display:none` | 요소를 화면에 표시하지 않는다.  |
+| `display:inline` | 요소를 `Inline` 형태로 표시한다. |
+| `display:block` | 요소를 `Block` 형태로 표시한다. |
+| `display:inline-block` | 요소를 `Inline` 형태로 표시하되, `Block`의 성질을 따르게 한다. |
+
+약간 애매한 역할이 **inline-block** 인데,  표기 자체는 **inline** 요소로 표기하지만, 
+**block**의 성질을 따라 조절되는 요소다.
+
+```html
+...
+<style>
+      #p4 {
+        display: inline-block;
+        background-color: green;
+        width: 50px;
+        height: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <p id="p4">생활</p>
+  </body>
+```
+
+<Preview>
+    <p className="inline-block bg-green-500 w-[50px] h-[50px]">생활</p>
+</Preview>
+
+예시로 `<p>` 라는 **인라인 요소**에 inline-block을 할당해뒀다. 
+원래 `<p>` 라는 **인라인 요소**에는 길이 관련된 속성은 붙을 수 없지만
+실제로는 적용된걸 확인할 수 있다.
+
+
+---
+
+## 요소 제어, `float`
+
+HTML를 작성하다 보면 특정 요소나 속성이 내가 원하는 위치로 가지 않고
+주변 요소에 의해 밀리거나 하는 경우를 볼 수 있다. 
+
+
+사용방법은 간단하다. `float` 속성으로 원하는 위치를 지정하면 된다.
+
+**left** 왼쪽에 붙음
+**right** 오른쪽에 붙음
+**none** 기본 상태
+
+```html
+    <style>
+      .container {
+        height: 400px;
+      }
+      img {
+        width: 100px;
+        height: 100px;
+      }
+      #first {
+        float: left;
+      }
+      #second {
+        float: left;
+      }
+    </style>
+    
+      <body>
+    <div class="container">
+      <img id="first" src="A.png" />
+      <img id="second" src="A.png" />
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+    </div>
+  </body>
+```
+<Preview>
+![sample](/img/2024-05-20-17-10-01.webp)
+</Preview>
+
+두 개의 `img` 를 `float`을 통해 왼쪽으로 나열하고, 아래쪽에 `<p>` 를 배치한 상태다.
+
+
+모든 항목이 서로 붙어있는 걸 확인할 수 있다. 뭐가 달라졌는지 모르겠는가?
+`style`속성을 제외하면 어떻게 되는지 확인해보자.
+
+<Preview>
+![sample](/img/2024-05-20-17-15-53.webp)
+</Preview>
+`<img>`끼리는 **block**요소에 공간이 남아 붙어있지만,
+`<p>`요소는 배치 순서에 따라 아래로 들어가게 된다.
+그렇다면, **float**을 서로 좌, 우로 배치하게 된다면 어떻게 될까?
+
+<Preview>
+![sample](/img/2024-05-20-17-17-10.webp)
+</Preview>
+`<img>`태그 중간에 `<p>`요소가 껴있는 다소 보기 좋지않은 상황이 벌어져 있다.
+자, 그러면 우리는 **inline** 요소인 **img** 만 좌,우로 배치하고 메세지는 원래 위치로 보내고 싶다.
+그럴 때는 **clear** 속성을 사용하면 된다. **clear**에는 **left**, **right**, **both** 가 존재하니, 상황에 맞게 쓰자.
+
+```html
+    <style>
+      p {
+        clear: both;
+      }
+    </style>
+```
+
+<Preview>
+![sample](/img/2024-05-20-17-17-45.webp)
+</Preview>
+이미지를 좌,우에 배치하였고, 그 아래에 문제 없이 기존 인라인 요소가 배치 되는걸 볼 수 있다.
+
+---
+
+## 위치 제어, `position`
+
+`block` 요소를 조절할 때, `display:flex` 를 이용하는게 일반적이나
+그렇지 않은 경우 각 물체의 위치를 어떻게 지정하면 되는지 알아보자.
+`position` 은 block의 위치를 조절하는데 쓰이는 속성이다.
+
+| Type | Description |
+| --- | --- |
+| `relative` | block의 **현재 위치**를 기준으로 이동한다. |
+| `absolute` | block의 **절대 위치**를 기준으로 이동한다. 상위 요소에 위치 값이 존재할 경우 그 위치를 기준으로 이동한다. |
+| `fixed` | block의 **화면 위치**를 기준으로 이동한다. 화면을 따라다니는 효과가 있어, `nav` 등 다양하게 사용된다. 첫 위치는 상위 `absolute`를 따른다. |
+
+`position` 으로 원하는 방식을 고르고 `left` `right` `top` `bottom` 으로 원하는 대로 움직일 수 있다.
+
+
+
+```css
+.rel {
+     background-color: red; 
+     position: relative; 
+     top: 50px; 
+     left: 50px; 
+     }
+ ```
+
+---
+
+## 중첩 제어, `z-index`
+
+공학을 전공하거나 좌표를 배워봤다면 Z축이라는 존재를 알고 있을 것이다.
+Z축과 사용 방법은 같다.
+
+요소를 다루다 보면 서로 겹치거나 하는 경우가 있을텐데
+더 위에 나타나게 하거나 아래로 보낼 수 있는것이다.
+
+<Callout>**z-index** 는 **position="static"** 을 제외한 값만 변동시킬 수 있다</Callout>
+
+
+위의 내용을 반드시 기억하자. 기본적으로 `position`은 `static` 인데, 이러한 `position`을 부여 하지 않고 `z-index` 를 사용한다면 아무런 변화가 없을 것이다.
+
+`z-index`는 속성으로 준 정수가 큰 순으로 앞서게 된다. 따라서
+
+```css
+      .div1 {
+        background-color: orange;
+        z-index: 4;
+        overflow: scroll;
+      }
+      .div2 {
+        background-color: red;
+        bottom: 50px;
+        z-index: 3;
+      }
+      .div3 {
+        background-color: purple;
+        bottom: 100px;
+        z-index: 2;
+      }
+      .div4 {
+        background-color: green;
+        bottom: 150px;
+        z-index: 1;
+      }
+```
+
+<Preview>
+  <div className="flex text-right relative w-[100px] h-[50px]">
+    <div className="absolute z-40 left-0 w-[50px] h-[50px] bg-orange-400">div1</div>
+    <div className="absolute z-30 left-8 w-[50px] h-[50px] bg-red-400">div2</div>
+    <div className="absolute z-20 left-16 w-[50px]  h-[50px] bg-purple-400">div3</div>
+    <div className="absolute z-10 left-24 w-[50px] h-[50px] bg-green-400">div4</div>
+  </div>
+</Preview>
+
+ `z-index` 값이 `4` 인 `div1` 가 가장 앞으로 나타나게 된다.
+    
+---
+
+## 선택자 `(Selector)`
+
+그동안 요소를 선택 할 때, `.class` `#id` 와 같은 간단한 선택자만 사용 했을 것이다.
+하지만 현업에서는 대부분 모듈화를 통해 원하는 부분을 떼어서 css를 설계한다.
+따라서 다양한 선택자를 다루는 것이 중요하다.
+
+| 종류 | 선택자 명 | 예시와 설명 |
+| --- | --- | --- |
+| [] | 속성 선택자 | [div]  `div`의 속성을 지닌 모든 요소 |
+| 공백  | 하위 요소 선택자 | `div p`  `div`의 하위 요소 `p`   |
+| > | 자식 요소 선택자 | `div > p` `div`의 자식 요소 `p` |
+| + | 인접 형제 선택자 | `div + p` `div`의 인접 형제 요소 `p`, 바로 아래 있는 요소 |
+| ~  | 형제 요소 선택자 | `div ~ p` `div`의 전체 형제 요소 `p`, 아래쪽에 있는 모든 형제 요소 |
+| * | 값의 포함 여부 | `[width*=’120’]`  `width`의 속성을 지녔고 `120`이 포함된 요소 |
+| ^ | 값의 시작 여부 | `[width^='120']` `width`의 속성을 지녔고 `120`으로 시작되는 요소  |
+| $ | 값의 끝 여부 | `[width$='120']`  `width`의 속성을 지녔고 `120`으로 끝나는 요소  |
+
+선택자의 종류가 생각보다 많지만, 전부 암기하기보다 그때 그때 찾아보며 활용성을 늘려보자.
+
+
+<Callout>근데, **공백** 과 **>** 는 뭐가 다른거지?</Callout> 
+
+하위 선택자는 자식 선택자에 비해 더 넓은 범위를 가진다.
+ 
+다르게 말하자면,
+
+`div > p`의 경우 `div` 의 자식 요소인 `p`에만 해당되는 속성이란 것이다.
+`div p` 의 경우 `div` 의 자식 요소인 `p` 와, 그의 하위 요소 모든 곳에 해당되는 속성이다.
+    
+---
+
+## 의사 클래스와 의사 요소 `(pseudo)`
+
+요소가 어떤 상태가 되었을 때 요소를 선택하겠다는 의미다.
+물론 전부 그렇게 작동하진 않는다.
+
+| pseudo class | 조건 | 예시, 사용 방법 |
+| --- | --- | --- |
+| :hover | 마우스가 올라감 | a:hover  태그 위에 마우스가 올라갈 경우 작동 |
+| :active | 마우스 클릭 | a:active 태그를 마우스가 누를 경우 작동 |
+| :nth-child |              -  | `li:nth-child(1)`  `<li>` 태그의 형제 중 1번째에게 적용 |
+
+<Callout type="info">**nth-child**의 정수 부분에는 **n**과 같은 정수도 들어간다.
+홀수/짝수 등 다양하게 응용 가능하고 사용할 곳이 많은 클래스다.</Callout>
+
+
+| pseudo element | 예시, 사용 방법 |
+| --- | --- |
+| ::after | div::after div 후에 적용할 구성을 넣는다. 이미 완성된 서식에 추가할 때 용이하다. |
+| ::before | div::before div 전에 적용할 구성을 넣는다.  |
+| ::marker | `<ul>`, `<ol>` 등,  속성 값이 list-tem 인 요소에 서식을 추가한다. content 사용 |
+| ::first-line | p::first-line 해당 요소에 첫 번째 줄에 서식을 추가한다. |
+| ::placeholder | placeholder 타입의 문자에 서식을 추가한다. |
+
+의사요소와 클래스도 전부 외우자! 하지 말고 필요할 때 마다 찾아보며 익숙해지자.
+솔직히 몇 개는 알아도 안 쓸 거 같은 느낌이긴 하다.
+
+---
+
+## 변형과 전환 `(Transform / Transition)`
+
+변형은 기존에 있는 요소를 원하는 형태로 변형한다.
+
+| transform | 효과 |
+| --- | --- |
+| translate | 위치를 변경한다.  |
+| scale | 사이즈를 변경한다. |
+| skew | 쥐어 짠다는 뜻이다. 잘 사용되지 않는다. **deg** 가 단위 |
+| rotate | 각도를 변경한다. **deg** 가 단위 |
+
+```
+transform: translate(20px, 50px);
+transform: scale(1.25, 0.75); 
+transform: skew(12deg);
+transform: rotate(45deg);
+```
+
+<Preview>
+
+<div className="flex gap-4 h-[100px] text-black">
+    <div className="w-[50px] h-[50px] text-center bg-slate-200 translate-x-5 translate-y-14 ">Box1</div>
+    <div className="w-[50px] h-[50px] text-center bg-slate-200 scale-x-125 scale-y-75">Box2</div>
+    <div className="w-[50px] h-[50px] text-center bg-slate-200 skew-x-12">Box3</div>
+    <div className="w-[50px] h-[50px] text-center bg-slate-200 rotate-45">Box4</div>
+</div>
+</Preview>
+
+전환은 변형되는 방식을 조정한다. 의사 클래스와 혼용해서 사용하는 경우가 많다.
+
+| transition | 기능 |
+| --- | --- |
+| duration | 전환 하는데 걸리는 시간 |
+| delay | 전환을 시작하는데 걸리는 시작 |
+| timing-function | 전환 하는 시간 함수 방식 |
+| property | 전환 하고자 하는 속성 |
+
+`timing-function` 은 종류가 여러가지 있으므로, 가독성을 위해 표를 사용하겠다.
+| timing | 효과 |
+| --- | --- |
+| ease | 빨라지다가 느려진다. |
+| linear | 균일한 속도로 진행된다. |
+| ease-in | 점점 빨라진다. |
+| ease-out | 점점 느려진다. |
+
+물론 이러한 전환은 합성해서 사용할 수 있다. 이 편이 적응하면 더 편하니 익숙해지자.
+
+명심하자, 합성해서 쓸 경우 처음으로 오는 숫자가 `duration`, 뒤 숫자가 `delay`다. 
+
+나머지는 위치에 관계 없고 명시하지 않아도 기본 값으로 실행된다.
+
+```css
+transition: (property) (duration/delay) (timing-function)
+
+.div:hover{
+transition: background-color 5s 1s linear
+}
+```
+
+<Preview>
+<div className="bg-slate-400 p-2 rounded-md hover:bg-slate-700 hover:text-white duration-500 delay-100 transition linear">
+Test
+</div>
+</Preview>
+
+---
+
+## 애니메이션 효과 `@keyframes`
+
+
+CSS에서는 웹페이지의 애니메이션 효과를 지원하기 위해 모듈로서 `@keyframes` 을 제공 한다.
+
+전환과 똑같이 합성해서 사용 가능하다.
+
+| @keyframes (name) | 효과 |
+| --- | --- |
+| name | 애니메이션 이름 지정 |
+| duration | 움직이는데 걸리는 시간 |
+| delay | 움직임을 시작하는데 걸리는 시간 |
+| timing-function | 전환 하는 시간 함수 방식 |
+| iteration-count | 정수 또는 infinite 사용 가능, 반복 횟수를 지정한다. |
+| direction | alternate  정 방향 재생 후 역방향 재생normal 정 방향 재생reverse 역 방향 재생 |
+| play-state | paused  애니메이션 정지
+running | 애니메이션 진행 |
+
+```css
+
+@keyframes moving {
+    from {
+        transform: rotate: 0deg;
+    }
+    to {
+        transform: rotate: 360deg;
+    }
+}
+      
+.animation-name: moving; ## moving이라는 이름의 애니메이션 할당
+.animation-duration: 2s; ## 애니메이션 지속시간 2s
+.animation-dealy: 0s; ## 애니메이션 딜레이 0s
+.animation-timing-function: linear; ## 항상 균일한 속도
+.animation-iteration-count: infinite; ## 반복 횟수
+.animation-direction: altenate; ## 정 방향 재생 후 역방향 재생
+.animation-play-state: running; ## 실행 중
+.animation: moving 2s 0s linear infinite alternate running;
+```
+
+
+<Preview>
+<div className="w-[50px] h-[50px] bg-slate-600 animate-spin delay-200">살려줘</div>
+</Preview>
+
+해석하자면 `rotate:0deg`에서 시작해 `rotate:360deg`로 움직이고 다시 돌아가는 요소이다.
+균일 속도`(2s)`로 무한 반복되며 현재 실행 중이다.
+
+---
+
+## 상속`(Inherit)`와 비 상속`(Initial)`
+
+부모 요소에 존재하는 속성 값을 상속하는 경우와 상속하지 않는 경우가 있다.
+
+일반적으로 색상 관련은 상속하고 박스와 관련된 경우는 상속되지 않지만, 
+
+직접 적응하면서 기억하는 게 더욱 알기 편할 것 이다.
+
+하지만 속성으로 강제로 상속 시키거나, 상속 시키지 않는 방법이 있다.
+
+| Inherit | 상속 받음 |
+| --- | --- |
+| initial | 상속 받지 않음 |
+| unset | 기본 값 |
+
+```css
+border: inherit;
+// border와 관련된 상속을 받는다
+
+color: initial;
+// color와 관련된 상속을 받지 않는다.
+```
+
+---
+
+## 반응형 웹과 `viewport` 단위
+
+HTML에서 기본 값 snippet인 `!` 을 사용하면, 자동으로 붙는 태그를 봤을 것 이다.
+
+`<meta name="viewport" content="width=device-width, initial-scale=1.0"/>` 
+
+해당 `meta`는 기기 간 호환성을 위한 meta 태그이다.
+
+`content=width=device-width` 의 경우 웹 페이지의 크기가 화면의 크기를 따라가도록 한다.
+
+`initial-scale=1.0` 의 경우 보여지는 화면의 확대 비율을 1x로 조절한다.
+
+---
+
+## 미디어 쿼리 `@media screen` 
+
+프론트엔드를 공부한다는 것은 미디어 쿼리를 잘 다뤄야 한다.
+아무리 `viewport` 를 설정한다 하더라도 실제 모바일 웹에서 보는 화면과 PC로 보는 화면은 다를 수 밖에 없다. 그럴때 사용하는 모듈이 `@media` 다. 
+
+현재 협업에서 CSS는 각각 모듈화 해서 상황에 맞게 조립해서 사용한다는 말은 들어 봤을 것이다. 그렇게 모듈화한 데이터를 `@media screen`에 맞게 각각 조절해서 사용자에게 서비스를 제공하는 것이다.
+
+```css
+@media screen and (condition) {
+...
+}
+// 위와 같은 형태로 사용한다. 아래 예시를 확인해보자
+
+@media screen and (max-width:800px) {
+	div.box {
+		font-size:16px;
+	}
+}
+// max-width가 800px보다 작은 화면에게 제공하는 스타일서식을 따로 지정할 수 있다.
+```
+
+
+대표적인 모바일 사이즈는 [개발자 도구]에서 각각의 핸드폰을 눌러보며 테스트 할 수 있다. 반드시 직접 해보자!
+
+
+

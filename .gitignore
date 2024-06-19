@@ -39,3 +39,6 @@ next-env.d.ts
 /build
 /public/robots.txt
 /public/sitemap*.xml
+
+# CUSTOM
+old

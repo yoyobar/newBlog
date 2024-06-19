@@ -1,0 +1,62 @@
+{
+    {
+        "프리뷰 사용": {
+            "prefix": ["pre", "preview"],
+            "body": [
+                "<Preview>",
+                "</Preview>"
+            ]
+        },
+        "콜아웃 사용": {
+            "prefix" : ["callout"],
+            "body": [
+                "<Callout type='$1'>$2</Callout>"
+            ]
+        },
+        "카드 임포트": {
+            "prefix": "impcard",
+            "body": [
+                "import {Cards, Card} from 'nextra/components'"
+            ]
+        },
+        "카드 사용": {
+            "prefix": "card",
+            "body": [
+                "<Cards>",
+                "<Card icon={} title='' href=''  />",
+                "</Cards>"
+            ]
+        },
+    
+        "Post Matter": {
+            "prefix": ["matter", "---"],
+            "description": "태그를 미리 설정합니다.",
+            "body": [
+              "---",
+              "title: '$1'",
+              "description: '$2'",
+              "image: ''",
+              "tags: [$3]",
+              "date: $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE $CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND",
+              "update: $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE $CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND",
+              "---",
+              "",
+              "$0"
+            ],
+          },
+          "Current Date": {
+            "scope": "mdx, md",
+            "prefix": ["current_date", "cd"],
+            "description": "현재 시간을 문자열로 뱉습니다.",
+            "body": "$CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE $CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND"
+          }
+    
+        
+    }
+    
+    
+}
+
+
+
+"scope": "javascript,typescript",

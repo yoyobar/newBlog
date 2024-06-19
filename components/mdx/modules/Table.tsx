@@ -1,5 +1,5 @@
 'use client';
-import React, { type ComponentProps, type ReactElement } from 'react';
+import React, { type ComponentProps } from 'react';
 
 export const Tr = ({ ...props }: ComponentProps<'tr'>) => {
     return <tr className='p-0 border-b border-[#e5e7eb] dark:border-[#3a4150] rounded-md whitespace-nowrap' {...props} />;

@@ -3,7 +3,12 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 
 const config: Config = {
     darkMode: 'class',
-    content: ['./components/**/*.{js,ts,jsx,tsx,mdx}', './app/**/*.{js,ts,jsx,tsx,mdx}', './utils/**/*.{js,jsx,ts,tsx}'],
+    content: [
+        './components/**/*.{js,ts,jsx,tsx,md,mdx}',
+        './app/**/*.{js,ts,jsx,tsx,md,mdx}',
+        './utils/**/*.{js,jsx,ts,tsx,md,mdx}',
+        './posts/**/*.{js,ts,jsx,tsx,md,mdx}',
+    ],
     theme: {
         screens: {
             ...defaultTheme.screens,
@@ -86,6 +91,7 @@ const config: Config = {
 
                         ':not(pre) > p > span > code': {
                             textWarp: 'break-words',
+                            margin: '1px 5px',
                         },
 
                         ':not(pre) > code > span > span': {

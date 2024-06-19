@@ -15,13 +15,17 @@ import { Blockquote } from './modules/Blockquote';
 import { Table, Td, Th, Tr } from './modules/Table';
 import { Hr } from './modules/Hr';
 import rehypeSlug from 'rehype-slug';
+import { Strong } from './modules/Strong';
+import Pen from './modules/Pen';
 
 const Mdx_Module = {
+    Pen,
     Preview,
-    img: Image as any,
     Callout,
     Card,
     Cards,
+    img: Image as any,
+    strong: Strong,
     blockquote: Blockquote,
     pre: CodeBlock,
     tr: Tr,
