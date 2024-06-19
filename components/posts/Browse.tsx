@@ -18,12 +18,12 @@ const Browse = ({ blogs, selected }: { blogs: AllPostsProp[]; selected?: string 
                 <>
                     <div
                         key={blog.meta.title}
-                        className='shadow-slate-950 transition hover:scale-105 active:scale-100 min-h-[140px] shadow-sm relative z-0 w-full border-2 border-slate-500  rounded-xl'
+                        className='transition hover:scale-105 active:scale-100 min-h-[120px] md:min-h-[140px] relative z-0 w-full border-black dark:border-darkInner-border border-2 rounded-xl'
                     >
                         <Link passHref href={`/posts/${blog.slug}`} className='no-underline p-8 flex flex-col gap-8 w-full'>
-                            <div className='flex flex-col gap-8'>
+                            <div className='flex flex-col gap-4'>
                                 <div className='text-4xl'>{blog.meta.title}</div>
-                                <article className='flex items-center gap-8'>
+                                <article className='flex items-center gap-4'>
                                     <div className='flex gap-2'>
                                         <CiCalendar className='text-gray-400' />
                                         <div className='dark:text-gray-400 text-gray-600 w-[80px] text-xl'>{blog.meta.date}</div>
@@ -34,12 +34,12 @@ const Browse = ({ blogs, selected }: { blogs: AllPostsProp[]; selected?: string 
                                             {blog.meta.readingMinutes} min
                                         </div>
                                     </div>
-                                    <div className='hidden md:flex w-[200px] justify-end items-center absolute h-[100px] top-[20px] right-10'>
+                                    <div className='right-0 opacity-50 md:opacity-100 flex w-1/3 h-full top-0 justify-end items-center absolute md:w-[200px]'>
                                         <ExportedImage
                                             alt={blog.meta.title}
                                             fill
                                             sizes='100vw'
-                                            className='p-0 m-0 rounded-lg'
+                                            className='p-0 m-0 rounded-r-md'
                                             src={blog.meta.src !== '' ? blog.meta.src : '/logo/template.webp'}
                                         />
                                     </div>

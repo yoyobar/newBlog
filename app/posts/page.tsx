@@ -45,7 +45,7 @@ export default function Home() {
 
     return (
         <PageContainer>
-            <div className='w-full xl:w-[90%] m-auto select-none'>
+            <div className='w-[90%] m-auto select-none'>
                 <Title type={'all'} length={allFiles.length} />
                 <Browse blogs={blogs} />
             </div>

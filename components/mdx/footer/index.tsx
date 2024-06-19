@@ -77,7 +77,7 @@ const Mdx_Footer = ({ footMatter }: { footMatter: FootMatterTypes[] }) => {
                             whileHover={{ scale: 1.05, opacity: 1 }}
                             className='bg-cover cursor-pointer relative rounded-2xl py-6 border dark:border-gray-500 flex flex-col gap-2'
                         >
-                            <div className='ml-20 text-left font-bold text-orange-500 relative  z-10'>이전 포스트</div>
+                            <div className='ml-20 text-left font-bold text-orange-500 relative  z-10 text-2xl md:text-3xl'>이전 포스트</div>
                             <div className='mt-2 text-center mb-6 text-white relative z-10 text-2xl md:text-3xl'>{previousPost.title}</div>
 
                             <motion.div
