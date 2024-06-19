@@ -35,6 +35,7 @@ export default function Home() {
                 title: grayMatter.title,
                 length: allFiles.length,
                 tags: grayMatter.tags,
+                src: grayMatter.image,
                 date: dayjs(grayMatter.date).format('YYYY-MM-DD'),
                 readingMinutes: Math.ceil(readingTime(content).minutes),
             },

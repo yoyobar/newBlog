@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 
 interface CategoryProps {
     onNav: () => void;
-    selected: boolean;
 }
 
 const container = {
@@ -31,7 +30,7 @@ const variant = {
     },
 };
 
-const Category = ({ onNav, selected }: CategoryProps) => {
+const Category = ({ onNav }: CategoryProps) => {
     const allCategory = getMetadataValues();
     const category = allCategory.filter((item) => item.visible);
 
@@ -45,7 +44,7 @@ const Category = ({ onNav, selected }: CategoryProps) => {
                     className='h-fit z-40 fixed flex flex-col gap-4 p-8 w-[300px] rounded-md bg-[rgba(255,255,255,0.98)]  dark:bg-slate-800 text-black border dark:border-black shadow-gray-400 dark:shadow-black shadow-sm'
                 >
                     {category.map((item) => (
-                        <Link onClick={onNav} className='no-underline transition-all' key={item.key} href={`${item.link}`}>
+                        <Link onClick={onNav} className='select-none no-underline transition-all' key={item.key} href={`${item.link}`}>
                             <motion.div variants={variant} whileHover={{ scale: 1.1 }}>
                                 <SubTitle type={item.key} />
                             </motion.div>

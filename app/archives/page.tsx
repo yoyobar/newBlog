@@ -44,6 +44,7 @@ export default function ArchivesPage() {
                 title: grayMatter.title,
                 length: allFiles.length,
                 tags: grayMatter.tags,
+                src: grayMatter.image,
                 date: dayjs(grayMatter.date).format('YYYY-MM-DD'),
                 readingMinutes: Math.ceil(readingTime(content).minutes),
             },
@@ -57,7 +58,7 @@ export default function ArchivesPage() {
 
     return (
         <PageContainer>
-            <div className='w-full xl:w-[90%] m-auto select-none'>
+            <div className='w-full md:w-[90%] m-auto select-none'>
                 <Title type={'archives'} />
                 <Suspense fallback={<div>Loading...</div>}>
                     <Archives blogs={blogs} tag={sortedTags} />

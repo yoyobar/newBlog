@@ -48,6 +48,7 @@ export async function getPosts(category: string) {
             meta: {
                 title: grayMatter.title,
                 tags: grayMatter.tags,
+                src: grayMatter.image,
                 date: dayjs(grayMatter.date).format('YYYY-MM-DD'),
                 readingMinutes: Math.ceil(readingTime(content).minutes),
             },

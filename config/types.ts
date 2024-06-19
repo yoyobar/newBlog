@@ -31,6 +31,7 @@ export interface AllBrowseType {
 
 export interface AllPostsProp {
     meta: {
+        src: string;
         title: string;
         tags: string[];
         date: string;
