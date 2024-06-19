@@ -17,7 +17,7 @@ const PageContainerSmall = ({
     const [isDragging, setIsDragging] = useState(false);
     const [endPosition, setEndPosition] = useState({ x: 251, y: -23 });
     const [startPosition, setStartPosition] = useState({ x: 1192, y: 94 });
-    const { data, setData } = useMaximize();
+    const { maximize, setMaximize } = useMaximize();
     const clickCount = useRef(0);
     const [selected, setSelected] = useState(false);
 
@@ -51,7 +51,7 @@ const PageContainerSmall = ({
     };
 
     const maximizeHandler = () => {
-        setData();
+        setMaximize();
     };
 
     const doubleMaximizeHandler = () => {
@@ -74,7 +74,7 @@ const PageContainerSmall = ({
                 style={{ left: endPosition.x, top: endPosition.y }}
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
-                className={`${!data && 'md:border-t-[80px] md:absolute md:w-3/4 md:h-[900px]'} 
+                className={`${!maximize && 'md:border-t-[80px] md:absolute md:w-3/4 md:h-[900px]'} 
                 static left-0 w-full h-full transition-width-height
                 border-transparent rounded-md z-10 blur-[2px]`}
             >
