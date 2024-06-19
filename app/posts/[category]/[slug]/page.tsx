@@ -52,7 +52,7 @@ export default async function Page({ params }: { params: { category: string; slu
     return (
         <PageContainer>
             {tocControl && <Mdx_Toc />}
-            <div className='m-auto w-[95%] xl:w-[70%] 3xl:w-[50%]'>
+            <div className='m-auto w-[95%] md:w-[75%] 3xl:w-[50%]'>
                 <Mdx_Header frontMatter={{ ...frontMatter, category: category }} />
                 <Mdx_Body content={content} />
                 <Mdx_Footer footMatter={footMatter} />

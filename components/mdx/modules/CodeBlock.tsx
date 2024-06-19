@@ -61,7 +61,7 @@ export const CodeBlock = ({
                             <FaCheck className='text-green-400' />
                         </motion.div>
                     )}
-                    <code className='bg-[#e0e0e0] dark:bg-[#292a36]'>
+                    <code className='bg-whiteInner-content dark:bg-darkInner-content'>
                         <div className='max-h-[400px] overflow-x-auto overflow-y-auto p-4 xl:p-8'>{children}</div>
                     </code>
                 </pre>

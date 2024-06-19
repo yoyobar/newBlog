@@ -9,7 +9,7 @@ interface IconType {
 
 export const calloutStyle = {
     default: 'bg-slate-600 dark:bg-slate-700 text-yellow-200',
-    info: 'bg-sky-600 dark:bg-sky-700 text-blue-200',
+    info: 'bg-sky-800 text-blue-200',
     danger: 'bg-rose-600 dark:bg-rose-700 text-rose-200',
     warn: 'bg-orange-600 text-orange-200',
 };

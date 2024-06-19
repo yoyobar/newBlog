@@ -41,13 +41,10 @@ update: 2024-06-19 14:43:44
   </body>
 ```
 
-<Preview>
-    <p className="inline-block bg-green-500 w-[50px] h-[50px]">생활</p>
-</Preview>
+<p className="inline-block bg-green-500 rounded-md dark:bg-green-700 w-[50px] h-[50px]">생활</p>
 
-예시로 `<p>` 라는 **인라인 요소**에 inline-block을 할당해뒀다. 
-원래 `<p>` 라는 **인라인 요소**에는 길이 관련된 속성은 붙을 수 없지만
-실제로는 적용된걸 확인할 수 있다.
+위를 보면 원래 `<p>` 라는 **인라인 요소**에는 길이 관련된 속성은
+붙을 수 없지만 실제로는 적용된걸 확인할 수 있다.
 
 
 ---
@@ -89,26 +86,21 @@ HTML를 작성하다 보면 특정 요소나 속성이 내가 원하는 위치�
     </div>
   </body>
 ```
-<Preview>
 ![sample](/img/2024-05-20-17-10-01.webp)
-</Preview>
+
 
 두 개의 `img` 를 `float`을 통해 왼쪽으로 나열하고, 아래쪽에 `<p>` 를 배치한 상태다.
-
-
 모든 항목이 서로 붙어있는 걸 확인할 수 있다. 뭐가 달라졌는지 모르겠는가?
 `style`속성을 제외하면 어떻게 되는지 확인해보자.
 
-<Preview>
 ![sample](/img/2024-05-20-17-15-53.webp)
-</Preview>
+
 `<img>`끼리는 **block**요소에 공간이 남아 붙어있지만,
 `<p>`요소는 배치 순서에 따라 아래로 들어가게 된다.
 그렇다면, **float**을 서로 좌, 우로 배치하게 된다면 어떻게 될까?
 
-<Preview>
 ![sample](/img/2024-05-20-17-17-10.webp)
-</Preview>
+
 `<img>`태그 중간에 `<p>`요소가 껴있는 다소 보기 좋지않은 상황이 벌어져 있다.
 자, 그러면 우리는 **inline** 요소인 **img** 만 좌,우로 배치하고 메세지는 원래 위치로 보내고 싶다.
 그럴 때는 **clear** 속성을 사용하면 된다. **clear**에는 **left**, **right**, **both** 가 존재하니, 상황에 맞게 쓰자.
@@ -121,9 +113,8 @@ HTML를 작성하다 보면 특정 요소나 속성이 내가 원하는 위치�
     </style>
 ```
 
-<Preview>
 ![sample](/img/2024-05-20-17-17-45.webp)
-</Preview>
+
 이미지를 좌,우에 배치하였고, 그 아래에 문제 없이 기존 인라인 요소가 배치 되는걸 볼 수 있다.
 
 ---
@@ -193,14 +184,13 @@ Z축과 사용 방법은 같다.
       }
 ```
 
-<Preview>
-  <div className="flex text-right relative w-[100px] h-[50px]">
-    <div className="absolute z-40 left-0 w-[50px] h-[50px] bg-orange-400">div1</div>
-    <div className="absolute z-30 left-8 w-[50px] h-[50px] bg-red-400">div2</div>
-    <div className="absolute z-20 left-16 w-[50px]  h-[50px] bg-purple-400">div3</div>
-    <div className="absolute z-10 left-24 w-[50px] h-[50px] bg-green-400">div4</div>
-  </div>
-</Preview>
+<div className="flex text-right relative w-[100px] h-[50px]">
+  <div className="absolute z-40 left-0 w-[50px] h-[50px] bg-orange-400">div1</div>
+  <div className="absolute z-30 left-8 w-[50px] h-[50px] bg-red-400">div2</div>
+  <div className="absolute z-20 left-16 w-[50px]  h-[50px] bg-purple-400">div3</div>
+  <div className="absolute z-10 left-24 w-[50px] h-[50px] bg-green-400">div4</div>
+</div>
+
 
  `z-index` 값이 `4` 인 `div1` 가 가장 앞으로 나타나게 된다.
     
@@ -283,15 +273,14 @@ transform: skew(12deg);
 transform: rotate(45deg);
 ```
 
-<Preview>
 
 <div className="flex gap-4 h-[100px] text-black">
-    <div className="w-[50px] h-[50px] text-center bg-slate-200 translate-x-5 translate-y-14 ">Box1</div>
-    <div className="w-[50px] h-[50px] text-center bg-slate-200 scale-x-125 scale-y-75">Box2</div>
-    <div className="w-[50px] h-[50px] text-center bg-slate-200 skew-x-12">Box3</div>
-    <div className="w-[50px] h-[50px] text-center bg-slate-200 rotate-45">Box4</div>
+  <div className="w-[50px] h-[50px] text-center bg-slate-200 translate-x-5 translate-y-14 ">Box1</div>
+  <div className="w-[50px] h-[50px] text-center bg-slate-200 scale-x-125 scale-y-75">Box2</div>
+  <div className="w-[50px] h-[50px] text-center bg-slate-200 skew-x-12">Box3</div>
+  <div className="w-[50px] h-[50px] text-center bg-slate-200 rotate-45">Box4</div>
 </div>
-</Preview>
+
 
 전환은 변형되는 방식을 조정한다. 의사 클래스와 혼용해서 사용하는 경우가 많다.
 
@@ -324,11 +313,10 @@ transition: background-color 5s 1s linear
 }
 ```
 
-<Preview>
 <div className="bg-slate-400 p-2 rounded-md hover:bg-slate-700 hover:text-white duration-500 delay-100 transition linear">
 Test
 </div>
-</Preview>
+
 
 ---
 
@@ -372,9 +360,8 @@ running | 애니메이션 진행 |
 ```
 
 
-<Preview>
 <div className="w-[50px] h-[50px] bg-slate-600 animate-spin delay-200">살려줘</div>
-</Preview>
+
 
 해석하자면 `rotate:0deg`에서 시작해 `rotate:360deg`로 움직이고 다시 돌아가는 요소이다.
 균일 속도`(2s)`로 무한 반복되며 현재 실행 중이다.

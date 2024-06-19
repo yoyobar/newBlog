@@ -57,11 +57,22 @@ const config: Config = {
             },
             colors: {
                 background: {
-                    DEFAULT: '#222222',
+                    DEFAULT: '#18181b',
                 },
                 header: {
                     DEFAULT: '#302b25',
-                    text: '#ddd',
+                    text: '#ededed',
+                },
+                whiteInner: {
+                    header: '#ededed',
+                    content: '#eaeef4',
+                    border: '#999b9d',
+                },
+                darkInner: {
+                    header: '#3a3b45',
+                    content: '#212127',
+                    border: '#454b5c',
+                    background: '#18181b',
                 },
             },
             typography: {
@@ -69,11 +80,10 @@ const config: Config = {
                     css: {
                         // ! <p> 태그
                         p: {
-                            lineHeight: '3rem',
                             fontSize: '1.8rem',
-
+                            lineHeight: '2em',
                             '@media screen and (max-width: 768px)': {
-                                lineHeight: '2.5rem',
+                                lineHeight: '1.5em',
                                 fontSize: '1.6rem',
                             },
                         },
@@ -81,17 +91,18 @@ const config: Config = {
                         // ! 인라인 코드 블럭
                         ':not(pre) > code': {
                             display: 'inline-block',
-                            padding: '0',
+                            padding: '0 5px',
+                            lineHeight: '1.5em',
                             fontWeight: 'inherit',
                             fontFamily: 'Consolas, Courier New, Courier, monospace',
-                            backgroundColor: '#e0e0e0',
+                            backgroundColor: '#eaeef4',
                             borderRadius: '3px',
                             textWarp: 'break-words',
                         },
 
                         ':not(pre) > p > span > code': {
                             textWarp: 'break-words',
-                            margin: '1px 5px',
+                            margin: '3px 5px',
                         },
 
                         ':not(pre) > code > span > span': {
@@ -103,7 +114,7 @@ const config: Config = {
                         },
 
                         '.dark :not(pre) > code': {
-                            backgroundColor: '#282a37',
+                            backgroundColor: '#212127',
                         },
 
                         'code::before': {

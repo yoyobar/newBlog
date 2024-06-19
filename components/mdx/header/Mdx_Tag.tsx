@@ -13,7 +13,7 @@ const Mdx_tag = ({ tags }: TagProps) => {
                     return (
                         <Link
                             href={`/archives?tag=${tag}`}
-                            className='bg-sky-300 no-underline dark:bg-header dark:hover:brightness-75 cursor-pointer p-1 text-2xl text-black dark:text-gray-400 rounded-md hover:bg-sky-500 transition'
+                            className='bg-whiteInner-header no-underline dark:bg-darkInner-header dark:hover:brightness-75 cursor-pointer p-1 text-2xl text-black dark:text-gray-400 rounded-md hover:bg-sky-500 transition'
                             key={tag}
                         >
                             {tag}

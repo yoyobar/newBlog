@@ -33,7 +33,7 @@ const Mdx_Header = ({ frontMatter }: { frontMatter: FrontMatterTypes }) => {
                         </div>
                         <Link
                             href={`/posts/${frontMatter.category}`}
-                            className='no-underline cursor-pointer hover:brightness-75 transition p-1 rounded-md bg-sky-300 dark:hover:brightness-75 hover:bg-sky-500 text-black dark:bg-header dark:text-gray-400 text-2xl'
+                            className='no-underline cursor-pointer hover:brightness-75 transition p-1 rounded-md bg-whiteInner-header text-black dark:bg-darkInner-header dark:text-gray-400 text-2xl'
                         >
                             {frontMatter.category}
                         </Link>

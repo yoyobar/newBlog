@@ -6,7 +6,6 @@ import rehypePrettyCode from 'rehype-pretty-code';
 // @ts-expect-error no types
 import remarkA11yEmoji from '@fec/remark-a11y-emoji';
 // Modules
-import { Preview } from './modules/Preview';
 import { Image } from './modules/Image';
 import { Callout } from './modules/Callout';
 import { Card, Cards } from './modules/Card';
@@ -20,7 +19,6 @@ import Pen from './modules/Pen';
 
 const Mdx_Module = {
     Pen,
-    Preview,
     Callout,
     Card,
     Cards,
@@ -38,8 +36,8 @@ const Mdx_Module = {
 const options = {
     keepBackground: true,
     theme: {
-        dark: 'min-dark',
-        light: 'one-light',
+        dark: 'material-theme-darker',
+        light: 'github-light',
     },
     defaultLang: {
         block: 'js',

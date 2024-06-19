@@ -21,12 +21,12 @@ const Browse = ({ blogs, selected }: { blogs: AllPostsProp; selected?: string })
     const filteredBlogs = selected ? sortedBlogs.filter((item) => item.meta.tags.includes(selected)) : sortedBlogs;
 
     return (
-        <div className='w-full px-2 grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4 relative mb-10'>
+        <div className='w-full px-2 grid grid-cols-1 xl:grid-cols-2 gap-4 relative mb-10'>
             {filteredBlogs.map((blog) => (
                 <>
                     <div
                         key={blog.meta.title}
-                        className='shadow-slate-950 min-h-[140px] shadow-sm relative z-0 w-full border border-slate-500 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-800 transition'
+                        className='shadow-slate-950 min-h-[140px] shadow-sm relative z-0 w-full border-2 border-slate-500  rounded-xl hover:bg-slate-200 dark:hover:bg-slate-800 transition'
                     >
                         <Link passHref href={`/posts/${blog.slug}`} className='no-underline p-8 flex flex-col gap-8 w-full'>
                             <div className='flex flex-col gap-8'>
