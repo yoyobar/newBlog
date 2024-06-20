@@ -16,7 +16,7 @@ const Loading = ({ type }: LoadingProps) => {
 
             {type === LOADING_ENUM.NORMAL && (
                 <div className='w-full h-full'>
-                    <AiOutlineLoading3Quarters className='mt-[30%] mx-auto animate-spin text-9xl dark:text-slate-200 text-violet-700' />
+                    <AiOutlineLoading3Quarters className='mt-10 mx-auto animate-spin text-9xl dark:text-slate-200 text-violet-700' />
                 </div>
             )}
         </>

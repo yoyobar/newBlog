@@ -1,5 +1,9 @@
 import fs from 'fs';
 import path from 'path';
+import { AllBrowseType, FrontMatterTypes } from '@/config/types';
+import matter from 'gray-matter';
+import dayjs from 'dayjs';
+import readingTime from 'reading-time';
 
 const BASE_DIR = 'posts';
 
@@ -19,4 +23,46 @@ export const allFilesLoad = (category: string[]) => {
         }));
     });
     return files;
+};
+
+export const loadBlogCategory = () => {
+    const { category, mdx }: AllBrowseType = allBrowseLoad();
+    const categoryFiles = allFilesLoad(category);
+    const allFiles = [...mdx.map((file) => ({ category: '', file })), ...categoryFiles];
+
+    const categoryCount: { [key: string]: number } = { All: allFiles.length };
+    allFiles.forEach(({ category }) => {
+        if (category) {
+            categoryCount[category] = (categoryCount[category] || 0) + 1;
+        }
+    });
+
+    return categoryCount;
+};
+
+export const loadBlogResource = () => {
+    const { category, mdx }: AllBrowseType = allBrowseLoad();
+    const categoryFiles = allFilesLoad(category);
+    const allFiles = [...mdx.map((file) => ({ category: '', file })), ...categoryFiles];
+
+    const blogs = allFiles.map(({ category, file }) => {
+        const filePath = category ? path.join(BASE_DIR, category, file) : path.join(BASE_DIR, file);
+        const fileContent = fs.readFileSync(filePath, 'utf-8');
+        const { content, data } = matter(fileContent);
+        const grayMatter = data as FrontMatterTypes;
+
+        return {
+            meta: {
+                title: grayMatter.title,
+                tags: grayMatter.tags,
+                src: grayMatter.image,
+                category: category,
+                date: dayjs(grayMatter.date).format('YYYY-MM-DD'),
+                readingMinutes: Math.ceil(readingTime(content).minutes),
+            },
+            slug: category ? `${category}/${file.replace('.mdx', '')}` : file.replace('.mdx', ''),
+        };
+    });
+
+    return blogs;
 };

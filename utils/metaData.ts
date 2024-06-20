@@ -30,25 +30,25 @@ export const metadata: metaType = {
         link: '/posts',
         visible: false,
     },
-    all: {
+    blogs: {
         icon: Icon.All,
         boxClass: metaStyle.default,
         title: '전체',
         link: '/posts',
         visible: true,
     },
-    js: {
+    javascript: {
         icon: Icon.Js,
         boxClass: metaStyle.js,
         title: '자바 스크립트',
-        link: '/posts/js',
+        link: '/posts/javascript',
         visible: true,
     },
-    ts: {
+    typescript: {
         icon: Icon.Ts,
         boxClass: metaStyle.ts,
         title: '타입 스크립트',
-        link: '/posts/ts',
+        link: '/posts/typescript',
         visible: true,
     },
     react: {
@@ -63,13 +63,6 @@ export const metadata: metaType = {
         boxClass: metaStyle.dev,
         title: '개발',
         link: '/posts/dev',
-        visible: true,
-    },
-    archives: {
-        icon: Icon.Archives,
-        boxClass: metaStyle.archives,
-        title: 'Archives',
-        link: '/archives',
         visible: true,
     },
     setting: {

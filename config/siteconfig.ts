@@ -43,5 +43,5 @@ export const siteConfig = {
             'naver-site-verification': '7f959e68f00cadb5b2a462dd0bd29ceed877ad91',
         },
     },
-    canonical: 'https://trouble-wiki.vercel.app/',
+    canonical: 'https://trouble-wiki.vercel.app',
 };

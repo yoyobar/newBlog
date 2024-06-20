@@ -7,6 +7,7 @@ import Mdx_Toc from '@/components/mdx/toc';
 import Mdx_Footer from '@/components/mdx/footer';
 import { getCategoryPost, getPost } from '@/lib/postData';
 import { FootMatterTypes } from '@/config/types';
+import { siteConfig } from '@/config/siteconfig';
 const BASE_DIR = 'posts';
 
 export async function generateMetadata({ params }: { params: { category: string; slug: string } }) {
@@ -24,6 +25,9 @@ export async function generateMetadata({ params }: { params: { category: string;
             images: [frontMatter.image ? frontMatter.image : '/logo/template_og.webp'],
             description: frontMatter.description,
             title: `${frontMatter.title} | Trouble Wiki`,
+        },
+        alternates: {
+            canonical: `${siteConfig.canonical}/posts/${category}/${slug}`,
         },
     };
 }
@@ -46,7 +50,6 @@ export default async function Page({ params }: { params: { category: string; slu
     const { category, slug } = params;
     const { frontMatter, content } = await getPost(category, slug);
     const footMatter = (await getCategoryPost(category)) as FootMatterTypes[];
-
     const tocControl = frontMatter?.toc === undefined && true;
 
     return (

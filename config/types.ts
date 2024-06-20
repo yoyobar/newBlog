@@ -37,6 +37,7 @@ export interface AllPostsProp {
         date: string;
         readingMinutes: number;
         toc?: boolean;
+        category: string;
     };
     slug: string;
 }

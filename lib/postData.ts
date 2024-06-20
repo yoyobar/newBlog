@@ -51,6 +51,7 @@ export async function getPosts(category: string) {
                 src: grayMatter.image,
                 date: dayjs(grayMatter.date).format('YYYY-MM-DD'),
                 readingMinutes: Math.ceil(readingTime(content).minutes),
+                category: category,
             },
             slug: `${category}/${file.replace('.mdx', '')}`,
             length: files.length,
