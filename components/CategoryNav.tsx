@@ -13,7 +13,7 @@ const CategoryNav = ({ onNav, text }: CategoryButtonProps) => {
 
     return (
         <>
-            <div className='flex w-full justify-between items-center'>
+            <div className='flex items-center'>
                 <div
                     onMouseEnter={() => setHovered(true)}
                     onMouseLeave={() => setHovered(false)}
@@ -27,12 +27,6 @@ const CategoryNav = ({ onNav, text }: CategoryButtonProps) => {
                 <div className={` text-white animate-slideCategory left-[10rem] text-2xl top-4 ${hovered ? 'absolute' : 'hidden'}`}>
                     {text}
                 </div>
-                {text === 'Posts' && (
-                    <AiFillHome
-                        onClick={() => router.push('/posts')}
-                        className='hover:text-slate-400 transition text-slate-100 text-4xl mr-10 cursor-pointer'
-                    />
-                )}
             </div>
         </>
     );

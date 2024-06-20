@@ -57,7 +57,7 @@ export const loadBlogResource = async () => {
                 tags: grayMatter.tags,
                 src: grayMatter.image,
                 category: category,
-                date: dayjs(grayMatter.date).format('YYYY-MM-DD'),
+                date: dayjs(grayMatter.date).format('YYYY년 MM월 DD일'),
                 readingMinutes: Math.ceil(readingTime(content).minutes),
             },
             slug: category ? `${category}/${file.replace('.mdx', '')}` : file.replace('.mdx', ''),

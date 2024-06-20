@@ -17,12 +17,12 @@ export async function generateMetadata({ params }: { params: { category: string;
         title: `${frontMatter.title} | Trouble Wiki`,
         keywords: frontMatter.tags,
         openGraph: {
-            images: [frontMatter.image ? frontMatter.image : '/logo/template_og.webp'],
+            images: [frontMatter.image ? frontMatter.image : '/img/template_og_browse.webp'],
             description: frontMatter.description,
             publishedTime: frontMatter.date,
         },
         twitter: {
-            images: [frontMatter.image ? frontMatter.image : '/logo/template_og.webp'],
+            images: [frontMatter.image ? frontMatter.image : '/img/template_og_browse.webp'],
             description: frontMatter.description,
             title: `${frontMatter.title} | Trouble Wiki`,
         },

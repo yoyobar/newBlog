@@ -7,12 +7,12 @@ export const metadata: Metadata = {
     description: `Trouble Wiki, 개인 블로그. 설정을 관리합니다.`,
     openGraph: {
         title: `Settings | Trouble Wiki`,
-        images: ['/logo/template_og_settings.webp'],
+        images: ['/img/template_og_settings.webp'],
         description: 'Trouble Wiki, 개인 블로그. 설정을 관리합니다.',
     },
     twitter: {
         title: `Settings | Trouble Wiki`,
-        images: ['/logo/template_og_settings.webp'],
+        images: ['/img/template_og_settings.webp'],
         description: 'Trouble Wiki, 개인 블로그. 설정을 관리합니다.',
     },
 };

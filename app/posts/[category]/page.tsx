@@ -14,15 +14,15 @@ export async function generateMetadata({ params }: { params: { category: string;
 
     return {
         title: `${titleName} | Trouble Wiki`,
-        keywords: [category, titleName],
+        keywords: [category, titleName, 'wiki', 'Trouble Wiki'],
         openGraph: {
             title: `${titleName} | Trouble Wiki`,
-            images: ['/logo/template_og_browse.webp'],
-            description: '게시글 목록 | Trouble Wiki',
+            images: ['/img/template_og_browse.webp'],
+            description: `Trouble Wiki, 개인 블로그. ${titleName} 카테고리의 게시물`,
         },
         twitter: {
             title: `${titleName} | Trouble Wiki`,
-            images: ['/logo/template_og_browse.webp'],
+            images: ['/img/template_og_browse.webp'],
             description: `Trouble Wiki, 개인 블로그. ${titleName} 카테고리의 게시물`,
         },
         alternates: {

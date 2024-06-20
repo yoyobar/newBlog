@@ -5,10 +5,20 @@ import type { Metadata } from 'next';
 import { siteConfig } from '@/config/siteconfig';
 
 export const metadata: Metadata = {
-    title: '전체 | Trouble Wiki',
-    description: `Trouble Wiki, 개인 블로그. 전체 게시물`,
+    title: 'Blogs | Trouble Wiki',
+    description: `Trouble Wiki, 개인 블로그. 전체 게시물을 다룹니다.`,
     alternates: {
         canonical: `${siteConfig.canonical}/posts`,
+    },
+    openGraph: {
+        title: `Blogs | Trouble Wiki`,
+        images: ['/img/template_og_browse.webp'],
+        description: `Trouble Wiki, 개인 블로그. 전체 게시물을 다룹니다.`,
+    },
+    twitter: {
+        title: `Blogs | Trouble Wiki`,
+        images: ['/img/template_og_browse.webp'],
+        description: `Trouble Wiki, 개인 블로그. 전체 게시물을 다룹니다.`,
     },
 };
 export default async function Home() {

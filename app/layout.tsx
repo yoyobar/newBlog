@@ -7,7 +7,6 @@ import { Metadata, MetadataRoute } from 'next';
 import localFont from 'next/font/local';
 import { siteConfig } from '@/config/siteconfig';
 import Script from 'next/script';
-import ExportedImage from 'next-image-export-optimizer';
 const pretendard = localFont({
     src: '../public/fonts/PretendardVariable.woff2',
     display: 'swap',
@@ -48,7 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html lang='ko' suppressHydrationWarning className={`${pretendard.variable}`}>
             <body
                 style={{
-                    backgroundImage: `url(/logo/main-bg.webp)`,
+                    backgroundImage: `url(/img/main-bg.webp)`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                 }}

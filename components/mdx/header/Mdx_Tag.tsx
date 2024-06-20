@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 interface TagProps {
     tags: string[];
 }
@@ -11,13 +9,12 @@ const Mdx_tag = ({ tags }: TagProps) => {
             <div className='flex gap-2'>
                 {tags.map((tag) => {
                     return (
-                        <Link
-                            href={`/archives?tag=${tag}`}
-                            className='bg-whiteInner-header no-underline dark:bg-darkInner-header dark:hover:brightness-75 cursor-pointer p-1 text-2xl text-black dark:text-gray-400 rounded-md hover:bg-sky-500 transition'
+                        <div
+                            className='bg-whiteInner-header dark:bg-darkInner-header p-1 text-2xl text-black dark:text-gray-400 rounded-md transition'
                             key={tag}
                         >
                             {tag}
-                        </Link>
+                        </div>
                     );
                 })}
             </div>

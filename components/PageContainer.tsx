@@ -7,6 +7,7 @@ import { IoMdClose } from 'react-icons/io';
 import CategoryNav from './CategoryNav';
 import Category from './Category';
 import { useMaximize } from '@/config/store';
+import { AiFillHome } from 'react-icons/ai';
 
 const PageContainer = ({
     children,
@@ -80,20 +81,26 @@ const PageContainer = ({
                 <header
                     onClick={doubleMaximizeHandler}
                     onMouseDown={handleMouseDown}
-                    className='flex select-none items-center gap-3 pl-2 rounded-t-md w-full h-[38px] bg-[#4b4b66]'
+                    className='relative flex select-none items-center gap-4 pl-2 rounded-t-md w-full h-[38px] bg-[#4b4b66]'
                 >
-                    <div onClick={exitHandler} className='cursor-pointer relative w-5 h-5 rounded-full bg-[#ff5f57]'>
+                    <div onClick={exitHandler} className='cursor-pointer relative w-6 h-6 rounded-full bg-[#ff5f57]'>
                         <IoMdClose className='absolute w-full h-full rounded-full font-bold scale-x-110 text-[#aa3e39]' />
                     </div>
-                    <div onClick={exitHandler} className='cursor-pointer relative w-5 h-5 rounded-full bg-[#fabb2c]'>
-                        <div className='top-[5px] left-[3px] absolute w-[7px] h-1 rounded-md bg-[#a87f1f]'></div>
+                    <div onClick={exitHandler} className='cursor-pointer relative w-6 h-6 rounded-full bg-[#fabb2c]'>
+                        <div className='top-[6px] left-[3px] absolute w-[9px] h-1 rounded-md bg-[#a87f1f]'></div>
                     </div>
-                    <div onClick={maximizeHandler} className='cursor-pointer hidden md:block relative w-5 h-5 rounded-full bg-[#28c841]'>
-                        <MdOpenInFull className='left-[0.14rem] absolute w-4 h-5 font-bold text-xs text-[#146721]' />
+                    <div onClick={maximizeHandler} className='cursor-pointer hidden md:block relative w-6 h-6 rounded-full bg-[#28c841]'>
+                        <MdOpenInFull className='left-[1px] top-[1px] absolute w-5 h-5 font-bold text-sm text-[#146721]' />
                     </div>
 
                     <nav className={'flex lg:hidden ml-2 h-full w-full justify-between'}>
                         <CategoryNav text='Posts' onNav={navHandler} />
+                    </nav>
+                    <nav className='absolute right-6'>
+                        <AiFillHome
+                            onClick={() => router.push('/posts')}
+                            className='hover:text-slate-400 transition text-slate-100 text-4xl mr-10 cursor-pointer'
+                        />
                     </nav>
                 </header>
                 <nav className='page-container relative overflow-y-scroll overflow-x-hidden bg-white dark:bg-background h-full rounded-b-md pb-24'>

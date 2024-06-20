@@ -24,11 +24,6 @@ const Dock = () => {
             class: 'block',
         },
         {
-            src: '/icon/archive.svg',
-            text: DataType.ARCHIVE,
-            class: 'block',
-        },
-        {
             src: '/icon/message.svg',
             text: DataType.MESSAGE,
             class: 'block',
@@ -52,10 +47,6 @@ const Dock = () => {
             case DataType.WIKI:
                 if (path === '/posts') return router.push('/');
                 router.push('/posts');
-                break;
-            case DataType.ARCHIVE:
-                if (path === '/archives') return router.push('/');
-                router.push('/archives');
                 break;
             // case DataType.MESSAGE:
             //     if (path === '/message') return router.push('/');

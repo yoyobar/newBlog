@@ -49,7 +49,7 @@ const Header = () => {
                     width={24}
                     height={24}
                     alt='background-logo'
-                    src={'/logo/main-logo.png'}
+                    src={'/img/main-logo.webp'}
                 />
                 <Link className='md:block hidden' href={'/'}>
                     Trouble Wiki
