@@ -105,6 +105,7 @@ const PageContainer = ({
                 </header>
                 <nav className='page-container relative overflow-y-scroll overflow-x-hidden bg-white dark:bg-background h-full rounded-b-md pb-24'>
                     {selected && <Category onNav={navHandler} />}
+
                     <div className={`${selected && `blur-sm `} transition duration-300 text-3xl prose dark:prose-invert min-w-full`}>
                         {children}
                     </div>

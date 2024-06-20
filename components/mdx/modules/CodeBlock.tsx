@@ -62,7 +62,7 @@ export const CodeBlock = ({
                         </motion.div>
                     )}
                     <code className='bg-whiteInner-content dark:bg-darkInner-content'>
-                        <div className='max-h-[400px] overflow-x-auto overflow-y-auto p-4 xl:p-8'>{children}</div>
+                        <div className='max-h-[250px]  md:max-h-[400px] overflow-x-auto overflow-y-auto p-4 xl:p-8'>{children}</div>
                     </code>
                 </pre>
             </div>

@@ -1,12 +1,11 @@
 import { siteConfig } from '@/config/siteconfig';
-import { IoLogoVercel } from 'react-icons/io5';
 import { IoLogoGithub } from 'react-icons/io';
 import { IoMdMail } from 'react-icons/io';
 import React from 'react';
 import Link from 'next/link';
 const CopyRight = () => {
     return (
-        <div className='flex flex-col gap-2'>
+        <div className='flex flex-col gap-2 mb-20 mt-4'>
             <div className='flex gap-2 justify-end text-3xl'>
                 <Link className='cursor-pointer' href={'https://github.com/yoyobar'}>
                     <IoLogoGithub />

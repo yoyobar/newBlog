@@ -16,7 +16,7 @@ module.exports = withMDX({
         nextImageExportOptimizer_storePicturesInWEBP: 'true',
         nextImageExportOptimizer_exportFolderName: 'nextImageExportOptimizer',
         nextImageExportOptimizer_generateAndUseBlurImages: 'true',
-        nextImageExportOptimizer_remoteImageCacheTTL: '3600',
+        nextImageExportOptimizer_remoteImageCacheTTL: '0',
     },
     pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
     webpack: (config, { dev, isServer }) => {
