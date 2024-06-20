@@ -11,9 +11,9 @@ export const metadata: Metadata = {
         canonical: `${siteConfig.canonical}/posts`,
     },
 };
-export default function Home() {
-    const blogs = loadBlogResource();
-    const category = loadBlogCategory();
+export default async function Home() {
+    const blogs = await loadBlogResource();
+    const category = await loadBlogCategory();
 
     return (
         <PageContainer>

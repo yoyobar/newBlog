@@ -25,7 +25,7 @@ export const allFilesLoad = (category: string[]) => {
     return files;
 };
 
-export const loadBlogCategory = () => {
+export const loadBlogCategory = async () => {
     const { category, mdx }: AllBrowseType = allBrowseLoad();
     const categoryFiles = allFilesLoad(category);
     const allFiles = [...mdx.map((file) => ({ category: '', file })), ...categoryFiles];
@@ -40,7 +40,7 @@ export const loadBlogCategory = () => {
     return categoryCount;
 };
 
-export const loadBlogResource = () => {
+export const loadBlogResource = async () => {
     const { category, mdx }: AllBrowseType = allBrowseLoad();
     const categoryFiles = allFilesLoad(category);
     const allFiles = [...mdx.map((file) => ({ category: '', file })), ...categoryFiles];

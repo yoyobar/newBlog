@@ -39,7 +39,7 @@ export async function generateStaticParams() {
 }
 export default async function Page({ params }: { params: { category: string } }) {
     const { category } = params;
-    const blogCategory = loadBlogCategory();
+    const blogCategory = await loadBlogCategory();
     const blogs = await getPosts(category);
 
     return (
