@@ -33,8 +33,8 @@ export async function generateMetadata({ params }: { params: { category: string;
 
 export async function generateStaticParams() {
     const categories = fs.readdirSync(BASE_DIR);
-    return categories.map((slug) => ({
-        slug,
+    return categories.map((category) => ({
+        category,
     }));
 }
 export default async function Page({ params }: { params: { category: string } }) {
