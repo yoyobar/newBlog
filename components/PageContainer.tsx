@@ -7,7 +7,7 @@ import { IoMdClose } from 'react-icons/io';
 import CategoryNav from './CategoryNav';
 import Category from './Category';
 import { useMaximize } from '@/config/store';
-import { motion } from 'framer-motion';
+
 const PageContainer = ({
     children,
 }: Readonly<{
@@ -69,14 +69,13 @@ const PageContainer = ({
 
     return (
         <>
-            <motion.div
-                animate={{ filter: ['blur(2px)', 'blur(0px)'] }}
+            <div
                 style={{ left: endPosition.x, top: endPosition.y }}
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
                 className={`${!maximize && 'md:border-t-[80px] md:absolute md:w-4/6 md:h-[calc(100%-40px)]'} 
                 static left-0 w-full h-full transition-width-height
-                border-transparent rounded-md z-10 blur-[2px]`}
+                border-transparent rounded-md z-10`}
             >
                 <header
                     onClick={doubleMaximizeHandler}
@@ -103,7 +102,7 @@ const PageContainer = ({
                         {children}
                     </div>
                 </nav>
-            </motion.div>
+            </div>
         </>
     );
 };

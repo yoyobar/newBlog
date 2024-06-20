@@ -20,8 +20,12 @@ const BrowseCategory = ({ categories }: BrowseCategoryProps) => {
                 return (
                     <Link
                         href={isAll ? '/posts' : `/posts/${category}`}
-                        className={`${isActive ? 'bg-black text-white' : 'hover:bg-slate-200'} 
-                            no-underline p-2 rounded-md font-mono text-2xl 2xl:text-3xl`}
+                        className={`${
+                            isActive
+                                ? 'bg-black dark:bg-white dark:text-black text-white'
+                                : 'hover:bg-slate-200 dark:hover:bg-darkInner-border'
+                        } 
+                            no-underline p-2 rounded-md font-mono text-2xl 2xl:text-3xl transition`}
                         key={category}
                     >
                         <div>{`${category} (${categoryValue[index]})`}</div>

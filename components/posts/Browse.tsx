@@ -17,7 +17,7 @@ const Browse = ({ blogs, categories }: BrowseProps) => {
 
     return (
         <div className='relative h-full p-0 mt-4'>
-            <section className='hidden bg-white lg:flex p-4 sticky top-0 mx-auto w-full max-w-[1300px] px-4 rounded-md gap-8 z-10'>
+            <section className='hidden bg-white dark:bg-darkInner-background lg:flex p-4 sticky top-0 mx-auto w-full max-w-[1300px] px-4 rounded-md gap-8 z-10'>
                 <BrowseCategory categories={categories} />
             </section>
             <section className='mx-auto mt-12 w-full max-w-[950px] px-4'>
@@ -30,7 +30,7 @@ const Browse = ({ blogs, categories }: BrowseProps) => {
                                 href={`/posts/${blog.slug}`}
                             >
                                 <nav className='flex h-full flex-col gap-3 overflow-hidden rounded-md border shadow-md transition hover:shadow-xl dark:border-slate-700 dark:hover:border-white'>
-                                    <div className='relative aspect-video w-full rounded-t-md border-b'>
+                                    <div className='relative aspect-video w-full rounded-t-md border-b dark:border-slate-700'>
                                         <ExportedImage
                                             sizes='(max-width: 1000px) 50vw, 450px'
                                             className='p-0 m-0 inset-0 object-cover text-transparent'
