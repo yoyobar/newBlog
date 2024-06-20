@@ -23,7 +23,7 @@ const Browse = ({ blogs, categories }: BrowseProps) => {
             <section className='mx-auto mt-12 w-full max-w-[950px] px-4'>
                 <div className='w-full px-2 grid grid-cols-1 lg:grid-cols-2 gap-8 2xl:gap-12 relative mt-20 mb-20'>
                     {sortedBlogs.map((blog) => (
-                        <div key={blog.meta.title} className='relative active:scale-100 hover:scale-[97%] transition'>
+                        <div key={blog.meta.title} className='animate-browse relative active:scale-100 hover:scale-[97%] transition'>
                             <Link
                                 className='no-underline relative z-0 w-full rounded-xl gap-3 overflow-hidden'
                                 passHref

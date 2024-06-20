@@ -49,11 +49,22 @@ const config: Config = {
                         height: '100%',
                     },
                 },
+                browse: {
+                    '0%': {
+                        opacity: '0',
+                        transform: 'translateY(-10px)',
+                    },
+                    '100%': {
+                        opacity: '1',
+                        transform: 'translateY(0px)',
+                    },
+                },
             },
             animation: {
                 popUp: 'popUp 0.3s ease-out 1',
                 slide: 'slide 0.3s ease-out 1',
                 slideCategory: 'slideCategory 0.3s ease-out 1',
+                browse: 'browse 0.5s ease-out 1',
             },
             colors: {
                 background: {
