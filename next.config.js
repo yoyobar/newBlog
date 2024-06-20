@@ -10,7 +10,7 @@ module.exports = withMDX({
     },
     transpilePackages: ['next-image-export-optimizer'],
     env: {
-        nextImageExportOptimizer_imageFolderPath: 'out/public/img',
+        nextImageExportOptimizer_imageFolderPath: 'public/img',
         nextImageExportOptimizer_exportFolderPath: 'out',
         nextImageExportOptimizer_quality: '75',
         nextImageExportOptimizer_storePicturesInWEBP: 'true',
