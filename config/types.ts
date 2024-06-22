@@ -71,3 +71,22 @@ export interface PlaylistItem {
 export interface PlaylistResponse {
     items: PlaylistItem[];
 }
+
+export type DailyVisitors = {
+    id: number;
+    visit_date: string;
+    visit_count: number;
+    ip_address: string;
+};
+
+export type Database = {
+    public: {
+        Tables: {
+            daily_visitors: {
+                Row: DailyVisitors;
+                Insert: Omit<DailyVisitors, 'id'>;
+                Update: Partial<Omit<DailyVisitors, 'id'>>;
+            };
+        };
+    };
+};

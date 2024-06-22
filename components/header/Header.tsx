@@ -55,7 +55,7 @@ const Header = () => {
                     Trouble Wiki
                 </Link>
             </div>
-            <div className='flex gap-2 items-center min-w-[220px]'>
+            <div className='flex min-w-[220px]'>
                 <UserCount />
                 <Clock />
             </div>

@@ -1,13 +1,37 @@
 'use client';
 
 import { FaUser } from 'react-icons/fa';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Modal from './Modal';
-import { useTheme } from 'next-themes';
+import { useEffectOnce } from 'react-use';
+import Cookies from 'js-cookie';
+import { getCookie, updateVisitCount, viewVisitCount } from '@/lib/visitorCount';
 
 const UserCount = () => {
+    const [visitCount, setVisitCount] = useState('-');
     const [focus, setFocus] = useState(false);
-    const { theme } = useTheme();
+
+    useEffectOnce(() => {
+        const countInit = async (type: string) => {
+            if (type === 'UPDATE') {
+                getCookie();
+                const data = await updateVisitCount();
+                setVisitCount(data);
+            }
+            if (type === 'VIEW') {
+                const data = await viewVisitCount();
+                setVisitCount(data);
+            }
+        };
+
+        const cookie = Cookies.get('currentDate');
+
+        if (!cookie) {
+            countInit('UPDATE');
+        } else {
+            countInit('VIEW');
+        }
+    });
 
     const enterHandler = () => {
         setFocus(true);
@@ -17,12 +41,14 @@ const UserCount = () => {
     };
 
     return (
-        <div onMouseLeave={leaveHandler} onMouseEnter={enterHandler} className='relative flex items-center gap-1 justify-between'>
-            <FaUser />
-            <div>0</div>
-            <div className='ml-2 h-[15px] border-r border-r-gray-300'></div>
-            {focus && <Modal>일일 방문자 수</Modal>}
-        </div>
+        <>
+            <div onMouseLeave={leaveHandler} onMouseEnter={enterHandler} className='relative flex items-center gap-2 min-w-[50px]'>
+                <FaUser />
+                <div>{visitCount}</div>
+                <div className='ml-2 h-[15px] border-r border-r-gray-300'></div>
+                {focus && <Modal>하루 방문자 수</Modal>}
+            </div>
+        </>
     );
 };
 
