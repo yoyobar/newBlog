@@ -1,0 +1,62 @@
+---
+title: 'Array-like Object'
+description: 'Array-like Object대해 소개하고, 설명합니다.'
+image: '/img/js.webp'
+tags: [js, Array-like Object]
+date: 2024-05-22 23:45:02
+update: 2024-06-22 23:45:02
+---
+
+
+> 배열은 아니지만 인덱스로 접근할 수 있고 `length` 속성을 가지는 특수한 배열처럼 보이는 객체
+
+
+
+`querySelectAll`, `document.body.children`으로 요소를 가져오면 유사배열 객체로 값이 온다.
+
+```html
+<div class="text">Hello</div>
+<div class="text">World</div>
+<div class="text">I'm</div>
+<div class="text">Programmer</div>
+```
+
+```jsx
+const texts = document.querySelectorAll('.text');
+console.log(texts);
+```
+![sample](/img/2024-05-20-18-21-11.webp)
+
+
+
+
+
+각각의 `key`가 숫자이고, `length` 값이 존재하는 객체다.
+
+객체이기때문에 `Array.forEach, map, filter`등의 메서드를 사용할 수가 없다.
+
+각각의 클래스에 해당되어있는 텍스트를 가져올 때, 방법이 없다고 생각할 수 있다.
+
+따라서 우리는 `Array.from()` 메서드를 활용해서 새로운 Array를 생성해야 한다.
+
+> Array.from() 메서드는 유사 배열 객체(array-like object)나 반복 가능한 객체(iterable object)를 얕게 복사해 새로운Array 객체를 만듭니다. (MDN)
+
+```jsx
+const texts = document.querySelectorAll('.text');
+Array.from(texts).map((text) => console.log(text));
+```
+
+사용법이 좀 어렵다고 느낄수도 있겠다. `Array.from`으로 변수에 
+위와 같은 활용을 한다면 코드를 절약할 수 있다.
+
+<Callout>그래서, Array와 Object 둘다 존재하는데, 이걸 대체 왜알아야해?</Callout>
+
+![sample](/img/2024-05-20-18-22-36.webp)
+
+놀랍게도 `Array-like Object`를 리턴하는 `API`가 간혹가다 종종있다.
+
+이걸 모르고 있다면 왜 배열 메서드가 작동 안하지? 라는 생각을 하는 경우가 존재하게 될 것이다.
+
+구시대의 유물이지만, 당황하지않고 처리하기 위해 알아두자.
+
+

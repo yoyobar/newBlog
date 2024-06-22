@@ -1,0 +1,311 @@
+---
+title: '배열 메소드'
+description: '자바스크립트 배열에 관한 메소드'
+image: '/img/js.webp'
+tags: [js, 배열]
+date: 2024-05-22 23:44:57
+update: 2024-06-22 23:48:57
+toc: false
+---
+
+
+
+# 개요
+배열 메소드는 크게 3가지로 역할을 구별 할 수 있다.
+그에 대해 정리해보고자 한다.
+
+## 요소 조작
+
+- 배열의 요소를 조작하는 메서드
+
+### Array.push()
+
+**역할**: 배열 맨뒤에 새 요소를 추가 함 
+**반환**: 갱신된 배열의 길이를 반환 함
+
+
+```js filename="javascript"
+let arr = [1,2,3,4,5]
+
+arr.push(arr.length+1);
+
+```
+
+### Array.unShift()
+
+**역할**: 배열 맨앞에 새 요소를 추가 함 
+**반환**: 갱신된 배열의 길이를 반환 함
+
+
+```js filename="javascript"
+let arr = [1,2,3,4,5]
+
+arr.unshift(arr.length+1);
+```
+
+
+### Array.pop()
+
+**역할**: 배열 맨뒤에 요소를 삭제 함 
+**반환**: 제거된 배열을 반환 함
+
+```js filename="javascript"
+let arr = [1,2,3,4,5]
+
+arr.pop();
+```
+
+
+### Array.shift()
+
+**역할**: 배열 맨앞 요소를 삭제 함 
+**반환**: 제거된 배열을 반환 함
+
+```js filename="javascript"
+let arr = [1,2,3,4,5]
+
+arr.shift();
+```
+
+### Array.slice()
+
+**역할**: 배열의 특정 범위를 잘라냄 
+**반환**: 새로운 배열을 반환
+
+```js filename="javascript"
+let arr = [1,2,3,4,5]
+
+const newArr = arr.slice(2,4);
+```
+
+<Callout type="warn">자신의 인덱스위치도 포함하므로 2,4 의 경우 2,3인덱스에 해당하게 된다.</Callout>
+
+
+
+
+### Array.concat()
+
+**역할**: 두개의 배열을 병합함 
+**반환**: 새로운 배열을 반환
+
+```js filename="javascript"
+let arr = [1,2,3]
+let arr2 = [4,5]
+let newArr = arr.concat(arr, arr2)
+```
+
+---
+
+
+## 순회 / 탐색
+
+- 배열을 순회하며 특정 작업을 하거나, 탐색하는 메서드
+
+### Array.forEach()
+
+**역할**: 배열의 모든 요소를 순회하며 동작 수행 
+**반환**: 없음
+
+```js filename="javascript"
+const arr = [1,2,3]
+
+arr.forEach((item) => {
+  console.log(item+1)
+})
+
+```
+
+
+
+### Array.includes()
+
+**역할**: 배열의 특정 요소가 있는지 확인 
+**반환**: `true` / `false`
+
+```js filename="javascript"
+const arr = [1,2,3]
+
+const include1 = arr.includes(2)
+console.log(include1)
+
+const include2 = arr.includes(4)
+console.log(include2)
+
+```
+
+### Array.indexOf()
+
+**역할**: 배열의 특정 요소가 있는 인덱스를 추적 
+**반환**: 인덱스 번호, 없는 경우 `-1`
+
+```js filename="javascript"
+const arr = [1,2,3]
+
+const indexof1 = arr.indexOf(2)
+console.log(indexof1)
+
+const indexof2 = arr.indexOf(4)
+console.log(indexof2)
+
+```
+
+
+### Array.findIndex()
+
+**역할**: 모든 요소를 순회하며 콜백함수를 만족하는 `인덱스`를 찾음 
+**반환**: 인덱스 번호, 없는 경우 `-1`
+
+```js filename="javascript"
+const arr = [1,2,3]
+
+const findIndex1 = arr.findIndex((item) => item % 2 === 0);
+console.log(findIndex1)
+
+const findIndex2 = arr.findIndex((item) => item > 100);
+console.log(findIndex2)
+
+```
+
+
+### Array.find()
+
+**역할**: 모든 요소를 순회하며 콜백함수를 만족하는 `요소`를 찾음 
+**반환**: `요소`
+
+
+```js filename="javascript"
+const arr = [{ name: '김민수', id: 0 }, { name: '홍길동', id: 1 }]
+
+const find1 = arr.find((item) => item.name === '김민수');
+console.log(find1)
+
+const find2 = arr.find((item) => item.name === '홍길동');
+console.log(find2)
+
+```
+<Callout type="info"> 배열 객체의 경우도 탐색 가능하므로 유용함</Callout>
+
+---
+
+## 변형
+
+- 배열의 형태를 변환하여 새로운 배열을 만드는 메서드
+
+### Array.filter()
+
+**역할**: 기존 배열에서 조건을 만족하는 요소만 필터링 하여 배열로 반환
+**반환**: `배열`
+
+```jsx filename="javascript"
+let arr = [
+    { name: '김민수', hobby: '컴퓨터' },
+    { name: '홍길동', hobby: '테니스' },
+    { name: '김효빈', hobby: '테니스' },
+];
+
+let tennisFilter = arr.filter((item) => item.hobby !== '테니스');
+console.log(tennisFilter)
+```
+
+
+### Array.map()
+
+**역할**: 기존 배열을 순회하며 형태를 변환하여 새 배열로 반환
+**반환**: `배열`
+
+```jsx filename="javascript"
+let arr = [
+    { name: '김민수', hobby: '컴퓨터' },
+    { name: '홍길동', hobby: '테니스' },
+    { name: '김효빈', hobby: '테니스' },
+];
+
+let hobbyChange = arr.map((item) => {
+  return {
+    ...item,
+    hobby: '코딩'
+  }
+});
+console.log(hobbyChange)
+```
+
+### Array.flatMap()
+
+**역할**: 기존 배열을 순회하며 형태를 변환하여 새 배열로 반환, **2단 배열도 헤제함**
+**반환**: `배열`
+
+```jsx filename="javascript"
+let arr = [[
+    { name: '김민수', hobby: '컴퓨터' },
+    { name: '홍길동', hobby: '테니스' },
+    { name: '김효빈', hobby: '테니스' },
+]]
+
+let hobbyChange = arr.flatMap((item) => {
+  return {
+    ...item,
+    hobby: '코딩'
+  }
+});
+console.log(hobbyChange)
+```
+
+
+
+
+
+### Array.reduce()
+
+**역할**: 기존 배열을 순회하며 값을 누적하여 하나의 결과값으로 반환
+**반환**: `배열`
+
+<Callout type="info">사용하기 까다롭지만 배열을 자유롭게 컨트롤 할 수 있음</Callout>
+
+```jsx filename="javascript"
+const numbers = [1, 2, 3, 4, 5];
+
+const sum = numbers.reduce((acc, curr) => {
+  return acc + curr;
+}, 0);
+
+console.log(sum);
+```
+
+여기서 `0`은 초기값을 결정한다. 이 초기값에 무엇을 두냐에 따라 다양하게 변화할 수 있다.
+
+
+### Array.sort()
+
+**역할**: 기존 배열을 사전순으로 정렬하여 새 배열을 반환
+**반환**: `배열`
+
+- 숫자를 정렬하는 경우
+
+```jsx filename="javascript"
+const numbers = [4, 2, 5, 1, 3];
+
+// 오름차순으로 정렬
+const upperSort = numbers.sort((a, b) => a - b);
+console.log(upperSort)
+
+// 내림차순으로 정렬
+const lowerSort = numbers.sort((a, b) => b - a);
+console.log(lowerSort)
+```
+
+
+- `Sort` 의 규칙
+
+`sort()` 메서드에 전달되는 비교 함수는 두개의 요소를 비교하고 정렬 순서를 결정한다.
+
+- 반환 값이 음수일 경우 `a > b`
+- 반환 값이 같을 경우 `a = b`
+- 반환 값이 다를 경우 `a < b`
+
+이러한 `sort()` 메서드는 문자열을 정리하는 용도로 사용하기에는 다루기 까다롭기 때문에 
+`Lodash` 라이브러리를 활용해서 문자열을 정리하거나
+`sort()`를 활용하지 않고 데이터자체에서 처리하는게 나을 수 있다.
+
+
+**도움되는 자료**
+[Sort Method (MDN)](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)

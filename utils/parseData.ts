@@ -60,7 +60,7 @@ export const loadBlogResource = async () => {
                 tags: grayMatter.tags,
                 src: grayMatter.image,
                 category: category,
-                date: dayjs.utc(grayMatter.date).format('YYYY년 MM월 DD일'),
+                date: dayjs.utc(grayMatter.date).format('YYYY년 MM월 DD일-HH:mm:ss'),
                 readingMinutes: Math.ceil(readingTime(content).minutes),
             },
             slug: category ? `${category}/${file.replace('.mdx', '')}` : file.replace('.mdx', ''),

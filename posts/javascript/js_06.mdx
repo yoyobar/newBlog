@@ -1,0 +1,126 @@
+---
+title: '수학 메소드'
+description: '자바스크립트 수학 메소드를 다룹니다.'
+image: '/img/js.webp'
+tags: [js, 수학 메소드]
+date: 2024-05-22 23:39:52
+update: 2024-06-22 23:39:52
+---
+
+
+## 수학 메소드
+
+### 올림 / 내림 / 반올림
+
+```jsx
+let num1 = 5.1;
+let num2 = 5.7;
+
+Math.ceil(num1) // 6, 올림
+Math.ceil(num2) // 6, 올림
+
+Math.floor(num1) // 5, 버림
+Math.floor(num2) // 5, 버림
+
+Math.round(num1) // 5, 반올림
+Math.round(num2) // 6, 반올림
+```
+
+### 소수점 표현
+
+```jsx
+let num = 30.1234;
+
+// 소수점 2자리 까지 표현하려면?
+num = Math.round(num * 100) / 100 //30.12
+
+// 더 간단한 방법
+num = num.toFixed(2); //'30.12' 문자열임, 주의
+```
+
+이럴 경우 쉽게 특정 소수점까지 내려올 수 있다. 
+단! `return`되는 값은 문자열이므로 `Number`등을 활용해서 반드시 교정해줘야 한다.
+
+### NaN 표현
+
+```jsx
+let x = Number('x'); // NaN
+x == NaN // false
+x === NaN // false
+NaN === NaN // false
+isNaN(x) // true
+```
+
+`NaN`은 자기자신도 `false`로 반환하는 특이한 성질을 지니고있다. 
+
+따라서 `NaN`을 검출하고자 할 경우, `isNaN`외에는 검출할 방법이 없다.
+
+### 숫자 → 문자 변환
+
+```jsx
+let num = 10;
+
+num.toString(); // '10'
+num.toString(2); // '1010' 2진수
+
+num = 255;
+num.toString(16); // 'ff' 16진수
+```
+
+`toString`을 활용해서 숫자로 손쉽게 문자, 2진수, 16진수로 변환할 수 있다.
+
+### 문자 → 정수 변환
+
+```jsx
+let margin = '10px';
+parseInt(margin) // 10
+Number(margin) // NaN
+
+let redColor = 'f3';
+parseInt(redColor); // NaN
+parseInt(redColor, 16); // 243
+```
+
+`parseInt`의 경우 숫자만 추출하게 된다. `Number`의 경우 숫자외의 값이 존재할경우 `NaN`을 `return`한다.
+
+단, 중간중간에 글자가 섞여있을 경우 제대로 추출할수 없다. `toString`처럼 16진수, 2진수의 데이터도 인식한다.
+
+### 문자 → 소수 변환
+
+```jsx
+let padding = '18.5%'
+parseInt(padding) //18
+parseFloat(padding) //18.5
+```
+
+`parseInt`의 경우 정수까지만 추출할 수 있다.
+
+`parseFloat`의 경우 소수점 까지 인식하여 추출할 수 있다.
+
+### 랜덤 숫자 생성
+
+```jsx
+Math.random() // 0 ~ 1 사이의 랜덤숫자 생성
+	
+//10 ~ 100까지의 랜덤숫자 생성방법
+Math.floor(Math.random()*100)+10
+	
+//0 ~ 1000까지의 랜덤숫자면서, 3자리미만일 경우 0 채워넣기
+String(Math.floor(Math.random() * 1000)).padStart(3, '0');
+```
+
+`Math.floor`로 버림을 하게될 경우, 소수점 이하는 버려지지만 0이상 1미만의 값도 존재하기 때문에 0도 결과가 될 수 있다. 만약 내가 10부터 100의 랜덤한 숫자를 원할경우, +10을 해주어 이를 해결 할 수 있다.
+
+`.padStart(자리수, String)` 속성의 경우 들어오는 내용이 String이어야만 작동한다. 따라서 계산값을 String으로 묶고, 그후 padStart로 변경하는 것이다. 만약 이후 값을 다르게 사용할 경우 그 점을 고려해야 할 것이다.
+
+### 제곱 표현
+
+```jsx
+Math.pow(2, 10) //2의 10승
+```
+
+### 제곱근 표현
+
+```jsx
+Math.sqrt(16) //4
+```

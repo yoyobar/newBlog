@@ -20,7 +20,7 @@ const Browse = ({ blogs, categories }: BrowseProps) => {
             <section className='hidden bg-white dark:bg-darkInner-background lg:flex p-4 sticky top-0 mx-auto w-full max-w-[1300px] px-4 rounded-md gap-8 z-10'>
                 <BrowseCategory categories={categories} />
             </section>
-            <section className='mx-auto mt-12 w-full max-w-[950px] px-4'>
+            <section className='sm:max-w-[600px] mx-auto mt-12 w-full md:max-w-[950px] px-4'>
                 <div className='w-full px-2 grid grid-cols-1 lg:grid-cols-2 gap-8 2xl:gap-12 relative mt-20 mb-20'>
                     {sortedBlogs.map((blog) => (
                         <div key={blog.meta.title} className='animate-browse relative active:scale-100 transition'>
@@ -42,11 +42,16 @@ const Browse = ({ blogs, categories }: BrowseProps) => {
 
                                     <div className='flex flex-1 flex-col justify-between p-4 pt-1'>
                                         <div>
-                                            <div className='text-xl font-medium text-pink-600 md:text-2xl'>{blog.meta.category}</div>
+                                            <div
+                                                className='text-x
+                                            l font-medium text-pink-600 md:text-2xl'
+                                            >
+                                                {blog.meta.category}
+                                            </div>
                                             <div className='mb-3 mt-1 font-bold text-2xl md:text-3xl'>{blog.meta.title}</div>
                                             <div className='flex text-2xl justify-between items-center text-gray-600 dark:text-gray-300'>
                                                 <div className='flex gap-2 items-center'>
-                                                    <CiCalendar className='text-3xl' /> <div>{blog.meta.date}</div>
+                                                    <CiCalendar className='text-3xl' /> <div>{blog.meta.date.split('-')[0]}</div>
                                                 </div>
                                                 <div className='flex gap-2 items-center'>
                                                     <IoTimerOutline className='animate-spin text-3xl antialiased' />

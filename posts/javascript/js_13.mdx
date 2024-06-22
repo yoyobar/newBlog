@@ -1,0 +1,105 @@
+---
+title: '나머지 매개변수, Rest Parameter'
+description: '나머지 매개변수, Rest Parameter를 다룹니다.'
+image: '/img/js.webp'
+tags: [js, Rest Parameter]
+date: 2024-05-23 00:56:38
+update: 2024-06-23 00:56:38
+toc: false
+---
+
+
+
+## 나머지 매개변수
+
+```jsx
+function showName(...names){
+	console.log(names);
+}
+
+name() //[]
+name('tom', 'park') //[tom, park]
+name('tom') // [tom]
+```
+
+나머지 매개변수는 …을 활용하여 초과해서 들어오는 매개변수를 처리하는 문법이다.
+
+좀더 실용적인 예시를 들어보자.
+
+```jsx
+const allPlus = (...nums) => {
+	let result = 0;
+	nums.forEach((anum) => {
+			result+=anum;
+	})
+	return result;
+}
+
+allPlus(1) // 1
+allPlus(2,21,5,1) //29
+allPlus() // 0
+```
+
+몇개의 매개변수가 들어오던 값을 전부 더해주는 계산기로서 사용이 되는걸 확인할 수 있다.
+
+다른 예시를 더 들어보자.
+
+```jsx
+function User(name, age, ...skill){
+	this.name = name;
+	this.age = age;
+	this.skill = skill;
+}
+
+user1 = new User('kim', 27, 'HTML','CSS','JS')
+//name: 'kim', age: 27, skill: ['HTML', 'CSS', 'JS']
+```
+
+이런식으로 생성자 함수를 사용할 때도 활용할 수 있다.
+
+주의할 점은 나머지 매개변수는 항상 마지막에 있어야한다.
+
+## 전개구문
+
+```jsx
+let arr1 = [1,2,3];
+let arr2 = [4,5,6];
+
+//arr를 겹쳐야 할 경우
+arr2.reverse().forEach((num) => {
+	arr1.unshift(num);
+})
+
+//rest parameter를 활용할 경우
+arr1 = [...arr1, ...arr2]
+```
+
+```jsx
+let user = { name: 'mike' };
+let info = { age: 30 };
+let fe = ['JS', 'React'];
+let lang = ['Korean', 'English'];
+
+//그냥 합칠 경우
+user = Object.assign(
+    {},
+    user,
+    info,
+    {
+        skills: [fe],
+    },
+    {
+        language: [lang],
+    }
+);
+console.log(user);
+
+//rest parameter를 활용할 경우
+
+user = {
+    ...user,
+    ...info,
+    [...fe, ...lang]
+};
+
+```

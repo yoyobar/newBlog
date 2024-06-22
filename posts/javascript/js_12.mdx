@@ -1,0 +1,193 @@
+---
+title: '분해 할당'
+description: 'ES6 문법인 분해할당을 다룹니다.'
+image: '/img/js.webp'
+tags: [js, 분해 할당]
+date: 2024-05-23 00:44:40
+update: 2024-06-23 00:44:40
+---
+
+
+
+## 배열 분해하기
+
+
+```javascript
+let arr = ["Bora", "Lee"];
+let [name1, name2] = arr;
+alert(name1); // Bora
+alert(name2); // Lee
+```
+
+배열의 요소를 개별 변수로 쉽게 할당할 수 있습니다.
+
+---
+
+### 특정 요소 무시하기
+
+```javascript
+let arr = ["bora", "lee", "park", "sungmin"];
+let [name1, name2, , name3] = arr;
+alert(name1); // bora
+alert(name2); // lee
+alert(name3); // sungmin
+```
+
+쉼표를 사용하여 특정 요소를 무시할 수 있습니다.
+
+---
+
+### 반복 가능한 객체 분해하기
+
+```javascript
+let [a, b, c] = "abc"; // ["a", "b", "c"]
+```
+
+할당 연산자의 우측에는 모든 반복 가능한 객체(iterable)를 사용할 수 있습니다.
+
+---
+
+
+### 객체에 할당하기
+
+```javascript
+let user = {};
+[user.name, user.surname] = "Bora Lee".split(" ");
+```
+
+할당 연산자의 좌측에는 모든 것이 올 수 있습니다.
+
+---
+
+### 나머지 요소 가져오기
+
+```javascript
+let [name1, name2, ...rest] = ["Julius", "Caesar", "Consul", "...names"];
+// rest는 ["Consul", "...names"]
+alert(rest[0]); // Consul
+alert(rest[1]); // ...names
+alert(rest.length); // 2
+```
+
+...을 사용해 나머지 요소를 가져올 수 있습니다.
+
+---
+
+### 변수 값 교환하기
+
+```javascript
+let a = 1;
+let b = 2;
+[a, b] = [b, a];
+alert(a); // 2
+alert(b); // 1
+```
+
+변수 간의 값을 쉽게 교환할 수 있습니다.
+
+---
+
+## 객체 분해하기
+
+```javascript
+let options = {
+    title: "Menu",
+    width: 100,
+    height: 200,
+};
+
+let {title, width, height} = options;
+alert(title); // "Menu"
+alert(width); // 100
+alert(height); // 200
+```
+
+객체의 속성을 분해하여 변수에 할당할 수 있습니다.
+
+
+---
+
+### 다른 변수명으로 할당하기
+
+```javascript
+let {title: id, width: w, height: h} = options;
+alert(id); // "Menu"
+alert(w); // 100
+alert(h); // 200
+```
+객체의 속성을 다른 변수명으로 할당할 수 있습니다.
+
+---
+
+### 기본값 설정하기
+```javascript
+let {wid = prompt("width?"), tit = 100, title} = options;
+alert(wid); // prompt 입력 값
+alert(tit); // 100
+alert(title); // "Menu"
+```
+키가 할당되지 않은 경우 기본값을 설정할 수 있습니다.
+
+---
+
+### 나머지 속성 가져오기
+
+```javascript
+let {title, ...rest} = options;
+alert(rest.height); // 200
+alert(rest.width); // 100
+```
+
+나머지 속성을 변수에 할당할 수 있습니다.
+
+---
+
+### 중첩 분해하기
+
+```javascript
+코드 복사
+let options = {
+    size: {
+        width: 100,
+        height: 200,
+    },
+    items: ['Cake', 'Donut'],
+    extra: true,
+};
+
+let {
+    size: { width, height },
+    items: [...item],
+    extra: bool,
+    title = "new Title",
+} = options;
+
+alert(width); // 100
+alert(height); // 200
+alert(item[0]); // "Cake"
+alert(item[1]); // "Donut"
+alert(bool); // true
+alert(title); // "new Title"
+```
+
+
+
+중첩된 객체나 배열도 구조 분해 할당을 통해 쉽게 분해할 수 있습니다.
+
+---
+
+### 함수 매개변수로 분해하기
+
+```javascript
+let options = {
+  title: "My menu",
+  items: ["Item1", "Item2"]
+};
+
+const showMenu = ({title = "Untitled", width = 200, height = 100, items = []}) => {
+	alert(`${title} ${width} ${height}`); // My Menu 200 100
+	alert( items ); // Item1, Item2
+}
+```
+
+구조 분해 할당은 함수의 매개변수로도 사용할 수 있습니다.

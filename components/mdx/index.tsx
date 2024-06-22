@@ -15,10 +15,8 @@ import { Table, Td, Th, Tr } from './modules/Table';
 import { Hr } from './modules/Hr';
 import rehypeSlug from 'rehype-slug';
 import { Strong } from './modules/Strong';
-import Pen from './modules/Pen';
 
 const Mdx_Module = {
-    Pen,
     Callout,
     Card,
     Cards,

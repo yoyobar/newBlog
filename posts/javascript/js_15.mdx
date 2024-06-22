@@ -1,0 +1,92 @@
+---
+title: 'call, apply, bind'
+description: 'call, apply, bind를 다룹니다.'
+image: '/img/js.webp'
+tags: [js, call, apply, bind]
+date: 2024-05-23 01:59:59
+update: 2024-06-23 01:59:59
+toc: false
+---
+
+
+
+## call, apply
+
+함수의 호출 방식과 관계없이 `this`를 지정할 수 있는 문법이다.
+
+```jsx
+const mike = {
+	name: "mike"
+}
+
+const tom = {
+	name: "tom"
+}
+
+function showThisName() {
+	console.log(this.name);
+}
+
+showThisName(); //'', window가 this로 지정됨
+showThisName.call(mike) // 'mike'
+showThisName.apply(mike) // 'mike'
+```
+
+`call`과 `apply`의 차이점은 맨 앞 매개변수가 `this`를 지정하는 점은 동일하다.
+
+`call`은 매개변수에게 보낼 값으로 일반 값을 받는다.
+
+`apply`는 매개변수에게 보낼 값으로 배열 값을 받는다.
+
+이 점만 기억하면 크게 햇갈리지 않을 것이다.
+
+```jsx
+const mike = {
+    name: 'mike',
+};
+
+const tom = {
+    name: 'tom',
+};
+
+function update(name, birthday) {
+    this.name = name;
+    this.birthday = birthday;
+}
+
+update.call(mike, 'minsu', 1998);
+update.apply(tom, ['minsu', 1998]);
+console.log(mike);
+console.log(tom);
+
+```
+
+## bind
+
+`bind`의 경우 함수의 `this`값을 영구히 적용 시킬 수 있다.
+
+```jsx
+const mike = {
+    name: 'mike',
+};
+
+const tom = {
+    name: 'tom',
+};
+
+function update(name, birthday) {
+    this.name = name;
+    this.birthday = birthday;
+}
+
+const mikeUpdate = update.bind(mike);
+const tomUpdate = update.bind(tom);
+
+mikeUpdate('minsu', '1998');
+tomUpdate('jinwoo', '1997');
+console.log(mike);
+console.log(tom);
+
+```
+
+주의 할 점은 `bind`로 할당된 변수를 함수 문법처럼 사용해야 한다는 점을 잊지말고 기억하자.

@@ -1,0 +1,250 @@
+---
+title: '상속과 프로토 타입'
+description: '상속과 프로토타입에 대해 다룹니다.'
+image: '/img/js.webp'
+tags: [js, 상속, 프로토타입]
+date: 2024-05-23 02:02:11
+update: 2024-06-23 02:02:11
+---
+
+## 프로토타입
+
+기본적으로 존재하는 `hasOwnProperty`가 존재한다. 이는 객체의 특정 키가 존재하는지 확인해주는데,
+그렇다면, 나는 이 객체에 이값을 선언한적이 없다. 얘는 어디에 있는걸까?
+
+![sample](/img/2024-05-20-21-46-25.webp)
+
+정답은 `prototype`에 있다. 내가 지정한적은 없지만, `prototype`이 내부에 존재한다는 것을 확인할 수 있다.
+
+이렇듯 객체의 기본적인 상속을 관여하는게 `prototype`이라고 기억하면 이해하기 쉽다.
+
+## 상속의 구조
+
+```jsx
+const user = {
+	name: 'jinwoo',
+	surName: 'Park',
+	hasOwnProperty: console.log('test')
+}
+user.name //jinwoo
+user.surName //Park
+user.hasOwnProperty //test
+```
+
+그렇다면, 애시당초에 `hasOwnProperty`라는 키가 `user`에게 존재한다면 어떻게 될까?
+
+정답은 내가 작성한 코드가 우선시된다. 해당 객체는 기본적으로 상속받은 개체기때문에, 자신의 값을 우선한다.
+
+이제 직접 상속을 작성해보자.
+
+```jsx
+const user1 = {
+    name: 'jinWoo',
+    surName: 'Park',
+    sayHi() {
+        console.log('Hello!');
+    },
+    sayBye() {
+        console.log('Bye!');
+    },
+};
+const user2 = {
+    name: 'namJi',
+    surName: 'Sang',
+    sayHi() {
+        console.log('Hello!');
+    },
+    sayBye() {
+        console.log('Bye!');
+    },
+};
+const user3 = {
+    name: 'namMin',
+    surName: 'Ho',
+    sayHi() {
+        console.log('Hello!');
+    },
+    sayBye() {
+        console.log('Bye!');
+    },
+};
+```
+
+다음과 같은 3개의 객체가 존재한다고 가정해보자. 
+
+동일한 내용의 `key`가 너무많다는걸 알 수 있다. 내용이 겹치는 부분은 프로토타입으로 구현할 수 있지 않을까?
+
+```jsx
+const user1 = {
+    name: 'jinWoo',
+    surName: 'Park',
+    sayHi() {
+        console.log('Hello!');
+    },
+    sayBye() {
+        console.log('Bye!');
+    },
+};
+
+const user2 = {
+    name: 'namJi',
+    surName: 'Sang',
+};
+const user3 = {
+    name: 'namMin',
+    surName: 'Ho',
+};
+
+user2.__proto__ = user1;
+user3.__proto__ = user1;
+user2.sayHi() // hello!
+user3.sayBye() // Bye!
+```
+
+이런식으로 상속받는 객체를 구현 할 수 있다. 
+
+`user2`, `user3`에서도 해당 프로퍼티가 존재한다는걸 확인할 수 있다.
+
+또 이러한 상속은 계속해서 이어질 수 있다는 점을 기억해두자
+
+![sample](/img/2024-05-20-21-46-48.webp)
+
+이렇게 연속해서 상속하는 경우도 가능하다.
+
+그렇다면, 상속된 키를 전부 확인하는 방법은 어떻게 될까? `for …in` 문법을 활용하여 구현할 수 있다.
+
+```jsx
+(...)
+
+for (key in User2){
+	console.log(key)
+}
+//sayHi()
+//sayBye()
+//name
+//surName
+
+// 각각의 key와 value를 요청할 경우, 상속 된 정보는 나오지 않는다.
+Object.keys(User2)
+//surName
+Object.value(User2)
+//Park
+```
+
+이런식으로 확인해 볼 수 있다. 그렇다면, 상속된 정보와 상속되지 않은 정보의 구별은 어떻게 할까?
+
+`hasOwnProperty` 문법을 활용해서 구현할 수 있겠다.
+
+```jsx
+(...)
+
+for (key in User2) {
+    if (User2.hasOwnProperty(key)) {
+        console.log('O ' + key);
+    }
+    console.log('X ' + key);
+}
+
+//O surName
+//X surName
+//X name
+//X sayHi
+//X sayBye
+```
+
+이렇게 확인해 볼 수 있다.
+
+생성자를 활용한 프로토타입의 구현
+
+하나의 생성자를 통해 다양한 개체를 만드는 경우도 존재한다. 
+
+이 개체의 값도 프로토타입으로 표현할 수 있지 않을까?
+
+```jsx
+const Fruits = function (name) {
+    this.name = name;
+    this.type = 'fruit';
+    this.information = () => {
+        console.log(`이 과일은 ${this.name}의 과일입니다.`);
+        console.log(`과일의 종류는 ${this.type}입니다.`);
+    };
+};
+
+const apple = new Fruits('apple');
+const banana = new Fruits('banana');
+```
+
+일반적인 생성자로 생성된 `Fruits`를 볼 수 있다. 
+
+여기서 `typ`e과 `info`는 모두가 겹치는 내용이므로, 따로 프로토타입으로 빼낼 수 있다.
+
+```jsx
+const Fruits = function (name) {
+    this.name = name;
+};
+
+Fruits.prototype.type = 'fruit';
+Fruits.prototype.information = function () {
+    console.log(`이 과일은 ${this.name}의 과일입니다.`);
+    console.log(`과일의 종류는 ${this.type}입니다.`);
+};
+
+const apple = new Fruits('apple');
+const banana = new Fruits('banana');
+```
+
+프로토타입으로 꺼내진 것을 확인할 수 있다. 여기서 `prototype = {}` 를 이용해서 프로토타입을 묶어서도 사용이 가능하다.
+
+```jsx
+const Fruits = function (name) {
+    this.name = name;
+};
+
+Fruits.prototype = {
+    type: 'fruit',
+    information() {
+        console.log(`이 과일은 ${this.name}의 과일입니다.`);
+        console.log(`과일의 종류는 ${this.type}입니다.`);
+    },
+};
+const apple = new Fruits('apple');
+const banana = new Fruits('banana');
+```
+
+다만, 이 경우에는 `constructor`를 확인하는 검사에서 `false`를 내뱉게 된다.
+
+```jsx
+(...)
+apple instanceof Fruits
+//apple의 생성자가 Fruits이 맞는가? true
+apple.constructor === Fruits
+//false
+```
+
+즉 생성자를 확인할 필요성이 있는 작업일 경우 `constructor`를 명시하거나,  풀어서 쓰는게 권장된다.
+
+마지막으로, 현재는 사용자가 `apple.name`으로 과일의 이름을 콘솔창 하나로 변경시킬 수 있다. 이런 경우를 방지해야한다.
+
+```jsx
+const Fruits = function (name) {
+    const n = name;
+    this.getName = function () {
+        return n;
+    };
+};
+
+Fruits.prototype.type = 'fruit';
+Fruits.prototype.information = function () {
+    console.log(`이 과일은 ${this.name} 과일입니다.`);
+    console.log(`과일의 종류는 ${this.type}입니다.`);
+};
+
+const apple = new Fruits('apple');
+const banana = new Fruits('banana');
+
+apple.getName() // apple
+apple.type // fruit
+apple.information //이 과일은 apple 과일입니다. 과일의 종류는 fruit 입니다.
+```
+
+이렇게, 생성자 `Fruits`는 다른코드로 변경할 수 없는 클로저가 존재하고, 프로토타입을 이용하는 생성자가 되었다.

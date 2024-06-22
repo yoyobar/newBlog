@@ -99,6 +99,12 @@ const config: Config = {
                             },
                         },
 
+                        // ! LINK 태그
+
+                        'p > a': {
+                            color: '#f43f5e',
+                        },
+
                         // ! 인라인 코드 블럭
                         ':not(pre) > code': {
                             display: 'inline-block',

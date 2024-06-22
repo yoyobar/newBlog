@@ -51,7 +51,7 @@ export async function getPosts(category: string) {
                 title: grayMatter.title,
                 tags: grayMatter.tags,
                 src: grayMatter.image,
-                date: dayjs.utc(grayMatter.date).format('YYYY년 MM월 DD일'),
+                date: dayjs.utc(grayMatter.date).format('YYYY년 MM월 DD일-HH:mm:ss'),
                 readingMinutes: Math.ceil(readingTime(content).minutes),
                 category: category,
             },

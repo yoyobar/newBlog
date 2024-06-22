@@ -1,0 +1,186 @@
+---
+title: '클로저(Closure)'
+description: '클로저 문법에 대해 다룹니다.'
+image: '/img/js.webp'
+tags: [js, Closure, 클로저]
+date: 2024-05-23 01:07:49
+update: 2024-06-23 01:07:49
+---
+
+## 어휘적 스코프 (lexical scope)
+
+클로저에 대해 이해하려면 먼저 어휘적 스코프(lexical scope)에 대해 알아야한다.
+
+어휘적 스코프는 선언된 환경이 무엇인가에 대해 말하는 것이다.
+
+![sample](/img/2024-05-20-21-14-14.webp)
+
+클로저는 어휘적 스코프에 대한 이해가 중요하다. 이에대해 해석을 해보고자한다.
+
+우선, 코드가 실행될 때 function은 이미 초기화되어 사용가능한 상태로 전환된다.  변수의 경우는 그렇지 않다.
+
+Stack이 해당하는 위치로 이동하여 변수를 초기화해주기전까지 변수는 사용할 수 없다.
+
+<Callout type='info'>어휘적 스코프 : `Global`</Callout>
+
+`func`라는 변수를 `outFunction`을 참조하게 생성하고
+실행하는 코드를 하단에 작성하였다.
+
+여기서 `func`가 실행되면서 바로 내부함수인
+`innerFunction`으로 어휘적 스코프가 넘어간다.
+
+<Callout type="info">어휘적 스코프 : `innerFunction()`</Callout>
+
+
+`innerFunction`에서 `count`라는 변수에 값을 조정하므로
+변수를 찾기위해 어휘적 스코프가 내부함수로 이동한다. 
+
+<Callout type="info">어휘적 스코프 : `outFunction()`</Callout>
+
+어휘적스코프가 이동하여 변수 `count`를 찾아낸다.
+탐색을 종료하고 값을 할당하고, 이를 `return`한다.
+
+따라서 `count` 변수는 은닉성을 유지하고
+함수를 통한 접근외에 이 값을 직접적으로 수정할 수 있는 방법은 **없다.**
+
+## 클로저(Closure)
+
+```javascript
+function makeFunc() {
+    const name = "Mozilla";
+    function displayName() {
+        console.log(name);
+    }
+    return displayName;
+}
+
+const myFunc = makeFunc();
+myFunc();
+```
+
+`makeFunc()`에서 접근이 끝나고 `displayName()`으로 넘어가면
+변수에 관여하지못할 것 같지만 그렇지 않다. 
+함수가 처리되기전까진 지역변수가 해당 공간에 남아 있는 것이다.
+
+`myFunc`는 `makeFunc`이 실행될때 생성된 `displayName()` 함수의 대한 참조다.
+
+`displayName`은 변수 `name`이 남아있는 참조상태를 유지한다.
+
+
+### 클로저 예시: 함수 하나로 여러 값 조절하기
+
+
+```javascript
+function makeAdder(x) {
+	return function (y) {
+		return x + y;
+	}
+}
+
+const add5 = makeAdder(5)
+const add10 = makeAdder(10)
+add5(2) // 7
+add10(2) // 12
+```
+
+`makeAdder`는 함수를 만들어내는 함수다. 
+단일 인자 `x`를 받아서 새함수를 반환하는 함수 `makeAdder`인 것이다.
+
+`add5`와 `add10`은 둘다 클로저라고 할 수 있다. 서로 같은 함수를 공유하지만 
+서로 다른 어휘적 환경을 저장하므로 겹치지 않고 내용을 사용하는 것이다.
+
+- add5 : `makeAdder` **x**에게 **5**를 할당, **y**에게 **2**를 할당
+- add10 :  `makeAdder`  **x**에게 **10**을 할당, **y**에게 **2**를 할당
+
+각각의 변수가 유용하게 함수를 사용할 수 있게 하는 방법이 클로저라고 할 수 있겠다.
+
+---
+
+### 클로저 예시: 상태유지
+
+클로저가 가장 유용하게 사용되는 상황은
+현재 상태를 기억하고 변경된 최신 상태를 유지한다는 점이다.
+
+나중에 배우게될 리액트의 `useState`도 같은 구조를 가지고 있다.
+
+
+```html
+<!DOCTYPE html>
+<html>
+<body>
+  <p>지역 변수를 사용한 Counting</p>
+  <button id="inclease">+</button>
+  <p id="count">0</p>
+  <script>
+    let incleaseBtn = document.getElementById('inclease');
+    let count = document.getElementById('count');
+
+    function increase() {
+      // 카운트 상태를 유지하기 위한 지역 변수
+      let counter = 0;
+      return ++counter;
+    }
+
+    incleaseBtn.onclick = function () {
+      count.innerHTML = increase();
+    };
+  </script>
+</body>
+</html>
+```
+
+변수를 지역변수로 집어넣어 언제나 안전하게 보관했다.
+하지만 함수를 불러올때마다 초기화되어 숫자는 1로 고정되어 버린다. 
+
+이를 클로저로 수정해보자.
+
+```html
+<!DOCTYPE html>
+<html>
+    <body>
+        <p>지역 변수를 사용한 Counting</p>
+        <button id="inclease">+</button>
+        <p id="count">0</p>
+        <script>
+            let incleaseBtn = document.getElementById('inclease');
+            let count = document.getElementById('count');
+
+            function increase() {
+                let counter = 0;
+                return function () {
+                    return counter++;
+                };
+            }
+            const up = increase();
+            incleaseBtn.onclick = function () {
+                count.innerHTML = up();
+            };
+        </script>
+    </body>
+</html>
+
+```
+
+클로저가 상태를 유지하게 되는 것을 확인할 수 있다.
+
+그리고 이러한 클로저 문법에는 꼼수가 존재한다.
+
+로컬스코프에 남기기 위해서 변수에 항상 할당하고 있는데
+**애시당초 생성할때 변수에 담아 버리는 것이다.**
+
+```javascript
+const increase = (function() {
+    let counter = 0;
+    return function () {
+        return counter++;
+        };
+    })();
+```
+
+보기에 힘겹겠지만 이럴경우 `count.innerHTML = increase();`로 작동한다.
+
+### 기억해야 할것
+
+- 내부함수가 외부 함수보다 오래가며 현상을 유지하며 적용되는 것을 클로저(Closure)라고 한다.
+- 해당 함수가 실행되기전에, 로컬 스코프에 남아있어야 하므로 항상 **변수에 할당**한다.
+

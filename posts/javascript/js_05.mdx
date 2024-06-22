@@ -1,0 +1,272 @@
+---
+title: '객체 메소드'
+description: '객체에서 사용되는 메소드를 다룹니다.'
+image: '/img/js.webp'
+tags: [js, object]
+date: 2024-05-22 22:55:55
+update: 2024-06-22 22:55:55
+---
+
+
+## 계산된 프로퍼티(Computed Property)
+
+```jsx
+let number = 30;
+let numbers = {
+	first: 50;
+	second: [number]; //30
+	third: 70;
+}
+```
+
+어떤 객체 안에 변수를 인자로 주고싶다면, []를 활용해서 내용을 전달해 줄 수 있다.
+
+## 객체의 메소드
+
+### Object.assgin(`{}`, origin)
+
+```jsx
+let object = {
+	name: 'object',
+	id: 1325,
+};
+
+let objectClone = object //참조만 하게 됨
+```
+
+위의 코드는 `deep copy` 되지 않고, 객체의 메모리주소만 참조하게 된다는 것을 알고 있을 것이다.
+그럴때 사용하는게 바로 `Object.assign`  메소드다.
+
+
+```jsx
+let object = {
+	name: 'object',
+	id: 1325,
+};
+let objectClone = Object.assign({},object);
+//{name: 'object', id:1325}
+```
+
+객체의 원하는 내용을 그대로 `deep copy`해주는 메소드이다. 대량의 객체를 넣을 수 있고,
+`{}`부분에 추가하고자 하는 값을 넣을 경우 추가된다. 단, `key`가 겹칠경우 덮어씌워진다.
+
+<Callout type="warn">2개 이상의 객체는 `deep copy` 할수 없다. 다른 방식 (분해할당 등)을 활용해야 한다.</Callout>
+
+
+### Object.keys(origin)
+
+```jsx
+let object = {
+	name: 'object',
+	id: 1325,
+};
+let key = Object.keys(object);
+```
+
+객체의 `key`값을 배열에 담아 리턴해준다.
+
+---
+
+### Object.values(origin)
+
+```jsx
+let object = {
+	name: 'object',
+	id: 1325,
+};
+let value = Object.values(object);
+```
+
+객체의 `value` 값을 배열에 담아 리턴해준다.
+
+
+---
+
+### Object.entries(origin)
+
+```jsx
+let object = {
+	name: 'object',
+	id: 1325,
+};
+let entries = Object.entries(object);
+```
+
+객체의 `key, value`값을 이중 배열에 담아 리턴해준다. 각 0번은 key, 1번은 value다.
+
+
+
+---
+
+### Object.formEntries(origin)
+
+```jsx
+let arr = [
+    ['name', 'object'],
+    ['id', 1325],
+];
+let entries = Object.fromEntries(arr);
+
+```
+
+이중 배열을 객체로 담아 리턴해준다.  각 0번은 `key`, 1번은 `value`다.
+
+
+---
+
+
+## 그외 참고사항
+
+### 객체의 생성
+
+객체는 두가지 방법으로 생성 할 수 있다. 생성자 문법과 리터럴 문법으로 가능하다. 
+
+`…`을 활용한 rest문법을 섞은 방법도 가능하다.
+`rest`문법을 활용할경우 `deepCopy`가 가능하다.
+
+```jsx
+let user = new Object(); //생성자 문법
+let user = {}; //리터럴 문법
+
+let restType = {
+	name: "kim",
+	age: "27",
+}
+let rest = {...restType} //rest 리터럴 문법
+```
+
+### 객체의 구조
+
+객체의 중괄호 내부에는 `키: 값` 의 형태로 데이터가 들어가게 된다.
+여기서 키의 부분은 점 표기법으로 내부 데이터에 접근할 수 있다.
+
+```jsx
+let object = {
+	value: true,
+}
+alert(object.value) //true
+
+delete object.value; //delete 연산자로 key 제거 가능
+
+alert(object.value) //undefind
+
+let user = {
+	"dark mode": true 
+}
+//여러 단어를 사용하는 경우, ""를 묶어야함
+
+alert(user["dark mode"]) // true
+//여러 단어를 호출하는 경우, []를 묶어야함
+```
+
+변수를 활용해 접근하는 경우, 대괄호 표기법을 이용한 접근은 되나  점 표기법을 활용하는 경우 접근할 수 없다.
+
+```jsx
+let user = {
+	name: "John",
+	age: 30,
+};
+
+let key = prompt("접근할 정보를 입력하세요",);
+
+alert(user[key]) // prompt에 입력한 값
+alert(user.key)  // undefind
+```
+
+객체에서 객체 key를 []로 둘러싸는 경우, `계산된 프로퍼티 (computed property`)라 부르며, 
+
+이는 변수에서 값을 동적으로 가져오겠다는 의미가 된다, 
+
+당연히 내부 데이터에도 사용이 가능하며 계산식도 들어갈 수 있다.
+
+```jsx
+let userFruit = prompt("원하시는 키를 입력 해 주세요.")
+
+let user = {
+	fruit: [userFruit + 5],
+}
+alert(user.fruit) //입력한 과일의 명칭 + 5
+```
+
+실무에서는 프로퍼티 값을 변수에서 받아와 사용하는 경우가 자주 있다.
+
+이럴 때 단축구문을 활용하면 짧은 코드로 변수를 할당할 수 있다.
+
+```jsx
+//일반 구문
+function makeUser(name, age){
+	return {
+		name: name,
+		age: age,
+	
+	};
+};
+let user = makeUser("John", 30)
+console.log(user) //name: "John", age: 30
+
+//단축 구문
+function makeUser(name, age){
+	return {
+		name,
+		age,
+	};
+};
+let user = makeUser("John", 30)
+console.log(user) //name: "John", age: 30
+```
+
+객체의 중요한 특징중 하나는 존재하지 않는 프로퍼티에 접근해도 에러가 발생하지않고 `undefined`가 출력된다.
+
+이를 통해 프로퍼티 존재여부를 확인하거나, 연산자 `in`를 활용해서 존재여부를 확인할 수 있다.  `undefind`가 할당되어있는 경우, 구별이 안되므로 연산자 `in`을 사용하는게 확실한 코드다.
+
+```jsx
+let user = {
+	name: "John",
+};
+
+console.log(user.password) //undefined
+console.log(user.name in user) //false, 잘못된 활용
+console.log("john" in user) //false, 잘못된 활용
+
+console.log("name" in user) //true
+// in 연산자는 key에만 접근할 수 있다. 또한 키는 ""로 감싸야 한다.
+```
+
+`for ..in` 반복문을 활용하면 객체의 모든 키를 순회할 수 있다.
+
+```jsx
+let user = {
+	name: "John",
+	age: 18,
+}
+
+for (let key in user) { //key 라는 변수에 user의 key정보 반환
+console.log(key) //모든 key 반환
+}
+```
+
+객체에는 정수 프로퍼티라는게 존재해서 정수의 경우 key의 위치가 자동으로 정렬된다. 따라서 원하는 위치로 값이 반환되길 원한다면 정수 프로퍼티에 속하지 않도록 코딩할 필요성이 있다.
+
+```jsx
+let phone = {
+	"+49": "독일",
+	"+41": "스위스",
+}
+for (let codes in phone) {
+console.log(codes) //독일이 첫번째로 나옴
+}
+
+let phone = {
+	"49": "독일",
+	"41": "스위스",
+}
+for (let codes in phone) {
+console.log(codes) //스위스가 첫번째로 나옴
+}
+```
+
+**<div className="text-4xl">요약</div>**
+
+- 점 표기법 `(obj.property)`
+- 대괄호 표기법 `(obj["property"])` , 변수에서 키를 가져올 수 있음
+- 추가 사용 가능 연산자 `delete[탐색]`, `“key” in obj[탐색]`, `for (let key in obj)[나열]`
