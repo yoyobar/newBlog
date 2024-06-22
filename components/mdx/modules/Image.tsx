@@ -1,4 +1,7 @@
+'use client';
+
 import ExportedImage from 'next-image-export-optimizer';
+import { useState } from 'react';
 
 /* eslint-disable @next/next/no-img-element */
 interface ImageProps {
@@ -7,15 +10,32 @@ interface ImageProps {
 }
 
 export const Image = ({ src, alt }: ImageProps) => {
-    return (
-        <>
-            <ExportedImage
-                width={400}
-                height={300}
-                src={src}
-                alt={alt}
-                className='my-6 rounded-md border p-2 dark:border-darkInner-border'
-            />
-        </>
+    const [zoom, setZoom] = useState(false);
+    return zoom ? (
+        <ExportedImage
+            width={1000}
+            height={1000}
+            src={src}
+            alt={alt}
+            onClick={() => setZoom(false)}
+            className='transition-maximize my-6 rounded-md border cursor-zoom-out'
+        />
+    ) : (
+        <ExportedImage
+            width={500}
+            height={200}
+            src={src}
+            alt={alt}
+            onClick={() => {
+                setZoom(true);
+
+                setTimeout(() => {
+                    setZoom(false);
+                }, 3000);
+            }}
+            className='transition-maximize my-6 rounded-md border cursor-zoom-in'
+        />
     );
 };
+
+export const Preview = () => {};

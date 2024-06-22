@@ -1,0 +1,74 @@
+---
+title: '03. 심볼 타입'
+description: '심볼 타입의 문법에 대해 소개합니다.'
+image: '/img/js.webp'
+tags: [js, 심볼타입]
+date: 2024-05-21 20:26:05
+update: 2024-06-22 20:26:05
+toc: false
+---
+
+## 심볼 타입
+
+심볼은 유일성을 보장받는 새로운 타입이다. 
+동일한 이름의 심볼을 생성하고 느슨한 연산자로 이를
+비교해보아도 전혀 다른 내용이라고 인식하게 된다.
+
+```js
+const sym = Symbol(); //심볼의 생성 방법
+const sym1 = Symbol('id');
+const sym2 = Symbol('id');
+
+sym1 == sym2 // false
+sym1 === sym2 // false
+
+console.log(sym2)
+//Symbol(id)
+```
+
+이러한 심볼은 객체에 사용할 경우, 객체의 일반적인 메소드에서도 호출되지 않는다. 
+
+심볼의 주 용도는
+`디버깅(Debugging)`이라고도 할 수 있다. 
+
+객체를 생성하고 그안의 객체를 구별하기위한 심볼을 삽입해 사용자가 무엇을 위한 객체인지 쉽게 파악할 수 있기 때문이다.
+
+```js
+const symbol1 = Symbol('user ID');
+const user = {
+	name: 'kim',
+	id: 'barwait',
+	pw: 1325,
+	[symbol1]: 'id',
+}
+Object.keys(user);
+//[name, id, pw]
+Object.values(user);
+//['kim', 'barwait', 1325]
+Object.entries(user);
+//(...)
+
+symbol1.description;
+//'user ID'
+```
+
+이렇게 어떠한 값도 영향을 줄 수 없는 심볼을 생성 할 수 있다. `.description`으로 심볼의 이름을 알 수 있다.
+
+## 전역 심볼
+
+심볼을 여러개 재사용하는 경우라고 가정해보자, 
+매번 동일한 이름으로 설정해도 심볼끼리의 비교는 `false`로 나오지만
+전역심볼로서 생성할 경우 해당 심볼끼리는 서로 같은 심볼이라고 인식하게 된다.
+
+```js
+const id1 = Symbol.for('user id')
+const id2 = Symbol.for('user id')
+id1 === id2 //true
+id1 == id2 //true
+
+Symbol.keyFor(id1) //'user id'
+Symbol.keyFor(id2) //'user id'
+```
+
+`Symbol` 은 매번 다른 `Symbol`값을 생성하지만, `Symbol.key` 메소드는 하나를 키를 통해 공유하게 된다.
+이런 심볼은 `.keyFor`로 내부 주소를 알 수 있다. `.description`은 사용되지 않는다.

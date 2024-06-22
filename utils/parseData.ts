@@ -3,6 +3,9 @@ import path from 'path';
 import { AllBrowseType, FrontMatterTypes } from '@/config/types';
 import matter from 'gray-matter';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
+
 import readingTime from 'reading-time';
 
 const BASE_DIR = 'posts';
@@ -57,7 +60,7 @@ export const loadBlogResource = async () => {
                 tags: grayMatter.tags,
                 src: grayMatter.image,
                 category: category,
-                date: dayjs(grayMatter.date).format('YYYY년 MM월 DD일'),
+                date: dayjs.utc(grayMatter.date).format('YYYY년 MM월 DD일'),
                 readingMinutes: Math.ceil(readingTime(content).minutes),
             },
             slug: category ? `${category}/${file.replace('.mdx', '')}` : file.replace('.mdx', ''),

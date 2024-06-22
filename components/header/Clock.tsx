@@ -5,7 +5,6 @@ import Loading from '../Loading';
 import { LOADING_ENUM } from '@/config/types';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
-import { useEffectOnce } from 'react-use';
 
 dayjs.locale('ko');
 

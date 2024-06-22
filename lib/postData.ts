@@ -3,7 +3,9 @@ import fs from 'fs';
 import matter from 'gray-matter';
 import { FrontMatterTypes } from '@/config/types';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import readingTime from 'reading-time';
+dayjs.extend(utc);
 const BASE_DIR = 'posts';
 
 export async function getPost(category: string, slug: string) {
@@ -49,7 +51,7 @@ export async function getPosts(category: string) {
                 title: grayMatter.title,
                 tags: grayMatter.tags,
                 src: grayMatter.image,
-                date: dayjs(grayMatter.date).format('YYYY-MM-DD'),
+                date: dayjs.utc(grayMatter.date).format('YYYY년 MM월 DD일'),
                 readingMinutes: Math.ceil(readingTime(content).minutes),
                 category: category,
             },

@@ -7,11 +7,15 @@ import Mdx_Tag from './Mdx_Tag';
 import dayjs from 'dayjs';
 import Link from 'next/link';
 import ExportedImage from 'next-image-export-optimizer';
+import utc from 'dayjs/plugin/utc';
+import 'dayjs/locale/ko';
 
 const Mdx_Header = ({ frontMatter }: { frontMatter: FrontMatterTypes }) => {
     const formatDate = (date: Date) => {
-        const data = dayjs(date, 'YYYY-MM-DD HH:mm:ss');
-        return data.format('YYYY-MM-DD A h:mm:ss');
+        dayjs.locale('ko');
+        dayjs.extend(utc);
+        const data = dayjs.utc(date, 'YYYY-MM-DD A HH:mm').locale('ko');
+        return data.format('YYYY-MM-DD A hh시 mm분');
     };
 
     const date = formatDate(frontMatter.date);

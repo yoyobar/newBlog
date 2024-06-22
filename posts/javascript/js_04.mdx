@@ -1,0 +1,72 @@
+---
+title: '04. 생성자 함수'
+description: '생성자 함수의 사용법에 대해 소개합니다.'
+image: 'img/js.webp'
+tags: [js, 생성자함수]
+date: 2024-05-22 20:29:27
+update: 2024-06-22 20:29:27
+---
+
+## 생성자 함수
+
+유저의 정보를 받아들이고, 해당 정보를 보여주는 객체를 제작해보자
+
+```jsx
+let user = {
+	name : '김민수',
+	id : 'barwait'
+	pw : '1325'
+}
+```
+
+간단하게 작성할 수 있다. 근데 이러한 유저의 정보가 수십 개 있다고 가정해보고 작성하면, 
+
+코드적으로 엄청난 중노동이 될것을 예상할 수 잇다. 이럴 때 사용하는게 생성자 함수다.
+
+```jsx
+function User(name,id,pw) { //생성자 함수는 대문자로 시작하는 것이 관례
+	this.name = name;
+	this.id = id;
+	this.pw = pw;
+}
+
+let user1 = new User('mike', 'ak47', '772')
+let user2 = new User('tom', 'k-2', '556')
+let user3 = new User('minsu', 'k-1', '556')
+//new 연산자를 이용하여 호출
+```
+
+이렇게 간단한 코드로 3개의 각각 다른 객체를 생성하였다. 
+
+이렇게 유용하게 활용될 수 있는게 생성자 함수다. 
+
+근데 `new`태그를 사용하지 않으면 작동하지 않는다. 왜일까?
+
+ 
+
+```jsx
+function User(name,id,pw) { //생성자 함수는 대문자로 시작하는 것이 관례
+	this.name = name;
+	this.id = id;
+	this.pw = pw;
+}
+
+let user1 = User('mike', 'ak47', '772') //undefined
+```
+
+이유는 간단하다. `user1`에 값이 `return`되지 않아서 그렇다. 생성자 함수를 사용할 경우 문법적으로 해석해보자
+
+```jsx
+function User(name,id,pw) { //생성자 함수는 대문자로 시작하는 것이 관례
+	this = {
+	this.name = name;
+	this.id = id;
+	this.pw = pw;
+	}
+	return this;
+}
+
+let user1 = new User('mike', 'ak47', '772') //undefined
+```
+
+이런식으로 작동하는 함수라고 생각하면 된다. 따라서 `this`에 각각의 매개변수로 보낸 값이 `return`되어 할당되고, 우리는 생성자로서 객체를 생성 받을 수 있는것이다.
