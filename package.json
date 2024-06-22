@@ -6,7 +6,8 @@
         "dev": "next dev",
         "build": "next build && next-image-export-optimizer && next-sitemap",
         "start": "next start",
-        "lint": "next lint"
+        "lint": "next lint",
+        "convert": "node ./utils/imageConvert.js"
     },
     "dependencies": {
         "@fec/remark-a11y-emoji": "^4.0.2",
@@ -36,6 +37,7 @@
         "remark-breaks": "^4.0.0",
         "remark-gfm": "^4.0.0",
         "shiki": "^1.6.3",
+        "webp-converter": "^2.3.3",
         "zustand": "^4.5.2"
     },
     "devDependencies": {
