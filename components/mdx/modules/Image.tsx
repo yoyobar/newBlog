@@ -17,7 +17,10 @@ export const Image = ({ src, alt }: ImageProps) => {
             height={1000}
             src={src}
             alt={alt}
-            onClick={() => setZoom(false)}
+            onClick={() => {
+                if (!zoom) return;
+                setZoom(false);
+            }}
             className='transition-maximize my-6 rounded-md border cursor-zoom-out'
         />
     ) : (
@@ -27,11 +30,8 @@ export const Image = ({ src, alt }: ImageProps) => {
             src={src}
             alt={alt}
             onClick={() => {
+                if (zoom) return;
                 setZoom(true);
-
-                setTimeout(() => {
-                    setZoom(false);
-                }, 3000);
             }}
             className='transition-maximize my-6 rounded-md border cursor-zoom-in'
         />

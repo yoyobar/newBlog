@@ -5,8 +5,8 @@ const withMDX = require('@next/mdx')({
 module.exports = withMDX({
     images: {
         loader: 'custom',
-        imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-        deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+        imageSizes: [16, 48, 96, 128, 256],
+        deviceSizes: [640, 1080, 1920, 2048, 3840],
     },
     transpilePackages: ['next-image-export-optimizer'],
     env: {
@@ -16,7 +16,7 @@ module.exports = withMDX({
         nextImageExportOptimizer_storePicturesInWEBP: 'true',
         nextImageExportOptimizer_exportFolderName: 'nextImageExportOptimizer',
         nextImageExportOptimizer_generateAndUseBlurImages: 'true',
-        nextImageExportOptimizer_remoteImageCacheTTL: '0',
+        nextImageExportOptimizer_remoteImageCacheTTL: '86400',
     },
     pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
     webpack: (config, { dev, isServer }) => {
