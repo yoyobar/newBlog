@@ -8,7 +8,6 @@ import remarkA11yEmoji from '@fec/remark-a11y-emoji';
 // Modules
 import { Image } from './modules/Image';
 import { Callout } from './modules/Callout';
-import { Card, Cards } from './modules/Card';
 import { CodeBlock } from './modules/CodeBlock';
 import { Blockquote } from './modules/Blockquote';
 import { Table, Td, Th, Tr } from './modules/Table';
@@ -18,8 +17,6 @@ import { Strong } from './modules/Strong';
 
 const Mdx_Module = {
     Callout,
-    Card,
-    Cards,
     img: Image as any,
     strong: Strong,
     blockquote: Blockquote,

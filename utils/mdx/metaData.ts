@@ -24,12 +24,6 @@ export const metaStyle = {
 };
 
 export const metadata: metaType = {
-    default: {
-        icon: Icon.All,
-        title: 'ETC',
-        link: '/posts',
-        visible: false,
-    },
     blogs: {
         icon: Icon.All,
         boxClass: metaStyle.default,
@@ -37,39 +31,39 @@ export const metadata: metaType = {
         link: '/posts',
         visible: true,
     },
-    javascript_basic: {
-        icon: Icon.Js,
-        boxClass: metaStyle.js,
-        title: '자바 스크립트 기초',
-        link: '/posts/javascript_basic',
-        visible: true,
-    },
-    typescript: {
-        icon: Icon.Ts,
-        boxClass: metaStyle.ts,
-        title: '타입 스크립트',
-        link: '/posts/typescript',
-        visible: true,
-    },
-    react: {
-        icon: Icon.React,
-        boxClass: metaStyle.react,
-        title: '리액트',
-        link: '/posts/react',
-        visible: true,
-    },
-    dev: {
-        icon: Icon.Dev,
-        boxClass: metaStyle.dev,
-        title: '개발',
-        link: '/posts/dev',
-        visible: true,
-    },
     setting: {
         icon: Icon.Setting,
         boxClass: metaStyle.setting,
         title: 'Setting',
         link: '/setting',
+        visible: true,
+    },
+    Javascript_basic: {
+        icon: Icon.Js,
+        boxClass: metaStyle.js,
+        title: '자바 스크립트',
+        link: '/posts/Javascript_basic',
+        visible: true,
+    },
+    Typescript: {
+        icon: Icon.Ts,
+        boxClass: metaStyle.ts,
+        title: '타입 스크립트',
+        link: '/posts/Typescript',
+        visible: true,
+    },
+    React: {
+        icon: Icon.React,
+        boxClass: metaStyle.react,
+        title: '리액트',
+        link: '/posts/React',
+        visible: true,
+    },
+    Dev: {
+        icon: Icon.Dev,
+        boxClass: metaStyle.dev,
+        title: '개발',
+        link: '/posts/Dev',
         visible: true,
     },
 };

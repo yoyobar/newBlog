@@ -11,7 +11,9 @@ const SubTitle = ({ type }: { type: string }) => {
     return (
         <>
             <div className='flex items-center gap-8 px-4 py-4 hover:bg-slate-300 text-3xl hover:text-sky-500 transition-all dark:hover:bg-slate-950 text-black dark:text-white rounded-md'>
-                <div className={`${boxClassName} p-3 rounded-full dark:bg-slate-700 bg-slate-200`}>
+                <div
+                    className={`${boxClassName} p-3 rounded-full dark:bg-slate-700 bg-slate-200`}
+                >
                     <Icon />
                 </div>
                 <div className='flex-grow text-3xl'>{titleName}</div>

@@ -5,7 +5,12 @@ import { getPosts } from '@/utils/parseData';
 import { metadata } from '@/utils/mdx/metaData';
 import { loadBlogCategory } from '@/utils/parseData';
 import { siteConfig } from '@/config/siteconfig';
-import { Suspense } from 'react';
+import dynamic from 'next/dynamic';
+
+const DynamicBrowse = dynamic(() => import('@/components/posts/Browse'), {
+    loading: () => <p>Loading...</p>,
+    ssr: false,
+});
 
 const BASE_DIR = 'posts';
 export async function generateMetadata({
@@ -50,9 +55,7 @@ export default async function Page({ params }: { params: { category: string } })
     return (
         <PageContainer>
             <div className='w-[90%] m-auto select-none'>
-                <Suspense fallback={<div>Loading...</div>}>
-                    <Browse blogs={blogs} categories={blogCategory} />
-                </Suspense>
+                <Browse blogs={blogs} categories={blogCategory} />
             </div>
         </PageContainer>
     );
