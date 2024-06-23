@@ -1,7 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { AiFillHome } from 'react-icons/ai';
 interface CategoryButtonProps {
     onNav: () => void;
     text: string;

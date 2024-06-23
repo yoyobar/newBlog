@@ -4,9 +4,8 @@ import { AllBrowseType, FrontMatterTypes } from '@/config/types';
 import matter from 'gray-matter';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-dayjs.extend(utc);
-
 import readingTime from 'reading-time';
+dayjs.extend(utc);
 
 const BASE_DIR = 'posts';
 
@@ -34,6 +33,7 @@ export const loadBlogCategory = async () => {
     const allFiles = [...mdx.map((file) => ({ category: '', file })), ...categoryFiles];
 
     const categoryCount: { [key: string]: number } = { All: allFiles.length };
+
     allFiles.forEach(({ category }) => {
         if (category) {
             categoryCount[category] = (categoryCount[category] || 0) + 1;
@@ -69,3 +69,57 @@ export const loadBlogResource = async () => {
 
     return blogs;
 };
+
+export async function getCategoryPost(category: string) {
+    const dirPath = path.join(BASE_DIR, category);
+    const fileNames = fs.readdirSync(dirPath);
+    const posts = [];
+
+    for (const fileName of fileNames) {
+        if (fileName.endsWith('.mdx')) {
+            const filePath = path.join(dirPath, fileName);
+            const fileContent = fs.readFileSync(filePath, 'utf-8');
+            const { data } = matter(fileContent);
+            const postSlug = path.parse(fileName).name;
+            posts.push({ ...data, slug: postSlug });
+        }
+    }
+
+    return posts;
+}
+
+export async function getPosts(category: string) {
+    const categoryPath = path.join(BASE_DIR, category);
+    const files = fs.readdirSync(categoryPath);
+    const blogs = files.map((file) => {
+        const filePath = path.join(categoryPath, file);
+        const fileContent = fs.readFileSync(filePath, 'utf-8');
+        const { content, data } = matter(fileContent);
+        const grayMatter = data as FrontMatterTypes;
+        return {
+            meta: {
+                title: grayMatter.title,
+                tags: grayMatter.tags,
+                src: grayMatter.image,
+                date: dayjs.utc(grayMatter.date).format('YYYY년 MM월 DD일-HH:mm:ss'),
+                readingMinutes: Math.ceil(readingTime(content).minutes),
+                category: category,
+            },
+            slug: `${category}/${file.replace('.mdx', '')}`,
+            length: files.length,
+        };
+    });
+    return blogs;
+}
+
+export async function getPost(category: string, slug: string) {
+    const filePath = path.join(BASE_DIR, category, `${slug}.mdx`);
+    const fileContent = fs.readFileSync(filePath, 'utf-8');
+    const { data, content } = matter(fileContent);
+    const frontMatter = data as FrontMatterTypes;
+
+    return {
+        frontMatter,
+        content,
+    };
+}

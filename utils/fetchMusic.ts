@@ -1,5 +1,16 @@
 import { PlaylistResponse } from '@/config/types';
 
+const parseISODuration = (duration: string) => {
+    const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+    if (!match) return 0;
+
+    const hours = parseInt(match[1]) || 0;
+    const minutes = parseInt(match[2]) || 0;
+    const seconds = parseInt(match[3]) || 0;
+
+    return hours * 3600 + minutes * 60 + seconds;
+};
+
 export async function fetchPlaylistItems() {
     try {
         const response = await fetch('../api/playlist');
@@ -12,17 +23,6 @@ export async function fetchPlaylistItems() {
         console.error(error);
     }
 }
-
-const parseISODuration = (duration: string) => {
-    const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
-    if (!match) return 0;
-
-    const hours = parseInt(match[1]) || 0;
-    const minutes = parseInt(match[2]) || 0;
-    const seconds = parseInt(match[3]) || 0;
-
-    return hours * 3600 + minutes * 60 + seconds;
-};
 
 export async function fetchDetailItems(id: string) {
     try {

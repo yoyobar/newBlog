@@ -23,13 +23,20 @@ const Mdx_Header = ({ frontMatter }: { frontMatter: FrontMatterTypes }) => {
     return (
         <div className='select-none'>
             {frontMatter?.image && (
-                <div className='relative min-w-full min-h-[350px] mt-4'>
-                    <ExportedImage className='rounded-md m-0 p-0' fill alt={frontMatter.description} src={frontMatter.image} />
+                <div className='relative min-w-full min-h-[200px] md:min-h-[350px] mt-4'>
+                    <ExportedImage
+                        className='rounded-md m-0 p-0'
+                        fill
+                        alt={frontMatter.description}
+                        src={frontMatter.image}
+                    />
                 </div>
             )}
             <div className='flex flex-col justify-center items-center mt-10'>
                 <div className='w-full md:w-[80%] flex flex-col gap-6'>
-                    <div className='text-5xl md:text-6xl text-black dark:text-white font-bold mb-8'>{frontMatter.title}</div>
+                    <div className='text-5xl md:text-6xl text-black dark:text-white font-bold mb-8'>
+                        {frontMatter.title}
+                    </div>
                     <article className='text-2xl flex gap-16 items-center text-gray-400'>
                         <div className='flex gap-2 w-[100px] items-center'>
                             <TbCategoryFilled />

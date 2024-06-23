@@ -1,4 +1,4 @@
-import { getMetadataValues } from '@/utils/metaData';
+import { getMetadataValues } from '@/utils/mdx/metaData';
 import Link from 'next/link';
 import SubTitle from './posts/SubTitle';
 import { motion } from 'framer-motion';
@@ -16,7 +16,7 @@ const container = {
         opacity: 1,
         scale: 0.9,
         transition: {
-            delayChildren: 0.3,
+            delayChildren: 0.1,
             staggerChildren: 0.1,
         },
     },

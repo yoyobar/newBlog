@@ -1,8 +1,8 @@
 import fs from 'fs';
 import PageContainer from '@/components/PageContainer';
 import Browse from '@/components/posts/Browse';
-import { getPosts } from '@/lib/postData';
-import { metadata } from '@/utils/metaData';
+import { getPosts } from '@/utils/parseData';
+import { metadata } from '@/utils/mdx/metaData';
 import { loadBlogCategory } from '@/utils/parseData';
 import { siteConfig } from '@/config/siteconfig';
 

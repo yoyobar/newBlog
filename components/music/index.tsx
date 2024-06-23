@@ -5,7 +5,7 @@ import { FaPlay } from 'react-icons/fa';
 import { IoPlaySkipForward, IoPlaySkipBack } from 'react-icons/io5';
 import { FaPause } from 'react-icons/fa6';
 import { IoMdVolumeHigh, IoMdVolumeOff } from 'react-icons/io';
-import { fetchDetailItems, fetchPlaylistItems, formatTime } from '@/lib/fetchMusic';
+import { fetchDetailItems, fetchPlaylistItems, formatTime } from '@/utils/fetchMusic';
 import { PlaylistItem } from '@/config/types';
 import { motion } from 'framer-motion';
 import { useMaximize } from '@/config/store';

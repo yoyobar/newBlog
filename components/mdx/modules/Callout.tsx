@@ -1,4 +1,4 @@
-import { calloutData } from '@/utils/calloutData';
+import { calloutData } from '@/utils/mdx/calloutData';
 import { PropsWithChildren } from 'react';
 
 interface CalloutProps extends PropsWithChildren {

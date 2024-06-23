@@ -12,6 +12,7 @@ import { BsLightbulbFill } from 'react-icons/bs';
 import { MdDangerous } from 'react-icons/md';
 import { AiFillTags } from 'react-icons/ai';
 import { IoIosSettings } from 'react-icons/io';
+
 export const Default = () => <FaArrowRight />;
 export const WarnCallout = () => <IoIosWarning />;
 export const InfoCallout = () => <FaInfoCircle />;

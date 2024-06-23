@@ -5,7 +5,7 @@ import Mdx_Body from '@/components/mdx';
 import Mdx_Header from '@/components/mdx/header';
 import Mdx_Toc from '@/components/mdx/toc';
 import Mdx_Footer from '@/components/mdx/footer';
-import { getCategoryPost, getPost } from '@/lib/postData';
+import { getCategoryPost, getPost } from '@/utils/parseData';
 import { FootMatterTypes } from '@/config/types';
 import { siteConfig } from '@/config/siteconfig';
 const BASE_DIR = 'posts';

@@ -34,7 +34,7 @@ const Mdx_Module = {
 const options = {
     keepBackground: true,
     theme: {
-        dark: 'material-theme-darker',
+        dark: 'dracula',
         light: 'github-light',
     },
     defaultLang: {

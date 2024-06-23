@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { metadata } from '@/utils/metaData';
+import { metadata } from '@/utils/mdx/metaData';
 import { PropsWithChildren } from 'react';
 
 export interface CardProps extends PropsWithChildren {

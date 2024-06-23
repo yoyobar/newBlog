@@ -81,7 +81,7 @@ const config: Config = {
                 },
                 darkInner: {
                     header: '#3a3b45',
-                    content: '#212127',
+                    content: '#292a35',
                     border: '#454b5c',
                     background: '#18181b',
                 },
@@ -131,7 +131,7 @@ const config: Config = {
                         },
 
                         '.dark :not(pre) > code': {
-                            backgroundColor: '#212127',
+                            backgroundColor: '#292a35',
                         },
 
                         'code::before': {

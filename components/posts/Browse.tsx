@@ -1,9 +1,11 @@
-import Link from 'next/link';
-import { CiCalendar } from 'react-icons/ci';
-import { IoTimerOutline } from 'react-icons/io5';
-import ExportedImage from 'next-image-export-optimizer';
+'use client';
+import { IoSearchSharp } from 'react-icons/io5';
 import { AllPostsProp } from '@/config/types';
 import BrowseCategory from './BrowseCategory';
+import { useEffect, useRef, useState } from 'react';
+import BrowseContent from './BrowseContent';
+import { motion } from 'framer-motion';
+import useDebounce from '@/hook/useDebounce';
 
 interface BrowseProps {
     blogs: AllPostsProp[];
@@ -11,64 +13,107 @@ interface BrowseProps {
 }
 
 const Browse = ({ blogs, categories }: BrowseProps) => {
+    const [search, setSearch] = useState('');
+    const inputRef = useRef<HTMLInputElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const debouncedSearch = useDebounce(search, 300);
+    const [searchVisible, setSearchVisible] = useState<boolean>(false);
     const sortedBlogs = blogs.sort((a, b) => {
         return b.meta.date.localeCompare(a.meta.date);
     });
+    const filteredBlogs = sortedBlogs.filter(
+        (blog) =>
+            blog.meta.title.toUpperCase().includes(debouncedSearch.toUpperCase()) ||
+            blog.meta.tags.find(
+                (item) => item.toUpperCase() === debouncedSearch.toUpperCase()
+            )
+    );
+
+    useEffect(() => {
+        if (searchVisible) {
+            inputRef.current?.focus();
+        } else {
+            containerRef.current?.focus();
+        }
+    }, [searchVisible]);
+
+    const searchButtonHandler = () => {
+        setSearchVisible(true);
+    };
+
+    const searchChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearch(e.currentTarget.value);
+    };
+
+    const keyboardHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            setSearchVisible(false);
+        }
+        if (e.key === 'Escape') {
+            setSearch('');
+            setSearchVisible(false);
+        }
+    };
+    const divKeyboardHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (e.altKey && e.key === 'k') {
+            setSearchVisible(true);
+        }
+    };
 
     return (
-        <div className='relative h-full p-0 mt-4'>
-            <section className='hidden bg-white dark:bg-darkInner-background lg:flex p-4 sticky top-0 mx-auto w-full max-w-[1300px] px-4 rounded-md gap-8 z-10'>
-                <BrowseCategory categories={categories} />
-            </section>
-            <section className='sm:max-w-[600px] mx-auto mt-12 w-full md:max-w-[950px] px-4'>
-                <div className='w-full px-2 grid grid-cols-1 lg:grid-cols-2 gap-8 2xl:gap-12 relative mt-20 mb-20'>
-                    {sortedBlogs.map((blog) => (
-                        <div key={blog.meta.title} className='animate-browse relative active:scale-100 transition'>
-                            <Link
-                                className='no-underline relative z-0 w-full rounded-xl gap-3 overflow-hidden'
-                                passHref
-                                href={`/posts/${blog.slug}`}
-                            >
-                                <nav className='flex h-full flex-col gap-3 overflow-hidden rounded-md border shadow-md transition-all hover:shadow-xl dark:border-slate-700 dark:hover:border-white'>
-                                    <div className='relative aspect-video w-full rounded-t-md border-b dark:border-slate-700'>
-                                        <ExportedImage
-                                            sizes='(max-width: 1000px) 50vw, 450px'
-                                            className='p-0 m-0 inset-0 object-cover text-transparent'
-                                            fill
-                                            alt={blog.meta.title}
-                                            src={blog.meta.src !== '' ? blog.meta.src : '/img/template_post.webp'}
-                                        />
-                                    </div>
-
-                                    <div className='flex flex-1 flex-col justify-between p-4 pt-1'>
-                                        <div>
-                                            <div
-                                                className='text-x
-                                            l font-medium text-pink-600 md:text-2xl'
-                                            >
-                                                {blog.meta.category}
-                                            </div>
-                                            <div className='mb-3 mt-1 font-bold text-2xl md:text-3xl'>{blog.meta.title}</div>
-                                            <div className='flex text-2xl justify-between items-center text-gray-600 dark:text-gray-300'>
-                                                <div className='flex gap-2 items-center'>
-                                                    <CiCalendar className='text-3xl' /> <div>{blog.meta.date.split('-')[0]}</div>
-                                                </div>
-                                                <div className='flex gap-2 items-center'>
-                                                    <IoTimerOutline className='animate-spin text-3xl antialiased' />
-                                                    <div className='opacity-0 hover:opacity-100 transition absolute w-[60px] h-[20px] bg-slate-100 shadow-md rounded-md right-2 p-1 text-center text-xl flex items-center justify-center'>
-                                                        <div>읽는 시간</div>
-                                                    </div>
-                                                    <div>{blog.meta.readingMinutes}분</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </nav>
-                            </Link>
+        <div
+            ref={containerRef}
+            className='outline-none'
+            onKeyUp={divKeyboardHandler}
+            tabIndex={0}
+            autoFocus
+        >
+            {searchVisible && (
+                <section>
+                    <div
+                        onClick={() => setSearchVisible(false)}
+                        className='absolute top-0 left-0 min-w-full min-h-full z-10'
+                    ></div>
+                    <motion.div
+                        animate={{ opacity: [0, 1] }}
+                        className='absolute flex justify-center w-full top-4 left-0 z-30'
+                    >
+                        <input
+                            onKeyUp={keyboardHandler}
+                            value={search}
+                            onChange={searchChangeHandler}
+                            ref={inputRef}
+                            className='fixed p-4 rounded-md border'
+                            placeholder='Search Title...'
+                        ></input>
+                    </motion.div>
+                </section>
+            )}
+            <div className={`relative h-full max-w-[1100px] p-0 mt-4 mx-auto`}>
+                <section
+                    className={`${
+                        searchVisible && 'invisible '
+                    } hidden bg-white md:flex dark:bg-darkInner-background p-4 sticky top-4 mx-auto w-full max-w-[1100px] pl-4 pr-[6rem] gap-x-4 gap-y-4 z-10 flex-wrap shadow-md border rounded-md`}
+                >
+                    <BrowseCategory categories={categories} />
+                </section>
+                <nav
+                    onClick={searchButtonHandler}
+                    className='text-rose-500 absolute right-[7rem] md:right-[10rem] top-[-4rem] md:top-1 z-20 opacity-80'
+                >
+                    <div className=' hover:scale-[115%] transition fixed flex gap-1 text-4xl p-4 rounded-md cursor-pointer'>
+                        <div className=' px-2 py-1 rounded-md bg-black text-white dark:text-black dark:bg-white text-2xl'>
+                            {searchVisible ? 'Enter' : '⌘+K'}
                         </div>
-                    ))}
-                </div>
-            </section>
+                        <IoSearchSharp />
+                    </div>
+                </nav>
+                <section className='sm:max-w-[600px] mx-auto w-full md:max-w-[950px] px-4'>
+                    <div className='w-full px-2 grid grid-cols-1 md:grid-cols-2 gap-8 relative mt-20 mb-20'>
+                        <BrowseContent blogs={filteredBlogs} />
+                    </div>
+                </section>
+            </div>
         </div>
     );
 };
