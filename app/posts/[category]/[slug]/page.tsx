@@ -8,7 +8,6 @@ import Mdx_Footer from '@/components/mdx/footer';
 import { getCategoryPost, getPost } from '@/utils/parseData';
 import { FootMatterTypes } from '@/config/types';
 import { siteConfig } from '@/config/siteconfig';
-import { Suspense } from 'react';
 const BASE_DIR = 'posts';
 
 export async function generateMetadata({

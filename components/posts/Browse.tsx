@@ -45,15 +45,20 @@ const Browse = ({ blogs, categories }: BrowseProps) => {
         setSearch(e.currentTarget.value);
     };
 
+    const searchBlurHandler = () => {
+        setSearchVisible(false);
+    };
+
     const keyboardHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-            setSearchVisible(false);
+            searchBlurHandler();
         }
         if (e.key === 'Escape') {
             setSearch('');
-            setSearchVisible(false);
+            searchBlurHandler();
         }
     };
+
     const divKeyboardHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
         if (e.altKey && e.key === 'k') {
             setSearchVisible(true);
@@ -63,33 +68,32 @@ const Browse = ({ blogs, categories }: BrowseProps) => {
     return (
         <div
             ref={containerRef}
-            className='outline-none'
+            className='outline-none relative'
             onKeyUp={divKeyboardHandler}
             tabIndex={0}
             autoFocus
         >
             {searchVisible && (
                 <section>
-                    <div
-                        onClick={() => setSearchVisible(false)}
-                        className='absolute top-0 left-0 min-w-full min-h-full z-10'
-                    ></div>
                     <motion.div
                         animate={{ opacity: [0, 1] }}
-                        className='absolute flex justify-center w-full top-4 left-0 z-30'
+                        className='absolute flex justify-center w-full top-5 left-0 z-30'
                     >
-                        <input
+                        <motion.input
+                            animate={{ width: ['0px', '300px'] }}
+                            transition={{ type: 'spring' }}
                             onKeyUp={keyboardHandler}
                             value={search}
+                            onBlur={searchBlurHandler}
                             onChange={searchChangeHandler}
                             ref={inputRef}
-                            className='fixed p-4 rounded-md border'
-                            placeholder='Search Title...'
-                        ></input>
+                            className='fixed p-4 rounded-md border text-3xl'
+                            placeholder='검색...'
+                        ></motion.input>
                     </motion.div>
                 </section>
             )}
-            <div className={`relative h-full max-w-[1100px] p-0 mt-4 mx-auto`}>
+            <div className={`relative h-full max-w-[1100px] p-0 mx-auto`}>
                 <section
                     className={`${
                         searchVisible && 'invisible '
@@ -99,9 +103,9 @@ const Browse = ({ blogs, categories }: BrowseProps) => {
                 </section>
                 <nav
                     onClick={searchButtonHandler}
-                    className='text-rose-500 absolute right-[7rem] md:right-[10rem] top-[-4rem] md:top-1 z-20 opacity-80'
+                    className='text-rose-500 absolute right-[7rem] md:right-[10rem] top-[-4rem] md:top-5 z-20 opacity-80'
                 >
-                    <div className=' hover:scale-[115%] transition fixed flex gap-1 text-4xl p-4 rounded-md cursor-pointer'>
+                    <div className='hover:scale-[115%] transition fixed flex gap-1 text-4xl p-4 rounded-md cursor-pointer z-20'>
                         <div className=' px-2 py-1 rounded-md bg-black text-white dark:text-black dark:bg-white text-2xl'>
                             {searchVisible ? 'Enter' : '⌘+K'}
                         </div>

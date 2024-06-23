@@ -31,19 +31,19 @@ export const metadata: metaType = {
         link: '/posts',
         visible: true,
     },
-    setting: {
-        icon: Icon.Setting,
-        boxClass: metaStyle.setting,
-        title: 'Setting',
-        link: '/setting',
-        visible: true,
-    },
     Javascript_basic: {
         icon: Icon.Js,
         boxClass: metaStyle.js,
-        title: '자바 스크립트',
+        title: '자바 스크립트 기초',
         link: '/posts/Javascript_basic',
         visible: true,
+    },
+    Javascript_advance: {
+        icon: Icon.Js,
+        boxClass: metaStyle.js,
+        title: '자바 스크립트 심화',
+        link: '/posts/Javascript_advance',
+        visible: false,
     },
     Typescript: {
         icon: Icon.Ts,
@@ -64,6 +64,13 @@ export const metadata: metaType = {
         boxClass: metaStyle.dev,
         title: '개발',
         link: '/posts/Dev',
+        visible: true,
+    },
+    setting: {
+        icon: Icon.Setting,
+        boxClass: metaStyle.setting,
+        title: 'Setting',
+        link: '/setting',
         visible: true,
     },
 };

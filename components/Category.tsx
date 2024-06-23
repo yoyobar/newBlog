@@ -15,18 +15,6 @@ const container = {
     visible: {
         opacity: 1,
         scale: 0.9,
-        transition: {
-            delayChildren: 0.1,
-            staggerChildren: 0.1,
-        },
-    },
-};
-
-const variant = {
-    hidden: { x: -50, opacity: 0 },
-    visible: {
-        x: 0,
-        opacity: 1,
     },
 };
 
@@ -41,7 +29,7 @@ const Category = ({ onNav }: CategoryProps) => {
                     variants={container}
                     initial='hidden'
                     animate='visible'
-                    className='h-fit z-40 fixed flex flex-col gap-4 p-8 w-[300px] rounded-md bg-[rgba(255,255,255,0.98)]  dark:bg-slate-800 text-black border dark:border-black shadow-gray-400 dark:shadow-black shadow-sm'
+                    className='h-[350px] overflow-y-scroll z-40 fixed flex flex-col gap-4 p-8 w-[300px] rounded-md bg-[rgba(255,255,255,0.98)]  dark:bg-slate-800 text-black border dark:border-black shadow-gray-400 dark:shadow-black shadow-sm'
                 >
                     {category.map((item) => (
                         <Link
@@ -50,7 +38,7 @@ const Category = ({ onNav }: CategoryProps) => {
                             key={item.key}
                             href={`${item.link}`}
                         >
-                            <motion.div variants={variant} whileHover={{ scale: 1.1 }}>
+                            <motion.div whileHover={{ scale: 1.1 }}>
                                 <SubTitle type={item.key} />
                             </motion.div>
                         </Link>
