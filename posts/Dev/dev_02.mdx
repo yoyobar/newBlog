@@ -12,8 +12,8 @@ update: 2024-06-19 14:43:44
 
 ## 요소의 유형
 
-우선 **요소**의 정의를 알아보자.  계속해서 등장하는 **요소**라는 단어는 `<div></div>`
-즉 태그의 묶음 자체를 **요소** 라고 칭한다. 이런 요소의 표현 방식에는 여러가지가 존재한다.
+우선 `요소`의 정의를 알아보자.  계속해서 등장하는 `요소`라는 단어는 `<div></div>`
+즉 태그의 묶음 자체를 `요소` 라고 칭한다. 이런 요소의 표현 방식에는 여러가지가 존재한다.
 
 | display        | 설명 |
 | :-: | :-: |
@@ -22,8 +22,8 @@ update: 2024-06-19 14:43:44
 | `display:block` | 요소를 `Block` 형태로 표시한다. |
 | `display:inline-block` | 요소를 `Inline` 형태로 표시하되, `Block`의 성질을 따르게 한다. |
 
-약간 애매한 역할이 **inline-block** 인데,  표기 자체는 **inline** 요소로 표기하지만, 
-**block**의 성질을 따라 조절되는 요소다.
+약간 애매한 역할이 `inline-block` 인데,  표기 자체는 `inline` 요소로 표기하지만, 
+`block`의 성질을 따라 조절되는 요소다.
 
 ```html
 ...
@@ -43,7 +43,7 @@ update: 2024-06-19 14:43:44
 
 <p className="inline-block bg-green-500 rounded-md dark:bg-green-700 w-[50px] h-[50px]">생활</p>
 
-위를 보면 원래 `<p>` 라는 **인라인 요소**에는 길이 관련된 속성은
+위를 보면 원래 `<p>` 라는 `인라인 요소`에는 길이 관련된 속성은
 붙을 수 없지만 실제로는 적용된걸 확인할 수 있다.
 
 
@@ -57,9 +57,9 @@ HTML를 작성하다 보면 특정 요소나 속성이 내가 원하는 위치�
 
 사용방법은 간단하다. `float` 속성으로 원하는 위치를 지정하면 된다.
 
-**left** 왼쪽에 붙음
-**right** 오른쪽에 붙음
-**none** 기본 상태
+`left` 왼쪽에 붙음
+`right` 오른쪽에 붙음
+`none` 기본 상태
 
 ```html
     <style>
@@ -95,15 +95,15 @@ HTML를 작성하다 보면 특정 요소나 속성이 내가 원하는 위치�
 
 ![sample](/img/2024-05-20-17-15-53.webp)
 
-`<img>`끼리는 **block**요소에 공간이 남아 붙어있지만,
+`<img>`끼리는 `block`요소에 공간이 남아 붙어있지만,
 `<p>`요소는 배치 순서에 따라 아래로 들어가게 된다.
-그렇다면, **float**을 서로 좌, 우로 배치하게 된다면 어떻게 될까?
+그렇다면, `float`을 서로 좌, 우로 배치하게 된다면 어떻게 될까?
 
 ![sample](/img/2024-05-20-17-17-10.webp)
 
 `<img>`태그 중간에 `<p>`요소가 껴있는 다소 보기 좋지않은 상황이 벌어져 있다.
-자, 그러면 우리는 **inline** 요소인 **img** 만 좌,우로 배치하고 메세지는 원래 위치로 보내고 싶다.
-그럴 때는 **clear** 속성을 사용하면 된다. **clear**에는 **left**, **right**, **both** 가 존재하니, 상황에 맞게 쓰자.
+자, 그러면 우리는 `inline` 요소인 `img` 만 좌,우로 배치하고 메세지는 원래 위치로 보내고 싶다.
+그럴 때는 `clear` 속성을 사용하면 된다. `clear`에는 `left`, `right`, `both` 가 존재하니, 상황에 맞게 쓰자.
 
 ```html
     <style>
@@ -127,9 +127,9 @@ HTML를 작성하다 보면 특정 요소나 속성이 내가 원하는 위치�
 
 | Type | Description |
 | --- | --- |
-| `relative` | block의 **현재 위치**를 기준으로 이동한다. |
-| `absolute` | block의 **절대 위치**를 기준으로 이동한다. 상위 요소에 위치 값이 존재할 경우 그 위치를 기준으로 이동한다. |
-| `fixed` | block의 **화면 위치**를 기준으로 이동한다. 화면을 따라다니는 효과가 있어, `nav` 등 다양하게 사용된다. 첫 위치는 상위 `absolute`를 따른다. |
+| `relative` | block의 `현재 위치`를 기준으로 이동한다. |
+| `absolute` | block의 `절대 위치`를 기준으로 이동한다. 상위 요소에 위치 값이 존재할 경우 그 위치를 기준으로 이동한다. |
+| `fixed` | block의 `화면 위치`를 기준으로 이동한다. 화면을 따라다니는 효과가 있어, `nav` 등 다양하게 사용된다. 첫 위치는 상위 `absolute`를 따른다. |
 
 `position` 으로 원하는 방식을 고르고 `left` `right` `top` `bottom` 으로 원하는 대로 움직일 수 있다.
 
@@ -154,7 +154,7 @@ Z축과 사용 방법은 같다.
 요소를 다루다 보면 서로 겹치거나 하는 경우가 있을텐데
 더 위에 나타나게 하거나 아래로 보낼 수 있는것이다.
 
-<Callout>**z-index** 는 **position="static"** 을 제외한 값만 변동시킬 수 있다</Callout>
+<Callout>`z-index` 는 `position="static"` 을 제외한 값만 변동시킬 수 있다</Callout>
 
 
 위의 내용을 반드시 기억하자. 기본적으로 `position`은 `static` 인데, 이러한 `position`을 부여 하지 않고 `z-index` 를 사용한다면 아무런 변화가 없을 것이다.
@@ -184,7 +184,7 @@ Z축과 사용 방법은 같다.
       }
 ```
 
-<div className="flex text-right relative w-[100px] h-[50px]">
+<div className="text-white flex text-right relative w-[100px] h-[50px]">
   <div className="absolute z-40 left-0 w-[50px] h-[50px] bg-orange-400">div1</div>
   <div className="absolute z-30 left-8 w-[50px] h-[50px] bg-red-400">div2</div>
   <div className="absolute z-20 left-16 w-[50px]  h-[50px] bg-purple-400">div3</div>
@@ -216,7 +216,7 @@ Z축과 사용 방법은 같다.
 선택자의 종류가 생각보다 많지만, 전부 암기하기보다 그때 그때 찾아보며 활용성을 늘려보자.
 
 
-<Callout>근데, **공백** 과 **>** 는 뭐가 다른거지?</Callout> 
+<Callout>근데, `공백` 과 `>` 는 뭐가 다른거지?</Callout> 
 
 하위 선택자는 자식 선택자에 비해 더 넓은 범위를 가진다.
  
@@ -238,7 +238,7 @@ Z축과 사용 방법은 같다.
 | :active | 마우스 클릭 | a:active 태그를 마우스가 누를 경우 작동 |
 | :nth-child |              -  | `li:nth-child(1)`  `<li>` 태그의 형제 중 1번째에게 적용 |
 
-<Callout type="info">**nth-child**의 정수 부분에는 **n**과 같은 정수도 들어간다.
+<Callout type="info">`nth-child`의 정수 부분에는 `n`과 같은 정수도 들어간다.
 홀수/짝수 등 다양하게 응용 가능하고 사용할 곳이 많은 클래스다.</Callout>
 
 
@@ -263,8 +263,8 @@ Z축과 사용 방법은 같다.
 | --- | --- |
 | translate | 위치를 변경한다.  |
 | scale | 사이즈를 변경한다. |
-| skew | 쥐어 짠다는 뜻이다. 잘 사용되지 않는다. **deg** 가 단위 |
-| rotate | 각도를 변경한다. **deg** 가 단위 |
+| skew | 쥐어 짠다는 뜻이다. 잘 사용되지 않는다. `deg` 가 단위 |
+| rotate | 각도를 변경한다. `deg` 가 단위 |
 
 ```
 transform: translate(20px, 50px);

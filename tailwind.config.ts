@@ -184,6 +184,29 @@ const config: Config = {
                             fontWeight: 600,
                         },
 
+                        //! ul
+
+                        ul: {
+                            fontSize: '1.8rem',
+                            lineHeight: '2em',
+                            '@media screen and (max-width: 768px)': {
+                                lineHeight: '1.5em',
+                                fontSize: '1.6rem',
+                            },
+                        },
+                        'ul::marker': {
+                            color: 'tomato',
+                        },
+                        //! li
+
+                        li: {
+                            fontSize: '1.8rem',
+                            lineHeight: '2em',
+                            '@media screen and (max-width: 768px)': {
+                                lineHeight: '1.5em',
+                                fontSize: '1.6rem',
+                            },
+                        },
                         'li::marker': {
                             color: 'tomato',
                         },
