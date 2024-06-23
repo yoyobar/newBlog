@@ -37,39 +37,32 @@ export const metadata: metaType = {
         link: '/posts',
         visible: true,
     },
-    Javascript: {
-        icon: Icon.Js,
-        boxClass: metaStyle.js,
-        title: '자바 스크립트',
-        link: '/posts/Javascript',
-        visible: false,
-    },
-    Javascript_basic: {
+    javascript_basic: {
         icon: Icon.Js,
         boxClass: metaStyle.js,
         title: '자바 스크립트 기초',
-        link: '/posts/Javascript_basic',
+        link: '/posts/javascript_basic',
         visible: true,
     },
-    Typescript: {
+    typescript: {
         icon: Icon.Ts,
         boxClass: metaStyle.ts,
         title: '타입 스크립트',
-        link: '/posts/Typescript',
+        link: '/posts/typescript',
         visible: true,
     },
-    React: {
+    react: {
         icon: Icon.React,
         boxClass: metaStyle.react,
         title: '리액트',
-        link: '/posts/React',
+        link: '/posts/react',
         visible: true,
     },
-    Dev: {
+    dev: {
         icon: Icon.Dev,
         boxClass: metaStyle.dev,
         title: '개발',
-        link: '/posts/Dev',
+        link: '/posts/dev',
         visible: true,
     },
     setting: {
