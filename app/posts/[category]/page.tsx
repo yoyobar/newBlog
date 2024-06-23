@@ -5,9 +5,14 @@ import { getPosts } from '@/utils/parseData';
 import { metadata } from '@/utils/mdx/metaData';
 import { loadBlogCategory } from '@/utils/parseData';
 import { siteConfig } from '@/config/siteconfig';
+import { Suspense } from 'react';
 
 const BASE_DIR = 'posts';
-export async function generateMetadata({ params }: { params: { category: string; slug: string } }) {
+export async function generateMetadata({
+    params,
+}: {
+    params: { category: string; slug: string };
+}) {
     const { category } = params;
     const metaObj = metadata[category] || metadata['all'];
     const titleName = metaObj.title;
@@ -45,7 +50,9 @@ export default async function Page({ params }: { params: { category: string } })
     return (
         <PageContainer>
             <div className='w-[90%] m-auto select-none'>
-                <Browse blogs={blogs} categories={blogCategory} />
+                <Suspense fallback={<div>Loading...</div>}>
+                    <Browse blogs={blogs} categories={blogCategory} />
+                </Suspense>
             </div>
         </PageContainer>
     );
