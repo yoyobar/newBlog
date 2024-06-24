@@ -75,6 +75,7 @@ export const CommentEdit = ({
             >
                 <div className='text-white mb-4'>수정할 내용을 입력하세요</div>
                 <form
+                    autoComplete='off'
                     className='w-full flex flex-col justify-center items-center'
                     onSubmit={onEditSubmit}
                 >

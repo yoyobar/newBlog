@@ -33,6 +33,7 @@ const CommentForm = ({ onSubmit, onFormChange, form, formAlert }: CommentFormPro
                 댓글은 포스팅에 도움이됩니다. 적극적인 의견 감사드립니다.
             </div>
             <form
+                autoComplete='off'
                 onSubmit={onSubmit}
                 className='w-full bg-gray-100 dark:bg-darkInner-border rounded-md mb-10 pt-4 px-4'
             >
