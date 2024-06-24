@@ -119,7 +119,7 @@ const PageContainer = ({
                         <Theme />
                     </nav>
                 </header>
-                <nav className='transition-colors page-container relative overflow-y-scroll overflow-x-hidden bg-white dark:bg-background  h-full rounded-b-md pb-24'>
+                <nav className='transition-none md:transition-colors page-container relative overflow-y-scroll overflow-x-hidden bg-white dark:bg-background  h-full rounded-b-md pb-24'>
                     {selected && <Category onNav={navHandler} />}
 
                     <div
