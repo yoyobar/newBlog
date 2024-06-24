@@ -343,7 +343,7 @@ const MusicContainer = () => {
             </div>
             <>
                 <nav className='w-1/2 relative h-full flex-col hidden xl:flex'>
-                    <div className='fixed h-fit w-full z-20'>
+                    <div className='fixed h-fit w-full'>
                         <h1 className='mx-4 mt-8 text-white text-4xl font-normal m-0 p-0'>
                             Play List
                         </h1>

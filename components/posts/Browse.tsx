@@ -69,7 +69,11 @@ const Browse = ({ blogs, categories }: BrowseProps) => {
     };
 
     const handleKeyboardEvent = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter' || e.key === 'Escape') {
+        if (e.key === 'Enter') {
+            handleSearchBlur();
+        }
+        if (e.key === 'Escape') {
+            setSearch('');
             handleSearchBlur();
         }
     };

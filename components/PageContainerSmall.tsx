@@ -8,6 +8,7 @@ import Category from './Category';
 import { useMaximize } from '@/config/store';
 import { motion } from 'framer-motion';
 import CategoryNav from './CategoryNav';
+import Theme from './Theme';
 const PageContainerSmall = ({
     children,
 }: Readonly<{
@@ -103,8 +104,11 @@ const PageContainerSmall = ({
                     >
                         <MdOpenInFull className='left-[0.14rem] absolute w-4 h-5 font-bold text-xs text-[#146721]' />
                     </div>
+                    <nav className='absolute right-3 flex gap-5'>
+                        <Theme />
+                    </nav>
                 </header>
-                <nav className='transition-colors page-container overflow-hidden bg-background dark:bg-background h-full rounded-b-md pb-24'>
+                <nav className='transition-colors page-container overflow-hidden bg-background h-full rounded-b-md pb-24'>
                     <div className={`text-3xl prose dark:prose-invert min-w-full`}>
                         {children}
                     </div>

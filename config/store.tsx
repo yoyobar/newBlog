@@ -36,7 +36,7 @@ const useOptions = create<OptionStore>(
             setTheme: (theme: boolean) => set({ theme: theme }),
         }),
         {
-            name: 'theme',
+            name: 'option',
         }
     )
 );
