@@ -1,7 +1,6 @@
 'use client';
 import Link from 'next/link';
 import Clock from './Clock';
-
 import UserCount from './UserCount';
 import { useState } from 'react';
 import ExportedImage from 'next-image-export-optimizer';
@@ -28,7 +27,10 @@ const Header = () => {
                     flex-col items-center p-1 bg-background
                      rounded-md font-normal border border-gray-600 shadow-gray-500 shadow-sm'
                     >
-                        <div onClick={aboutHandler} className='p-2 rounded-md w-full text-center hover:bg-blue-600'>
+                        <div
+                            onClick={aboutHandler}
+                            className='p-2 rounded-md w-full text-center hover:bg-blue-600'
+                        >
                             About
                         </div>
                         <Link
@@ -45,7 +47,9 @@ const Header = () => {
                     onClick={() => {
                         setShowMenu(!showMenu);
                     }}
-                    className={`${showMenu && 'brightness-200'} cursor-pointer hover:brightness-75 transition`}
+                    className={`${
+                        showMenu && 'brightness-200'
+                    } cursor-pointer hover:brightness-75 transition`}
                     width={24}
                     height={24}
                     alt='background-logo'

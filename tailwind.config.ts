@@ -15,6 +15,9 @@ const config: Config = {
             '3xl': '1920px',
         },
         extend: {
+            backgroundImage: {
+                dark: "url('/img/main-bg.webp')",
+            },
             transitionProperty: {
                 'width-height': 'width, height',
             },
@@ -35,7 +38,7 @@ const config: Config = {
                         opacity: '0.1',
                     },
                     '100%': {
-                        left: '10rem',
+                        left: '11rem',
                         opacity: '1',
                     },
                 },

@@ -8,6 +8,7 @@ import CategoryNav from './CategoryNav';
 import Category from './Category';
 import { useMaximize } from '@/config/store';
 import { AiFillHome } from 'react-icons/ai';
+import Theme from './Theme';
 
 const PageContainer = ({
     children,
@@ -68,45 +69,64 @@ const PageContainer = ({
         }
     };
 
+    ('use client');
+
     return (
         <>
             <div
                 style={{ left: endPosition.x, top: endPosition.y }}
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
-                className={`${!maximize && 'md:border-t-[80px] md:absolute md:w-4/6 md:h-[calc(100%-40px)]'} 
+                className={`${
+                    !maximize &&
+                    'md:border-t-[80px] md:absolute md:w-4/6 md:h-[calc(100%-40px)]'
+                } 
                 static left-0 w-full h-full transition-width-height
-                border-transparent rounded-md z-10`}
+                border-transparent rounded-md z-10 page`}
             >
                 <header
                     onClick={doubleMaximizeHandler}
                     onMouseDown={handleMouseDown}
                     className='relative flex select-none items-center gap-4 pl-2 rounded-t-md w-full h-[38px] bg-[#4b4b66]'
                 >
-                    <div onClick={exitHandler} className='cursor-pointer relative w-6 h-6 rounded-full bg-[#ff5f57]'>
+                    <div
+                        onClick={exitHandler}
+                        className='cursor-pointer relative w-6 h-6 rounded-full bg-[#ff5f57]'
+                    >
                         <IoMdClose className='absolute w-full h-full rounded-full font-bold scale-x-110 text-[#aa3e39]' />
                     </div>
-                    <div onClick={exitHandler} className='cursor-pointer relative w-6 h-6 rounded-full bg-[#fabb2c]'>
+                    <div
+                        onClick={exitHandler}
+                        className='cursor-pointer relative w-6 h-6 rounded-full bg-[#fabb2c]'
+                    >
                         <div className='top-[6px] left-[3px] absolute w-[9px] h-1 rounded-md bg-[#a87f1f]'></div>
                     </div>
-                    <div onClick={maximizeHandler} className='cursor-pointer hidden md:block relative w-6 h-6 rounded-full bg-[#28c841]'>
+                    <div
+                        onClick={maximizeHandler}
+                        className='cursor-pointer hidden md:block relative w-6 h-6 rounded-full bg-[#28c841]'
+                    >
                         <MdOpenInFull className='left-[1px] top-[1px] absolute w-5 h-5 font-bold text-sm text-[#146721]' />
                     </div>
 
                     <nav className={'flex lg:hidden ml-2 h-full w-full justify-between'}>
                         <CategoryNav text='Posts' onNav={navHandler} />
                     </nav>
-                    <nav className='absolute right-6'>
+                    <nav className='absolute right-3 flex gap-5'>
                         <AiFillHome
                             onClick={() => router.push('/posts')}
-                            className='hover:text-slate-400 transition text-slate-100 text-4xl mr-10 cursor-pointer'
+                            className='hover:text-slate-400 transition text-slate-100 text-4xl cursor-pointer'
                         />
+                        <Theme />
                     </nav>
                 </header>
-                <nav className='page-container relative overflow-y-scroll overflow-x-hidden bg-white dark:bg-background h-full rounded-b-md pb-24'>
+                <nav className='transition-colors page-container relative overflow-y-scroll overflow-x-hidden bg-white dark:bg-background  h-full rounded-b-md pb-24'>
                     {selected && <Category onNav={navHandler} />}
 
-                    <div className={`${selected && `blur-sm `} transition duration-300 text-3xl prose dark:prose-invert min-w-full`}>
+                    <div
+                        className={`${
+                            selected && `blur-sm `
+                        } text-3xl prose dark:prose-invert min-w-full`}
+                    >
                         {children}
                     </div>
                 </nav>

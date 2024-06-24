@@ -6,8 +6,8 @@ export interface OptionForm {
     theme: boolean;
 }
 interface OptionStore {
-    data: OptionForm;
-    setData: (form: OptionForm) => void;
+    theme: boolean;
+    setTheme: (theme: boolean) => void;
 }
 
 interface MaximizeStore {
@@ -20,20 +20,23 @@ interface CollapseStore {
     setCollapse: () => void;
 }
 
-type OptionPersist = (config: StateCreator<OptionStore>, options: PersistOptions<OptionStore>) => StateCreator<OptionStore>;
-type MaxiMizePersist = (config: StateCreator<MaximizeStore>, options: PersistOptions<MaximizeStore>) => StateCreator<MaximizeStore>;
+type OptionPersist = (
+    config: StateCreator<OptionStore>,
+    options: PersistOptions<OptionStore>
+) => StateCreator<OptionStore>;
+type MaxiMizePersist = (
+    config: StateCreator<MaximizeStore>,
+    options: PersistOptions<MaximizeStore>
+) => StateCreator<MaximizeStore>;
 
 const useOptions = create<OptionStore>(
     (persist as OptionPersist)(
         (set) => ({
-            data: {
-                animation: true,
-                theme: true,
-            },
-            setData: (form: OptionForm) => set({ data: form }),
+            theme: false,
+            setTheme: (theme: boolean) => set({ theme: theme }),
         }),
         {
-            name: 'option',
+            name: 'theme',
         }
     )
 );

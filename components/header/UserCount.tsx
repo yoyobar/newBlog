@@ -42,7 +42,11 @@ const UserCount = () => {
 
     return (
         <>
-            <div onMouseLeave={leaveHandler} onMouseEnter={enterHandler} className='relative flex items-center gap-2 min-w-[50px]'>
+            <div
+                onMouseLeave={leaveHandler}
+                onMouseEnter={enterHandler}
+                className='relative flex items-center gap-2 min-w-[50px]'
+            >
                 <FaUser />
                 <div>{visitCount}</div>
                 <div className='ml-2 h-[15px] border-r border-r-gray-300'></div>

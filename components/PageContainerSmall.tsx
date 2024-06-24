@@ -74,7 +74,9 @@ const PageContainerSmall = ({
                 style={{ left: endPosition.x, top: endPosition.y }}
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
-                className={`${!maximize && 'md:border-t-[80px] md:absolute md:w-3/4 md:h-[900px]'} 
+                className={`${
+                    !maximize && 'md:border-t-[80px] md:absolute md:w-3/4 md:h-[900px]'
+                } 
                 static left-0 w-full h-full transition-width-height
                 border-transparent rounded-md z-10 blur-[2px]`}
             >
@@ -83,22 +85,27 @@ const PageContainerSmall = ({
                     onClick={doubleMaximizeHandler}
                     className='flex select-none items-center gap-3 pl-2 rounded-t-md w-full h-[38px] bg-[#4b4b66]'
                 >
-                    <div onClick={exitHandler} className='cursor-pointer relative w-5 h-5 rounded-full bg-[#ff5f57]'>
+                    <div
+                        onClick={exitHandler}
+                        className='cursor-pointer relative w-5 h-5 rounded-full bg-[#ff5f57]'
+                    >
                         <IoMdClose className='absolute w-full h-full rounded-full font-bold scale-x-110 text-[#aa3e39]' />
                     </div>
-                    <div onClick={exitHandler} className='cursor-pointer relative w-5 h-5 rounded-full bg-[#fabb2c]'>
+                    <div
+                        onClick={exitHandler}
+                        className='cursor-pointer relative w-5 h-5 rounded-full bg-[#fabb2c]'
+                    >
                         <div className='top-[5px] left-[3px] absolute w-[7px] h-1 rounded-md bg-[#a87f1f]'></div>
                     </div>
-                    <div onClick={maximizeHandler} className='cursor-pointer hidden md:block relative w-5 h-5 rounded-full bg-[#28c841]'>
+                    <div
+                        onClick={maximizeHandler}
+                        className='cursor-pointer hidden md:block relative w-5 h-5 rounded-full bg-[#28c841]'
+                    >
                         <MdOpenInFull className='left-[0.14rem] absolute w-4 h-5 font-bold text-xs text-[#146721]' />
                     </div>
-                    <nav className={'flex ml-2 h-full w-full justify-between'}>
-                        <CategoryNav text={'Musics'} onNav={navHandler} />
-                    </nav>
                 </header>
-                <nav className='page-container overflow-hidden bg-background dark:bg-background h-full rounded-b-md pb-24'>
-                    {selected && <Category onNav={navHandler} />}
-                    <div className={`${selected && 'blur-sm'} transition duration-300 text-3xl prose dark:prose-invert min-w-full`}>
+                <nav className='transition-colors page-container overflow-hidden bg-background dark:bg-background h-full rounded-b-md pb-24'>
+                    <div className={`text-3xl prose dark:prose-invert min-w-full`}>
                         {children}
                     </div>
                 </nav>

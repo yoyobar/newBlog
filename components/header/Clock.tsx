@@ -40,7 +40,7 @@ const Clock = () => {
     return (
         <div>
             <div>{time === '' && <Loading type={LOADING_ENUM.SMALL} />}</div>
-            <div>{time && time}</div>
+            <div className='ml-2'>{time && time}</div>
         </div>
     );
 };

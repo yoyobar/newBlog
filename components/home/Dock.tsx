@@ -33,11 +33,6 @@ const Dock = () => {
             text: DataType.MUSIC,
             class: 'hidden md:block',
         },
-        {
-            src: '/icon/setting.svg',
-            text: DataType.SETTING,
-            class: 'block',
-        },
     ];
 
     const router = useRouter();
@@ -56,10 +51,6 @@ const Dock = () => {
                 if (path === '/music') return router.push('/');
                 router.push('/music');
                 break;
-            case DataType.SETTING:
-                if (path === '/setting') return router.push('/');
-                router.push('/setting');
-                break;
         }
     };
     return (
@@ -76,7 +67,7 @@ const Dock = () => {
                 dragMomentum={false}
                 dragPropagation={false}
             >
-                <TiArrowMove className='text-slate-300 cursor-grab absolute -top-4 -left-4 text-5xl' />
+                <TiArrowMove className='text-sky-400 dark:text-slate-300 cursor-grab absolute -top-4 -left-4 text-5xl' />
                 {dockData.map((item) => (
                     <motion.div
                         whileHover={{ scale: 1.5 }}
@@ -97,7 +88,7 @@ const Dock = () => {
                             ></ExportedImage>
                         }
                         <p
-                            className={`${item.class} text-header-text text-center p-2 font-bold ml-6 absolute top-[50%] left-[100%] translate-y-[-50%] rounded-md bg-header text-xl`}
+                            className={`${item.class} text-header-text text-center p-2 font-bold ml-6 absolute top-[50%] left-[100%] translate-y-[-50%] rounded-md  bg-header text-xl`}
                         >
                             {item.text}
                         </p>

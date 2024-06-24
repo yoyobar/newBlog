@@ -27,4 +27,3 @@ export const Ts = () => <SiTypescript />;
 export const React = () => <FaReact />;
 export const Redux = () => <TbBrandRedux />;
 export const Dev = () => <SiNextra />;
-export const Setting = () => <IoIosSettings />;

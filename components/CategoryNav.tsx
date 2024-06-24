@@ -8,7 +8,6 @@ interface CategoryButtonProps {
 
 const CategoryNav = ({ onNav, text }: CategoryButtonProps) => {
     const [hovered, setHovered] = useState(false);
-    const router = useRouter();
 
     return (
         <>
@@ -19,11 +18,27 @@ const CategoryNav = ({ onNav, text }: CategoryButtonProps) => {
                     onClick={onNav}
                     className='h-full w-[32px] relative z-10 flex flex-col justify-center gap-[5px] cursor-pointer'
                 >
-                    <div className={`transition-width-height h-1 border-b border-2 rounded-md ${hovered ? 'w-5' : 'w-7'}`}></div>
-                    <div className={`transition-width-height h-1 border-b border-2 rounded-md ${hovered ? 'w-8' : 'w-5'}`}></div>
-                    <div className={`transition-width-height h-1 border-b border-2 rounded-md ${hovered ? 'w-5' : 'w-8'}`}></div>
+                    <div
+                        className={`transition-width-height h-1 border-b border-2 rounded-md ${
+                            hovered ? 'w-5' : 'w-7'
+                        }`}
+                    ></div>
+                    <div
+                        className={`transition-width-height h-1 border-b border-2 rounded-md ${
+                            hovered ? 'w-8' : 'w-5'
+                        }`}
+                    ></div>
+                    <div
+                        className={`transition-width-height h-1 border-b border-2 rounded-md ${
+                            hovered ? 'w-5' : 'w-8'
+                        }`}
+                    ></div>
                 </div>
-                <div className={` text-white animate-slideCategory left-[10rem] text-2xl top-4 ${hovered ? 'absolute' : 'hidden'}`}>
+                <div
+                    className={` text-white animate-slideCategory left-[11rem] text-2xl top-4 ${
+                        hovered ? 'absolute' : 'hidden'
+                    }`}
+                >
                     {text}
                 </div>
             </div>

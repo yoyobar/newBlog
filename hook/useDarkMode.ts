@@ -3,13 +3,13 @@ import { useTheme } from 'next-themes';
 import { useEffect } from 'react';
 
 export const useDarkMode = () => {
-    const { data } = useOptions();
+    const { theme } = useOptions();
     const { setTheme } = useTheme();
     useEffect(() => {
-        if (data.theme) {
+        if (theme) {
             setTheme('dark');
         } else {
             setTheme('light');
         }
-    }, [data, setTheme]);
+    }, [theme, setTheme]);
 };

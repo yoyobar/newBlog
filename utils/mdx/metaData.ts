@@ -19,7 +19,6 @@ export const metaStyle = {
     ts: 'text-[#3178C6]',
     react: 'text-[#61DAFB]',
     redux: 'text-[#764ABC]',
-    setting: 'text-gray-400',
     dev: 'text-rose-400',
 };
 
@@ -64,13 +63,6 @@ export const metadata: metaType = {
         boxClass: metaStyle.dev,
         title: '개발',
         link: '/posts/Dev',
-        visible: true,
-    },
-    setting: {
-        icon: Icon.Setting,
-        boxClass: metaStyle.setting,
-        title: 'Setting',
-        link: '/setting',
         visible: true,
     },
 };

@@ -1,6 +1,5 @@
 import './globals.css';
 import Header from '@/components/header/Header';
-import Snowfall from '@/components/home/SnowFall';
 import Dock from '@/components/home/Dock';
 import Provider from './Provider';
 import { Metadata, MetadataRoute } from 'next';
@@ -47,18 +46,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang='ko' suppressHydrationWarning className={`${pretendard.variable}`}>
             <body
-                style={{
-                    backgroundImage: `url(/img/main-bg.webp)`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                }}
-                className={`${pretendard.className} fixed overflow-hidden w-full h-full bg-background`}
+                className={`${pretendard.className} fixed bg-cover bg-center overflow-hidden w-full h-full bg-dark bg-background`}
             >
                 <Provider>
                     <Analytics />
                     <Header />
                     {children}
-                    <Snowfall />
+
                     <Dock />
                 </Provider>
             </body>

@@ -25,7 +25,9 @@ const MusicContainer = () => {
     //? CONTROLLER DATA STATE
     const [duration, setDuration] = useState<number>(0);
     const [currentPlaylistIndex, setCurrentPlaylistIndex] = useState<number>(0);
-    const [playerState, setPlayerState] = useState<'playing' | 'paused' | 'ended'>('paused');
+    const [playerState, setPlayerState] = useState<'playing' | 'paused' | 'ended'>(
+        'paused'
+    );
     const [paused, setPaused] = useState(false);
     const [currentTime, setCurrentTime] = useState<number>(0);
     const [volume, setVolume] = useState(50);
@@ -243,7 +245,9 @@ const MusicContainer = () => {
                     <>
                         <div
                             className='h-full min-w-[100%] xl:min-w-[50%] bg-cover absolute opacity-15'
-                            style={{ backgroundImage: `url(${selectItem.snippet.thumbnails.high.url})` }}
+                            style={{
+                                backgroundImage: `url(${selectItem.snippet.thumbnails.high.url})`,
+                            }}
                         >
                             <div className='w-full h-full'></div>
                         </div>
@@ -251,12 +255,18 @@ const MusicContainer = () => {
                         <div className='relative w-full h-full flex flex-col items-center justify-center mt-[20%] px-20'>
                             <motion.div
                                 animate={{
-                                    translateY: playerState === 'playing' ? [0, 5, 0] : [0, 0],
-                                    opacity: playerState === 'playing' ? [0.7, 1, 0.7] : [1, 1],
+                                    translateY:
+                                        playerState === 'playing' ? [0, 5, 0] : [0, 0],
+                                    opacity:
+                                        playerState === 'playing'
+                                            ? [0.7, 1, 0.7]
+                                            : [1, 1],
                                 }}
                                 transition={{ duration: 2, repeat: Infinity }}
                                 className='w-[240px] h-[240px] bg-cover rounded-full border-4 border-white shadow-sm shadow-white'
-                                style={{ backgroundImage: `url(${selectItem.snippet.thumbnails.medium.url})` }}
+                                style={{
+                                    backgroundImage: `url(${selectItem.snippet.thumbnails.medium.url})`,
+                                }}
                             ></motion.div>
 
                             <input
@@ -273,36 +283,56 @@ const MusicContainer = () => {
                                 <div>{formatTime(duration)}</div>
                             </div>
 
-                            <div className='p-8 text-white text-4xl h-[100px] md:h-[80px] mt-6'>{selectItem.snippet.title}</div>
+                            <div className='p-8 text-white text-4xl h-[100px] md:h-[80px] mt-6'>
+                                {selectItem.snippet.title}
+                            </div>
                             <div className='flex flex-col justify-between items-center mt-8 text-white'>
                                 <div className='w-[150px] flex justify-between items-center'>
-                                    <motion.button whileHover={{ opacity: 0.6 }} onClick={playPreviousHandler}>
+                                    <motion.button
+                                        whileHover={{ opacity: 0.6 }}
+                                        onClick={playPreviousHandler}
+                                    >
                                         <IoPlaySkipBack className='text-6xl' />
                                     </motion.button>
 
                                     {playerState === 'playing' && (
-                                        <motion.button whileHover={{ opacity: 0.6 }} onClick={pauseHandler}>
+                                        <motion.button
+                                            whileHover={{ opacity: 0.6 }}
+                                            onClick={pauseHandler}
+                                        >
                                             <FaPause className='text-6xl' />
                                         </motion.button>
                                     )}
                                     {playerState !== 'playing' && (
-                                        <motion.button whileHover={{ opacity: 0.6 }} onClick={playHandler}>
+                                        <motion.button
+                                            whileHover={{ opacity: 0.6 }}
+                                            onClick={playHandler}
+                                        >
                                             <FaPlay className='text-5xl' />
                                         </motion.button>
                                     )}
 
-                                    <motion.button whileHover={{ opacity: 0.6 }} onClick={playNextHandler}>
+                                    <motion.button
+                                        whileHover={{ opacity: 0.6 }}
+                                        onClick={playNextHandler}
+                                    >
                                         <IoPlaySkipForward className='text-6xl' />
                                     </motion.button>
                                 </div>
                                 <div className='flex gap-4 mt-2'>
-                                    {volume ? <IoMdVolumeHigh className='text-5xl' /> : <IoMdVolumeOff className='text-5xl' />}
+                                    {volume ? (
+                                        <IoMdVolumeHigh className='text-5xl' />
+                                    ) : (
+                                        <IoMdVolumeOff className='text-5xl' />
+                                    )}
 
                                     <input
                                         className='accent-white '
                                         type='range'
                                         value={volume}
-                                        onChange={(e) => setVolume(Number(e.target.value))}
+                                        onChange={(e) =>
+                                            setVolume(Number(e.target.value))
+                                        }
                                     ></input>
                                 </div>
                             </div>
@@ -313,13 +343,20 @@ const MusicContainer = () => {
             </div>
             <>
                 <nav className='w-1/2 relative h-full flex-col hidden xl:flex'>
-                    <div className='fixed h-fit w-full'>
-                        <h1 className='mx-4 mt-8 text-white text-4xl font-normal m-0 p-0'>Play List</h1>
+                    <div className='fixed h-fit w-full z-20'>
+                        <h1 className='mx-4 mt-8 text-white text-4xl font-normal m-0 p-0'>
+                            Play List
+                        </h1>
                         <div className='mx-4 text-gray-400 text-2xl mb-8'>
-                            유튜브로 재생되므로 유튜브 프리미엄이 있어야 광고가 나오지 않습니다.
+                            유튜브로 재생되므로 유튜브 프리미엄이 있어야 광고가 나오지
+                            않습니다.
                         </div>
                     </div>
-                    <div className={`${maximize ? 'h-[700px]' : 'h-[700px]'} mt-[100px] overflow-y-scroll`}>
+                    <div
+                        className={`${
+                            maximize ? 'h-[700px]' : 'h-[700px]'
+                        } mt-[100px] overflow-y-scroll`}
+                    >
                         {playlistItems.map((item) => (
                             <motion.div
                                 onClick={() => selectHandler(item)}
@@ -328,7 +365,9 @@ const MusicContainer = () => {
                             >
                                 <div
                                     className='min-w-[180px] min-h-[100px] bg-cover rounded-md'
-                                    style={{ backgroundImage: `url(${item.snippet.thumbnails.medium.url})` }}
+                                    style={{
+                                        backgroundImage: `url(${item.snippet.thumbnails.medium.url})`,
+                                    }}
                                 ></div>
 
                                 <div className=''>{item.snippet.title}</div>
