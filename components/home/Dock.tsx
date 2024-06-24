@@ -9,11 +9,8 @@ const Dock = () => {
     const path = usePathname();
 
     enum DataType {
-        WIKI = 'Wiki',
-        ARCHIVE = 'Archives',
-        MESSAGE = 'Message',
-        MUSIC = 'music',
-        SETTING = 'Setting',
+        WIKI = 'Blog',
+        MUSIC = 'Music',
     }
 
     //? 개발 진행단계에 따라 차차 visible을 헤제하여 dock을 늘릴 예정임
@@ -21,11 +18,6 @@ const Dock = () => {
         {
             src: '/icon/wiki.svg',
             text: DataType.WIKI,
-            class: 'block',
-        },
-        {
-            src: '/icon/message.svg',
-            text: DataType.MESSAGE,
             class: 'block',
         },
         {
@@ -43,10 +35,6 @@ const Dock = () => {
                 if (path === '/posts') return router.push('/');
                 router.push('/posts');
                 break;
-            // case DataType.MESSAGE:
-            //     if (path === '/message') return router.push('/');
-            //     router.push('/message');
-            //     break;
             case DataType.MUSIC:
                 if (path === '/music') return router.push('/');
                 router.push('/music');

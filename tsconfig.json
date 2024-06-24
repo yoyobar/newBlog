@@ -22,6 +22,14 @@
             "@/*": ["./*"]
         }
     },
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "utils/Modules.ts", "app/components/SnowFall.jsx", "utils/imageConvert.js"],
+    "include": [
+        "next-env.d.ts",
+        "**/*.ts",
+        "**/*.tsx",
+        ".next/types/**/*.ts",
+        "utils/Modules.ts",
+        "app/components/SnowFall.jsx",
+        "utils/imageConvert.js"
+    ],
     "exclude": ["node_modules", "**/*.md", "**/*.mdx"]
 }

@@ -90,3 +90,19 @@ export type Database = {
         };
     };
 };
+
+export interface Comment {
+    content: string;
+    created_at: Date;
+    updated_at: Date;
+    name: string;
+    id: string;
+    admin: string;
+}
+
+export interface CommentFormType {
+    name: string;
+    password: string;
+    path: string;
+    content: string;
+}
