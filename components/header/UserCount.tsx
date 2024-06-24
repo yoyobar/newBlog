@@ -49,7 +49,7 @@ const UserCount = () => {
             >
                 <FaUser />
                 <div>{visitCount}</div>
-                <div className='ml-2 h-[15px] border-r border-r-gray-300'></div>
+                <div className='ml-2 mr-2 h-[15px] border-r border-r-gray-300'></div>
                 {focus && <Modal>하루 방문자 수</Modal>}
             </div>
         </>
