@@ -5,6 +5,7 @@ import Loading from '../Loading';
 import { LOADING_ENUM } from '@/config/types';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
+import { useEffectOnce } from 'react-use';
 
 dayjs.locale('ko');
 
@@ -23,6 +24,10 @@ const formatTime = (date: Date) => {
 
 const Clock = () => {
     const [time, setTime] = useState<string>('');
+
+    useEffectOnce(() => {
+        setTime(formatTime(new Date()));
+    });
 
     useEffect(() => {
         const timeInterval = setInterval(() => {
