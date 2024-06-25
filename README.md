@@ -3,7 +3,7 @@
 <img src="https://img.shields.io/badge/-typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=48a0eb">
 <img src="https://img.shields.io/badge/-React-20232a?style=for-the-badge&logo=React&logoColor=61dafb">
 <img src="https://img.shields.io/badge/-Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white"><br/>
-  <img src="https://img.shields.io/badge/-Firebase-ffca28?style=for-the-badge&logo=firebase&logoColor=red">
+  <img src="https://img.shields.io/badge/-Supabase-ffca28?style=for-the-badge&logo=supabase&logoColor=red">
   <img src="https://img.shields.io/badge/-TailwindCSS-647f8d?style=for-the-badge&logo=tailwindcss&logoColor=06B6D4">
   <img src="https://img.shields.io/badge/-ZUSTAND-5c1f70?style=for-the-badge">
 </p>
@@ -27,14 +27,9 @@
 -   Automator를 통한 webp 변환
 -   코드 블럭, 특수 `mdx`문법의 대한 형태 지정
 -   인터랙티브 반응형 디자인
+-   동적 메타데이터
+-   목차
+-   댓글
 
-## COMMENT
 
--   인증 구현
--   전체 코멘트를 분류하고 관리
--   firebase realtime DB를 통한 댓글 관리
-
-## DIARY
-
--   Calendar 라이브러리 중 하나로 캘린더 구현
--   캘린더 별 짧은 일기장 구현 및 라우팅
+자세한 내용은 해당 블로그에서 작성할 예정입니다.
