@@ -20,6 +20,11 @@ interface CollapseStore {
     setCollapse: () => void;
 }
 
+interface ModalStore {
+    modal: boolean;
+    setModal: (bool: boolean) => void;
+}
+
 type OptionPersist = (
     config: StateCreator<OptionStore>,
     options: PersistOptions<OptionStore>
@@ -57,4 +62,9 @@ export const useMaximize = create<MaximizeStore>(
 export const useCollapse = create<CollapseStore>((set) => ({
     collapse: false,
     setCollapse: () => set((state) => ({ collapse: !state.collapse })),
+}));
+
+export const useModal = create<ModalStore>((set) => ({
+    modal: true,
+    setModal: (bool: boolean) => set(() => ({ modal: bool })),
 }));
