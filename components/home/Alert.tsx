@@ -46,7 +46,7 @@ const Alert = ({ title, subTitle }: AlertProps) => {
                         className='border border-[#565656] absolute
                         right-10 top-20 p-4 rounded-3xl bg-slate-800
                         w-[350px] min-h-[78px] shadow-sm shadow-[#3f3f3f]
-                        hidden sm:flex select-none flex-col items-center gap-4'
+                        hidden sm:flex select-none flex-col items-center gap-4 text-white'
                     >
                         <div className='flex w-full h-full gap-8'>
                             <MdTipsAndUpdates className='h-full flex self-center justify-center text-4xl text-yellow-300 animate-pulse' />

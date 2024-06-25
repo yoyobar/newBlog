@@ -38,7 +38,9 @@ const Icon = ({ src, name, href, hidden, desc }: IconProps) => {
             whileDrag={{ opacity: 0.5, scale: 0.9 }}
             dragPropagation={false}
             onClick={doubleSelectHandler}
-            className={`${hidden && 'hidden'} sm:block relative w-[60px] h-[60px]`}
+            className={`${
+                hidden && 'hidden'
+            } text-white sm:block relative w-[60px] h-[60px]`}
             style={{ cursor: 'grab' }}
             dragMomentum={false}
         >

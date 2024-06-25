@@ -9,7 +9,7 @@ const Dock = () => {
                 hidden={false}
                 name='Blog'
                 href='/posts'
-                src='/icon/Wiki.svg'
+                src='/icon/wiki.svg'
             />
             <Icon
                 desc={'음악 플레이어를 킵니다.'}
