@@ -1,8 +1,117 @@
 ---
-title: '05. 커스텀 컴포넌트로 꾸미기'
+title: '05. 목차, TOC 만들기'
 description: ''
 image: '/img/2024-06-26-13-52-42.webp'
 tags: [typescript,next.js,tailwindCSS]
 date: 2024-07-01 13:56:38
 update: 2024-06-26 13:56:38
 ---
+
+## 개요
+TOC, 목차의 간단한 설계를 위해 `rehype-slug`
+라는 라이브러리를 소개드린적이 있습니다.
+
+이 라이브러리는 mdx에서 파싱된 h1,h2,h3에 고유의 id를 부여하는데요
+실제로 mdx상에서 어떻게 부여됫는지 확인해봅시다.
+
+![slug](/img/2024-06-26-19-25-51.webp)
+
+제가 작성한 내용이 id로 들어가는걸 확인할 수 있습니다.
+
+이제 이 id를 활용해서 `intersectionObserver API`로 설계 할 수 있습니다. 물론 생각보다 간단하진 않습니다..
+
+---
+### InterSectionObserver API 설계
+
+```ts title="utils/observe.ts"
+import { Dispatch, SetStateAction } from 'react';
+
+const observerOption = (root: Element) => ({
+    threshold: 0.4,
+    root,
+    rootMargin: '-80px 0px 0px 0px',
+});
+
+export const getIntersectionObserver = (root: Element, setState: Dispatch<SetStateAction<string>>) => {
+    let direction = '';
+    let prevYposition = root.scrollTop;
+
+    const checkScrollDirection = (prevY: number) => {
+        if (root.scrollTop === 0 && prevY === 0) return;
+        else if (root.scrollTop > prevY) direction = 'down';
+        else direction = 'up';
+
+        prevYposition = root.scrollTop;
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            checkScrollDirection(prevYposition);
+
+            if ((direction === 'down' && !entry.isIntersecting) || (direction === 'up' && entry.isIntersecting)) {
+                setState(entry.target.id);
+            }
+        });
+    }, observerOption(root));
+
+    return observer;
+};
+```
+
+`intersectionObserver` 는 감시를 시도할 대상을 정하고,
+해당 요소가 보이면 감시상태를 전달합니다.
+
+스크롤이 이전위치보다 내려가면 `down`, 올라가면 `up`으로 설정하고
+각 관찰대상이 뷰포트에 들어오거나 나갈때 실행됩니다.
+
+설계된 `intersectionObserver`를 이제 각 태그에 할당 하겠습니다.
+
+---
+
+### 목차 설계
+
+```tsx title="components/toc/index.tsx"
+const Mdx_Toc = () => {
+    const [currentId, setCurrentId] = useState<string>('');
+    const [headingEls, setHeadingEls] = useState<Element[]>([]);
+
+    useEffect(() => {
+        const pageContainer = document.querySelector('.page-container');
+        if (!pageContainer) return;
+
+        const observer = getIntersectionObserver(pageContainer, setCurrentId);
+        const headingElements = Array.from(document.querySelectorAll('h2, h3'));
+
+        setHeadingEls(headingElements);
+
+        headingElements.forEach((header) => {
+            observer.observe(header);
+        });
+
+        return () => {
+            headingElements.forEach((header) => {
+                observer.unobserve(header);
+            });
+        };
+    }, []);
+
+    return (...)
+}
+```
+`page-container` 클래스를 추적하면서 현재 감시된 요소를 세팅합니다.
+
+감시된 요소는 `document`내에 존재하는 모든 h2, h3태그 입니다.
+
+
+
+- currentId에 현재 감시된 요소가 전달됩니다.
+- headingEls에 게시물 내에 전체 태그가 전달됩니다.
+  
+이를 통해 현재 감시된 요소에 따라 스타일을 주고 
+해당 element를 클릭하면 `element.scrollIntoView`를 호출하여 감시요소의 위치를 추적할 수 있습니다.
+
+이를 통해 목차를 구현하실수 있겠습니다.
+
+---
+
+다음 포스트는 `supabase` 를 활용하여 방문자 집계기능을 제작해보겠습니다.

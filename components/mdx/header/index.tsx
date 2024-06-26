@@ -25,7 +25,8 @@ const Mdx_Header = ({ frontMatter }: { frontMatter: FrontMatterTypes }) => {
             {frontMatter?.image && (
                 <div className='relative min-w-full min-h-[200px] md:min-h-[350px] mt-4'>
                     <ExportedImage
-                        className='rounded-md m-0 p-0'
+                        sizes='(max-width: 1000px) 50vw, 450px'
+                        className='rounded-md p-0 m-0 inset-0 object-cover text-transparent'
                         fill
                         alt={frontMatter.description}
                         src={frontMatter.image}

@@ -1,8 +1,136 @@
 ---
-title: '03. MDX 추가 데이터 설정'
-description: ''
+title: '03. 다크 / 라이트 테마 설계하기'
+description: '블로그 만들기, 라이트/다크 테마 설계를 다룹니다.'
 image: '/img/2024-06-26-13-52-42.webp'
 tags: [typescript,next.js,tailwindCSS]
-date: 2024-06-29 13:56:38
-update: 2024-06-26 13:56:38
+date: 2024-06-26 18:53:55
+update: 2024-06-26 18:53:55
 ---
+
+## 개요
+
+사실 `tailwindCSS` + `Next.js` 환경에서 테마 다루기는
+아주 간단해서 굳이 제가 작성할 필요는 없지만,
+
+다음에 또 설계해야할 때 기록목적으로 작성해두겠습니다.
+
+`next.js` 환경에서 테마를 아주 쉽게 다루게 해주는 `next/themes` 라이브러리를 이용해서 간단하계 설계해봅시다.
+
+`npm install next-themes`
+
+## 테마 적용하기
+
+저는 항상 볼 수 있는 블로그 우측상단에 테마버튼을 만들었습니다. 우선 `tailwindCSS`의 기본설정을 해야합니다.
+
+```typescript title="tailwind.config.ts"
+const config: Config = {
+    darkMode: 'class',
+}
+```
+
+이전 글에서 예시를 보고 이미 적용하신 분도 있을 수 있겠지만
+위와 같이 `class`를 통해 `dark`모드를 구별하겠다는 명시를 해야합니다.
+
+그리고 가장 상위 `layout.tsx`를 감쌀 `Provider.tsx`를 하나 만듭시다.
+
+```tsx title="app/Provider.tsx"
+import { ThemeProvider } from 'next-themes';
+
+const Provider = ({ children }: { children: React.ReactNode }) => {
+    return <ThemeProvider attribute='class'>{children}</ThemeProvider>;
+};
+
+export default Provider;
+```
+
+이제 이 `Provider`로 `layout.tsx`에서 `body`를 감싸줍시다.
+
+```tsx title="app/layout.tsx"
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+    return (
+        <html lang='ko' suppressHydrationWarning className={`${pretendard.variable}`}>
+            <body
+                className={`${pretendard.className} fixed bg-cover bg-center overflow-hidden w-full h-full bg-dark bg-background`}
+            >
+                <Provider>
+                    <Analytics />
+                    <Header />
+                    {children}
+                    <Dock />
+                </Provider>
+            </body>
+        </html>
+    );
+}
+```
+다른 추가적인 컴포넌트는 신경안쓰셔도 됩니다. 이런식으로
+감싸서 적용시킬 수 있습니다.
+
+<Callout type='danger'>html 태그에 suppressHydrationWarning 키워드를 추가합니다. 
+html에서의 잘못된 해석구문 경고를 발생시키지 않게 해줍니다. [참조](https://nextjs.org/docs/messages/react-hydration-error)</Callout>
+
+이제 테마는 적용되었습니다. 근데 실제로 테마가 변동됫다는걸
+인식할 주체가 필요한데요, `useEffect`를 활용한 커스텀 훅으로 작성해봅시다.
+
+
+### 커스텀 훅 제작
+```tsx title="hook/useDarkMode.ts"
+import useOptions from '@/config/store';
+import { useTheme } from 'next-themes';
+import { useEffect } from 'react';
+
+export const useDarkMode = () => {
+    const { theme } = useOptions();
+    const { setTheme } = useTheme();
+    useEffect(() => {
+        if (theme) {
+            setTheme('dark');
+        } else {
+            setTheme('light');
+        }
+    }, [theme, setTheme]);
+};
+```
+
+저는 전역상태로 `theme`라는 값을 만들어서 관리하고 있지만,
+페이지 새로고침시에도 유지할 생각이 없으시다면 이와 같이 전역상태로 선언하지 않아도 됩니다.
+
+제 코드는 참고만 하시고, 상황에 맞게 테마적용을 작성해주세요.
+
+이제 테마를 바꾸는 버튼이 존재하는곳에서 `useDarkMode`가
+`State`가 바뀔때마다 실행시키며 적용된 값을 바꾸면 됩니다.
+
+
+```tsx title="components/Theme.tsx"
+import useOptions from '@/config/store';
+import { MdDarkMode, MdLightMode } from 'react-icons/md';
+import { useDarkMode } from '@/hook/useDarkMode';
+
+const Theme = () => {
+    const { theme, setTheme } = useOptions();
+    useDarkMode();
+
+    return (
+        <div className='cursor-pointer flex justify-center items-center relative text-white'>
+            {theme ? (
+                <MdDarkMode
+                    className='hover:text-slate-400 text-4xl transition'
+                    onClick={() => setTheme(false)}
+                />
+            ) : (
+                <MdLightMode
+                    className='hover:text-slate-400 text-4xl transition'
+                    onClick={() => setTheme(true)}
+                />
+            )}
+        </div>
+    );
+};
+
+export default Theme;
+```
+
+이제 다크/라이트 테마 적용이 완료되었습니다. 스타일이 필요한
+모든 곳에서 `dark:bg-slate-300`등 `dark:`를 붙여서 스타일을 매겨서 사용합니다.
+
+다음 포스트에서는 `MDX`의 꽃, 커스텀 컴포넌트에 대해 소개하겠습니다.

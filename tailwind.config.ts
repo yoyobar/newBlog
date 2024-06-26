@@ -92,6 +92,12 @@ const config: Config = {
             typography: {
                 DEFAULT: {
                     css: {
+                        // ! figure
+                        figure: {
+                            margin: 0,
+                            padding: 0,
+                        },
+
                         // ! <p> 태그
                         p: {
                             fontSize: '1.8rem',

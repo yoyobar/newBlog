@@ -18,7 +18,7 @@ export const FigCaption = ({
     children?: ReactNode;
 }): ReactElement => {
     return (
-        <div className='text-sky-200 text-2xl flex gap-1 items-center CiFileOn relative top-10 left-32 z-20'>
+        <div className='text-sky-200 text-2xl flex gap-1 items-center relative top-10 left-32 z-20'>
             <div>
                 <FaFile />
             </div>
@@ -67,7 +67,9 @@ export const CodeBlock = ({
                         <div className='w-[12px] h-[12px] rounded-full bg-[#f0bf4f]'></div>
                         <div className='w-[12px] h-[12px] rounded-full bg-[#6fc855]'></div>
                     </div>
-                    <div className='text-rose-500 text-2xl'>{language}</div>
+                    <div className='text-rose-500 text-2xl hidden sm:block'>
+                        {language}
+                    </div>
                 </div>
                 <pre
                     className='p-0 m-0 w-full rounded-b-md rounded-t-none border dark:border-[#3a3b45]'
