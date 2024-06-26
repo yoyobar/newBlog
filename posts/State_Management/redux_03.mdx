@@ -1,0 +1,160 @@
+---
+title: 'Redux와 비동기적인 처리, Redux-thunk'
+description: 'Redux-thunk, 비동기 전역 데이터 처리를 다룹니다.'
+image: '/img/redux.webp'
+tags: [react, redux, 전역 상태관리]
+date: 2024-05-26 10:53:34
+update: 2024-06-26 10:53:34
+---
+
+
+
+# Redux-thunk
+
+![redux-thunk](/img/2024-05-29-12-38-37.webp)
+
+> redux-thunk는 리덕스를 사용하는 프로젝트에서 비동기 작업을 처리할 때 가장 기본적으로 사용하는 미들웨어입니다.
+
+리덕스에서 전역적인 상태를 관리하면서 느낄 수 있는 부분이지만, 만약 내가 전역적으로 
+관리해야될 상태가 비동기적인 데이터라면 어떻게 처리해야될까? 
+
+이러한 리덕스에게 `객체` 뿐만아니라 `함수` 또한 `dispatch`를 지원해줌으로서 비동기 처리를 
+지원해주는게 `redux-thunk`다. 기존 `redux`의 경우 별개의 라이브러리로서 설치해야되지만, 
+`redux-toolkit`을 사용할 경우 별개의 라이브러리 없이 사용할 수 있다. 그부분에 대해서 다뤄보고자 한다. 
+
+<Callout type='info'>기존 dispatch의 경우 객체 형태만 지원하지만, `redux-thunk`에서는 함수 형태도 지원한다.</Callout>
+
+기본적인 사용법을 다루기 전에, 리듀서와 스토어부터 설정하고 해당 파일에 예를 들어 작성하겠다.
+
+## 사전 작업
+
+```js filename="store/countReducer.js"
+import {createSlice} from '@reduxjs/toolkit'
+
+const counterReducer = createSlice({
+    name: 'counter',
+    initialState : 0,
+
+    reducers: {
+        up: (state) => {
+            state += 1
+        },
+        down: (state) => {
+            state -= 1
+        } 
+    }
+})
+
+export const { up, down } = counterReducer.actions;
+export default counterReducer;
+```
+
+```js filename="store/index.js"
+import {configureStore} from '@reduxjs/toolkit'
+import {counterReducer} from './countReducer'
+
+const store = configureStore({
+    reducer: {
+        count: counterReducer,
+    }
+})
+```
+
+간단한 숫자데이터를 다루는 `counterReducer`와 해당 데이터를 스토어에 등록하였다. 
+이제 비동기로 숫자데이터를 다루는 부분을 제작해보겠다.
+
+
+## 단순한 비동기 작업의 경우
+
+우선, `redux-toolkit`에서는 `createAsyncThunk`라는 문법을 제공한다. 
+해당 문법을 활용해서 간단한 비동기 처리를 구현할 수 있다. 
+
+
+```js filename="store/countReducer.js"
+export const counterUpThunk = createAsyncThunk(
+    'counter/slowPlus',
+    (value, {dispatch}) => {
+        setTimeout(() => {
+            dispatch( counterSlice.actions.plus())
+        }, 1000)
+    } 
+)
+```
+
+일반적인 비동기 처리는 간단하다. 이렇게 구현한 함수를 `dispatch(counterThunk())`로 호출하면 완료된다. 
+함수선언시 첫 매개변수는 `dispatch`로 받아올 수 있는 값이다. 
+별도로 필요하지 않다면 선언하지 않아도 된다.
+
+## Promise 형태의 작업일 경우
+
+`Promise`를 리턴하는 경우 살짝 복잡해진다.  `Promise`의 상태로는 `fulfilled`, `rejected`, `pending` 3가지가 있는데, 
+각 상황에 따라 다른 `dispatch`를 동작시킬 수 있기 때문에 상황에 맞는 구성이 필요하다.
+
+
+```js filename="store/countReducer.js"
+export const countUpThunk = createAsyncThunk(
+    'counter/slowPlus',
+    async (value) => {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                const randomReject = Math.floor(Math.random() * 10) + 1
+                if (randomReject > 7) reject(`전송 실패 ${value}`)
+                resolve(1)
+            }, 1000)
+        })
+    }
+)
+export const countDownThunk = createAsyncThunk(
+    'counter/slowMinus',
+    async (value) => {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                const randomReject = Math.floor(Math.random() * 10) + 1
+                if (randomReject > 7) reject(`전송 실패 ${value}`)
+                resolve(1)
+            }, 1000)
+        })
+    }
+)
+```
+
+우선 `Promise`문을 작성한다.  
+이제 해당 `Promise`를 `Reducer`에서 불러와서 `extraReducers`를 추가로 선언해서 작성하면 된다.
+
+```js filename="store/countReducer.js"
+import {createSlice} from '@reduxjs/toolkit'
+
+const counterReducer = createSlice({
+    name: 'counter',
+    initialState : 0,
+
+    reducers: {
+        up: (state) => {
+            state += 1
+        },
+        down: (state) => {
+            state -= 1
+        } 
+    },
+
+    extraReducers: (builder) => {
+        builder.addCase(countUpThunk.fulfilled, (state, action) => {
+            state += action.payload
+        })
+        builder.addCase(countUpThunk.rejected, (state, action) => {
+            alert(action.error.message)
+        })
+        builder.addCase(countDownThunk.fulfilled, (state, action) => {
+            state -= action.payload
+        })
+        builder.addCase(countDownThunk.rejected, (state, action) => {
+            alert(action.error.message)
+        })
+    }
+})
+
+export const { up, down } = counterReducer.actions;
+export default counterReducer;
+```
+
+이제 사용하고자 하는 컴포넌트에서 `dispatch(countUpThunk())`으로 명시해서 사용할 수 있다. 

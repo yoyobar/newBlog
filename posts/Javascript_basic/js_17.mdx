@@ -1,0 +1,189 @@
+---
+title: '클래스 (Class)'
+description: 'ES6의 추가기능중 클래스 기능을 살펴봅니다.'
+image: '/img/js.webp'
+tags: [js, class, 클래스]
+date: 2024-05-26 10:20:31
+update: 2024-06-26 10:20:31
+---
+
+## 클래스
+
+`class`는 `ES6`에 추가된 기능으로서, 생성자함수를 대신해서 사용하는 방법이다.
+
+생성자 함수와 비교하며 알아보자.
+
+```jsx
+const User1 = function (name, age) {
+    this.name = name;
+    this.age = age;
+    this.showName = function () {
+        console.log(this.name);
+    };
+};
+
+class User2 {
+    constructor(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+    showName = function () {
+        console.log(this.name);
+    };
+}
+
+const tom = new User1('tom', '24');
+const mike = new User2('mike', '27');
+```
+
+생성하고 비교를해봐도 크게 달라보이지 않는다. 무엇이 다를까?
+
+1. 생성자로 생성된 함수는 프로토타입으로 들어간다.
+2. 생성자로 생성된 변수는 `new`를 할당하지않을경우, 에러가 발생한다.
+
+### 메서드 오버라이딩 (메서드 상속)
+
+클래스를 상속하기위해서는 `extends` 키워드를 사용해야한다. 이를 구현해보겠다.
+
+```jsx
+class User {
+    constructor(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+    myName() {
+        console.log(this.name);
+    }
+}
+
+class User2 extends User {
+    myAge() {
+        console.log(this.age);
+    }
+}
+
+const tom = new User2('tom', '24');
+tom.myAge(); // 24
+tom.myName(); // 'tom'
+```
+
+`User`를 상속받은 `User2`가 자신만의 함수를 가지고있지만 아무문제 없이 실행된다는 점을 확인할 수 있다.
+
+그렇다면 만약 `User2`에게 동일한 이름의 함수가 존재할 경우는 어떻게 될까?
+
+```jsx
+(...)
+
+class User2 extends User {
+    myAge() {
+        console.log(this.age);
+    }
+    myName() {
+        console.log(this.name + '!!!');
+    }
+}
+
+const tom = new User2('tom', '24');
+tom.myAge(); // 24
+tom.myName(); // 'tom!!!'
+```
+
+동일한 이름으로 메서드를 지정하니 덮어씌워진걸 확인할 수 있다.
+
+만약 부모의 메서드를 그대로 사용하면서 기능만 추가하고 싶다면 어떻게 해야할까?
+
+```jsx
+class User2 extends User {
+    myAge() {
+        console.log(this.age);
+    }
+    myName() {
+        super.myName();
+        console.log(this.name + '!!!');
+    }
+}
+
+const tom = new User2('tom', '24');
+tom.myAge(); //24
+tom.myName();
+//tom
+//tom!!!
+```
+
+부모의 메서드를 사용하면서 자신의 메서드또한 처리하는걸 확인할 수 있다. 이것이 `메소드 오버라이딩`이다.
+
+### 오버 라이딩
+
+부모에게 `constructor`를 사용하지 않고, 자신에게 `constructor`를 부여해보자.
+
+```jsx
+
+class User2 extends User {
+    constructor() {
+        this.birthday = '01/03'; //ReferenceError: Must call super constructor..
+    myAge() {
+        console.log(this.age);
+    }
+    myName() {
+        super.myName();
+        console.log(this.name + '!');
+    }
+}
+
+const tom = new User2('tom', '24');
+console.log(tom);
+
+```
+
+에러가 발생하는걸 확인할 수 있다. 에러에서도 알수 있듯이 `constructor`를 사용할 경우에는 `super()`를 사용해야한다.
+
+```jsx
+
+class User2 extends User {
+    constructor() {
+        super();
+        this.birthday = '01/03';
+    }
+    myAge() {
+        console.log(this.age);
+    }
+    myName() {
+        super.myName();
+        console.log(this.name + '!');
+    }
+}
+
+const tom = new User2('tom', '24');
+console.log(tom); //undefined, undefined, '01/03'
+
+```
+
+하지만 사용할 경우 값이 넘어가지 않는다. 이건 `super`로 우리가 생성자를 만들 때 매개변수로 입력한 값을 보내줘야 하기 때문이다.
+
+```jsx
+class User2 extends User {
+    constructor(name, age, birthday) {
+        super(name, age);
+        this.birthday = birthday;
+    }
+    myAge() {
+        console.log(this.age);
+    }
+    myName() {
+        super.myName();
+        console.log(this.name + '!');
+    }
+}
+
+const tom = new User2('tom', '24', '01/03');
+console.log(tom);
+//User2 { name: 'tom', age: '24', birthday: '01/03' }
+```
+
+이런식으로 할경우 문제없이 원하는대로 확장할 수 있다는점을 확인할 수 있다.
+
+### 요약
+
+- 생성자와 동일하게 사용가능한 `Class` 문법
+- 실제로는 `prototype`을 활용해서 생성되는 생성자, 불편한 점이 꽤 있다.
+- 상속을 좀더 쉽게 구현할 수 있다.

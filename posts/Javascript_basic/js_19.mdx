@@ -1,0 +1,142 @@
+---
+title: '제너레이터'
+description: '기본적인 제너레이터를 다룹니다.'
+image: '/img/js.webp'
+tags: [js, Generator, 제너레이터]
+date: 2024-05-26 10:33:54
+update: 2024-06-26 10:33:54
+---
+
+
+함수의 실행을 중간에 멈췄다가 재개할 수 있는 문법이다. `*`로 함수에 표기하여 사용한다.
+
+`yield`와 `next`, `return`, `throw`등의 문법이 추가로 제공된다.
+
+```jsx
+function* fn() {
+	console.log(1)
+	yield 1;
+	console.log(2)
+	console.log(3)
+	yield 2;
+	console.log(4)
+	yield 3;
+	return '완료';
+}
+
+const a = fn();
+a.next() // 1, done: false
+a.next() // 2 3, done: false
+a.next() // 4, done: false
+a.next() //완료, done: true
+```
+- `next:` 제너레이터를 진행하는데 사용된다.
+- `return:` 제너레이터의 `return`문을 실행하고 종료한다.
+- `throw:` 제너레이터의 `error`을 입력받아 실행한다.
+
+`return`은 알겠는데, `throw`가 어떻게 동작하는지 확인해보자, `try catch` 문법으로 확인할 수 있다.
+
+```jsx
+function* fn() {
+    try {
+        console.log(1);
+        yield 1;
+        console.log(2);
+        console.log(3);
+        yield 2;
+        console.log(4);
+        yield 3;
+    } catch (error) {
+        console.log(error);
+    }
+    return '완료';
+}
+
+const a = fn();
+a.next(); //작동 X
+a.throw('에러 발생'); //Error: 에러 발생
+a.next(); //undefined, done:false;
+```
+
+`return` 과 마찬가지로 이후 `next`가 호출되어도 `undefined`가 발생한다.
+
+```jsx
+function* world() {
+    console.log('world');
+    yield 1;
+}
+function* hello() {
+    console.log('h');
+    console.log('e');
+    console.log('l');
+    console.log('o');
+    console.log('o');
+    yield* world();
+}
+
+const c = hello();
+a.next(); //h,e,l,l,o 'world'
+```
+
+`yield`에도 *을 표시해서 다른 제너레이터를 불러 올 수 잇다.
+
+```jsx
+function* prom() {
+	const num1 = yield '첫번째 숫자';
+	console.log(num1)
+	
+	const num2 = yield '두번째 숫자';
+	console.log(num2)
+	
+	return num1 + num2;
+}
+
+const f = prom();
+f.next() // 첫번째 숫자 done:false;
+f.next(3)// 3        done:false;
+f.next(6)// 6, 9     done:true;
+```
+
+어떤식으로 활용 될지는 모르지만 `yield`에게 리턴시켜 숫자를 넘길수도 있다.
+
+알아둘 점
+
+### Iterable
+
+- `Symbol.iterator` 라는 메서드가 존재한다.
+- `Symbol.iterator` 는 `iterator`을 반환한다.
+
+### Iterator
+
+- `.next` 메서드를 가진다.
+- `.next` 메서드는 `value`와 `done` 속성의 객체를 반환한다.
+- 탐색이 완료되면 `done`은 `true`가 된다.
+
+> 즉, Generator는 Iterable이면서 Iterator 를 지녔다고 할 수 있다.
+
+
+### Iterable - Array
+
+```jsx
+let arr = [1,2,3,4,5];
+const it = arr[Symbol.iterator]();
+
+it.next(); //value 1, done : false
+it.next(); //value 2, done : false
+(...)
+```
+
+배열도 `Symbol.iterator` 메소드를 가지고있고, `Iterator`을 반환하고있으므로, `Iterable`하다고 할 수 있다.
+
+### Iterable - String
+
+```jsx
+let str = 'Hello world';
+const it = str[Symbol.iterator]();
+
+it.next(); //value 'H', done: false
+it.next(); //value 'e', done: false
+(...)
+```
+
+글자도 `Symbol.iterator` 메소드를 가지고있고, `Iterator`을 반환하고있으므로, `Iterable`하다고 할 수 있다.

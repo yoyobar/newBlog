@@ -22,7 +22,7 @@ const Alert = ({ title, subTitle }: AlertProps) => {
     };
 
     const handleDragEnd = (event: MouseEvent, info: PanInfo) => {
-        if (info.offset.x > 100) {
+        if (info.offset.x > 80) {
             setModal(false);
         }
     };

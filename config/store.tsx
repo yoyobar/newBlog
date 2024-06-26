@@ -9,11 +9,19 @@ interface OptionStore {
     theme: boolean;
     setTheme: (theme: boolean) => void;
 }
+type OptionPersist = (
+    config: StateCreator<OptionStore>,
+    options: PersistOptions<OptionStore>
+) => StateCreator<OptionStore>;
 
 interface MaximizeStore {
     maximize: boolean;
     setMaximize: () => void;
 }
+type MaxiMizePersist = (
+    config: StateCreator<MaximizeStore>,
+    options: PersistOptions<MaximizeStore>
+) => StateCreator<MaximizeStore>;
 
 interface CollapseStore {
     collapse: boolean;
@@ -24,15 +32,6 @@ interface ModalStore {
     modal: boolean;
     setModal: (bool: boolean) => void;
 }
-
-type OptionPersist = (
-    config: StateCreator<OptionStore>,
-    options: PersistOptions<OptionStore>
-) => StateCreator<OptionStore>;
-type MaxiMizePersist = (
-    config: StateCreator<MaximizeStore>,
-    options: PersistOptions<MaximizeStore>
-) => StateCreator<MaximizeStore>;
 
 const useOptions = create<OptionStore>(
     (persist as OptionPersist)(

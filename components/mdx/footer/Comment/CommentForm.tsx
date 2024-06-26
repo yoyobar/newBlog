@@ -85,7 +85,7 @@ const CommentForm = ({ onSubmit, onFormChange, form, formAlert }: CommentFormPro
                         placeholder='내용'
                         onChange={onFormChange}
                         name='content'
-                        className='dark:text-black bg-gray-100 mt-6 mb-6 w-full min-h-[130px] resize-none outline-none p-4 rounded-md'
+                        className=' bg-gray-100 dark:text-white dark:bg-slate-800 mt-6 mb-6 w-full min-h-[130px] resize-none outline-none p-4 rounded-md'
                     ></textarea>
                     <button
                         type='submit'

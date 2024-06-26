@@ -12,6 +12,7 @@ export interface FrontMatterTypes {
     date: Date;
     [key: string]: any;
     toc?: boolean;
+    hidden?: boolean;
 }
 
 export interface FootMatterTypes {
@@ -38,6 +39,7 @@ export interface AllPostsProp {
         readingMinutes: number;
         toc?: boolean;
         category: string;
+        hidden?: boolean;
     };
     slug: string;
 }

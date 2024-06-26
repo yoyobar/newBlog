@@ -1,0 +1,360 @@
+---
+title: 'UserPage 회고'
+description: '개인 프로젝트인 AdminMe 프로젝트의 유저페이지 작성 회고'
+tags: [Project, UserPage, AdminMe]
+date: 2024-05-26 11:50:24
+update: 2024-06-26 11:50:24
+hidden: true
+---
+
+
+## 유저 페이지 구현
+
+![sample](/img/2024-05-23-00-34-29.webp)
+
+### [프론트] - 컴포넌트 렌더링
+가장 많은 컴포넌트를 사용하는 유저페이지다. 우선 `v0.dev`라는 `Vercel`의 AI 컴포넌트 디자인을 활용해
+디자인 템플릿을 여러개 만들고 이중에 마음에드는 디자인을 바탕으로 직접 설계해서 디자인하였다.
+처음에는 댓글 기능등도 다뤄볼 생각이었지만, 배보다 배꼽이 커질 것 같아
+댓글 기능은 제외하고, `Modal`및 카테고리 분류를 구현하였다.
+
+이전 검증게시글에서 다뤗듯이, `TaskPage.tsx`는 서버에서 받은 `ROLE`값을 `state`로서 컴포넌트 렌더링을 변경하고있다.
+
+```tsx filename="TaskPage.tsx"
+export default function Task({ ROLE }: TaskProps) {
+  const { task, filteredTask, loadTask } = useTask();
+  const [isNew, setIsNew] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [editId, setEditId] = useState(0);
+
+  //? NEW
+  const newHandler = () => {
+    setIsNew(true);
+    setIsEdit(false);
+  };
+  const newExitHandler = () => {
+    setIsNew(false);
+  };
+
+  //? EDITOR
+  const editorHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    setIsEdit(true);
+    setIsNew(false);
+    setEditId(Number(e.currentTarget.name));
+  };
+  const editorExitHandler = () => {
+    setIsEdit(false);
+  };
+
+  const loadingHandler = async () => {
+    if (!isLoading) {
+      setIsLoading(true);
+      try {
+        await loadTask();
+        setIsLoading(false);
+      } catch (err) {
+        setIsLoading(false);
+      }
+    }
+  };
+
+  return (
+    <div className="flex flex-col w-full">
+      <TaskHeader newHandler={newHandler} loadingHandler={loadingHandler} isLoading={isLoading} ROLE={ROLE} />
+      {isNew && <NewModal setIsNew={setIsNew} newHandler={newHandler} newExitHandler={newExitHandler} />}
+      {isEdit && <EditModal editorExitHandler={editorExitHandler} editId={editId} />}
+      {ROLE === "USER" && (
+        <div>
+          {filteredTask ? (
+            filteredTask.map((item) => <TaskItem ROLE={ROLE} editorExitHandler={editorExitHandler} editorHandler={editorHandler} key={item.descID} {...item} />)
+          ) : (
+            <Loading />
+          )}
+        </div>
+      )}
+      {ROLE === "ADMIN" && (
+        <div>
+          {task ? task.map((item) => <TaskItem ROLE={ROLE} editorExitHandler={editorExitHandler} editorHandler={editorHandler} key={item.descID} {...item} />) : <Loading />}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+`zustand`를 활용해서 `useTask`에 서버에서 유저 게시글 데이터를 받아오는 `Task`, `FilteredTask`가 존재한다
+
+`FilteredTask`는 유저 아이디 / 선택한 카테고리에 따라 값이 필터링되는 게시글 데이터로, 일반유저에게 제공하게 되는 `Task`로서 구현하였다
+
+`Task`는 어드민에게 전체 유저 게시글을 보여주는 페이지를 만들기위해 모든 데이터를 필터링없이 그대로 보여주게 설계하였다.
+
+### [프론트] - 카테고리 분류
+```tsx filename="Category.tsx"
+export default function Category() {
+  const { task, viewTask, view } = useTask();
+  const [countData, setCountData] = useState<CategoryType[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [totalView, setTotalView] = useState(true);
+
+  function countSort() {
+    if (!task) return;
+    let total = 0;
+    const countData: CategoryType[] = [];
+
+    console.log(task);
+    task.forEach((item) => {
+      const type = item.type;
+      const index = countData.findIndex((data) => data.type === type);
+
+      if (index !== -1) {
+        countData[index].count++;
+      } else {
+        countData.push({ type, count: 1, stat: view === item.type ? true : false });
+      }
+    });
+    countData.forEach((item) => {
+      total += item.count;
+    });
+
+    setTotalCount(total);
+    setCountData(countData); // 상태 업데이트
+  }
+
+  useEffect(() => {
+    if (task === null) return;
+    countSort();
+  }, [task]);
+```
+
+전체 `task`의 데이터를 `forEach`로 탐색하면서 `type`이 같은 경우는 `count`를 추가하고 
+`type`이 다른경우에는 새 배열을 생성하면서 카테고리에서 데이터의 개수를 추적할 수 있게 설게하였다.
+애시당초 `state`에서 관리했으면 좀더 간편했을 거 같은데 이부분도 내가 미흡했던 것 같다.
+
+카테고리를 선택할경우 해당 카테고리가 선택된 디자인을 입히기위해 클릭핸들러를 만들었고,
+ `stat`이라는 변수로 만들어 이를 관리했다.
+그리고 `viewTask`라는 `Global State Function` 은 데이터의 타입을 기준으로 데이터를 필터링하게 함수를 만들어서 사용자가
+카테고리를 선택하면 해당 카테고리에 속해있는 아이템만 볼 수 있게 설계하였다.
+
+### [프론트] - 모달 창
+
+```tsx filename="component/Modal.tsx"
+export default function Modal({ Props }: NewModalProps | EditModalProps) {
+  const { task } = useTask();
+
+  return (
+    <>
+      <div className="absolute left-[320px] top-[100px]">
+        <div className="p-4 rounded-md z-10 select-none w-[400px] h-[550px] opacity-95 sticky bg-slate-800">
+          {Props.MODAL === "NEW" && <h1 className="text-3xl mb-10 text-white">New Task #{task ? task.length + 1 : 1}</h1>}
+          {Props.MODAL === "EDIT" && <h1 className="text-3xl mb-10 text-white">Edit Task</h1>}
+          <form className="w-full flex flex-col items-start gap-4" onSubmit={Props.submitHandler}>
+            <div className="font-mono text-white">Title</div>
+            <Input name="title" value={Props.title} onChange={Props.onChangeHandler} require={true} type="input" text="New title..." />
+            <div className="font-mono text-white">Content</div>
+            <Input name="content" value={Props.content} onChange={Props.onChangeHandler} require={true} type="input" text="New subject..." />
+            <div className="font-mono text-white">Type</div>
+            <div className="w-[200px]">
+              <Input name="type" value={Props.type} onChange={Props.onChangeHandler} type="input" text="NO SORT" />
+            </div>
+            <label className="flex w-[140px] flex-col cursor-pointer select-none items-start">
+              {Props.MODAL === "NEW" && (
+                <>
+                  <div className="font-mono text-white">is Finish?</div>
+                  <div className="relative">
+                    <input type="checkbox" checked={Props.isChecked} onChange={Props.handleCheckboxChange} className="sr-only" />
+                    <div className={`box block h-8 w-14 rounded-full ${Props.isChecked ? "bg-indigo-600" : "bg-indigo-200"}`}></div>
+                    <div
+                      className={`absolute left-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white transition ${Props.isChecked ? "translate-x-full" : ""}`}
+                    ></div>
+                  </div>
+                </>
+              )}
+            </label>
+            <div className="flex gap-4">
+              <Button className="w-32" text="Apply" color="indigo" type="submit" />
+              <Button className="w-32" onClick={Props.MODAL === "NEW" ? Props.newExitHandler : Props.editorExitHandler} text="Cancel" color="red" type="button" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </>
+  );
+}
+```
+
+전체적으로 다룬다면 너무 길어서 짧게 다루겠다. 
+들어오는 `Props`의 데이터를 기준으로 `Type`을 나누어 보여주는 데이터를 다르게 설계하였다.
+또한 `absolute`와 `sticky`를 주어 스크롤이 발생하더라도 사용자를 따라다니게 모달창을 설계하였다. 사용하는 `form`은
+체크박스를 하나 제외하면 편집모달과 생성모달이 동일하므로, 그 두개를 서로 구별하여 이벤트를 처리하게 설계했다.
+
+
+
+### [프론트] - 전역 상태관리
+`Zustand`를 활용해서 관리했다. 모든 사용자의 `CRUD`를 관리하고 있으므로 코드가 좀 길지만 간단하게 작성하였으므로 아래에 기록하겠다.
+
+```tsx filename="store.tsx"
+const filterUpdate: UpdateArgument = (task, view) => {
+  let updateData: TaskType[];
+  if (view === "ALL") {
+    updateData = task;
+  } else {
+    updateData = task.filter((item) => item.type === view);
+  }
+  return updateData;
+};
+
+const useTask = create<StoreType>((set) => ({
+  task: null,
+  filteredTask: null,
+  view: "ALL",
+
+  //? SERVER
+  loadTask: async () => {
+    try {
+      const { token } = await JSON.parse(localStorage.getItem("token") as string);
+      const data = await axios.post("http://localhost:3001/task", token);
+      if (data.status === 204) return;
+      set({ task: data.data, filteredTask: data.data });
+    } catch (error) {
+      return console.log(error);
+    }
+  },
+
+  postTask: async (task) => {
+    try {
+      const { token } = await JSON.parse(localStorage.getItem("token") as string);
+      await axios.post("http://localhost:3001/update", { token, task: task });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  //? LOGOUT
+  logoutTask: () => {
+    set({ task: null, filteredTask: null });
+    localStorage.removeItem("token");
+  },
+
+  //? CRUD
+  viewTask: (view: string) => {
+    set((state) => {
+      if (view === "ALL") {
+        return {
+          ...state,
+          filteredTask: state.task,
+          view: view,
+        };
+      } else {
+        return {
+          ...state,
+          view: view,
+          filteredTask: state.task!.filter((item) => view === item.type),
+        };
+      }
+    });
+  },
+
+  editTask: (id, form) => {
+    set((state) => {
+      (...)
+
+      return {
+        ...state,
+        task: editedTask,
+        filteredTask: updateTask,
+      };
+    });
+  },
+
+  checkTask: (id: string) => {
+    set((state) => {
+      (...)
+
+      return {
+        ...state,
+        task: checkedTask,
+        filteredTask: updateTask,
+      };
+    });
+  },
+
+  deleteTask: (id: string) => {
+    set((state) => {
+      (...)
+
+      return {
+        ...state,
+        task: deletedTask,
+        filteredTask: updateTask,
+      };
+    });
+  },
+  deleteAdminTask: (id: string, name: string) => {
+    set((state) => {
+      (...)
+
+      return {
+        ...state,
+        task: deletedTask,
+        filteredTask: updateTask,
+      };
+    });
+  },
+  createTask: (form) => {
+    set((state) => {
+      (...)
+
+      return {
+        ...state,
+        task: updatedTasks,
+      };
+    });
+  },
+}));
+```
+
+각각의 `task` 라는 배열객체를 다루는 `CRUD`를 구현하였다. 또한 사용자가 `CRUD`를 할 경우 서버와의 통신을 통해
+데이터를 갱신해야하므로 `POST: CRUD enum` 을 활용해서 데이터를 전달하였다.
+또한 어드민은 전체 사용자의 데이터를 삭제할 수 있게 하기위
+어드민에게도 전용 삭제 함수를 만들어서 제공하였다. `view`값이 바뀌면 `filteredTask`는 항상 변동해야하므로,
+`filterUpdate`라는 함수를 만들어서 이를 각각의 `CRUD`에게 전달하였다.
+
+### [백엔드] - CRUD처리
+
+매번 `postTask` 함수가 호출될때마다 백엔드에서도 데이터를 처리하게 설계하였다.
+``` javascript filename="server.js"
+app.post('/update', ({ body }, res) => {
+    const TOKEN = jwt.decode(body.token.token, process.env.SECRET_KEY, { algorithm: 'HS256' });
+    const USER = body.task;
+    const TYPE = body.task.POST;
+    if (!TOKEN) res.send(400);
+
+    switch (TYPE) {
+        case 'CREATE':
+            createTask(USER, TOKEN.user);
+            return res.sendStatus(200);
+        case 'UPDATE':
+            editTask(USER, TOKEN.user);
+            return res.sendStatus(200);
+        case 'CHECK':
+            checkTask(USER, TOKEN.user);
+            return res.sendStatus(200);
+        case 'DELETE':
+            deleteTask(USER, TOKEN.user);
+            return res.sendStatus(200);
+        case 'ADMIN_DELETE':
+            adminDeleteTask(USER);
+            return res.sendStatus(200);
+        default:
+            return res.sendStatus(500);
+    }
+});
+```
+
+![sample](/img/2024-05-23-00-35-55.webp)
+
+`enum`을 활용해서 가독성을 확보하고, 다른 개발자도 코드를 쉽게 읽을 수 있게 작성하였다.
+`localstorage`에 저장되어있는 사용자의 토큰을 다시 복호화하여 이메일정보를 파악해서 데이터베이스와 통신하였다
+즉, 위조된 사용자일 경우 애초에 데이터베이스에 접근하지 못하게 `email`값을 기반으로 관계형 데이터베이스를 작성해 두었다.
+각 `Task`의 대한 상세적인 동작은 레포지토리에서 직접 확인해보면 될 것 같다.

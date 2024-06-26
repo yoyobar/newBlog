@@ -3,7 +3,7 @@ import PageContainer from '@/components/PageContainer';
 import Browse from '@/components/posts/Browse';
 import { getPosts } from '@/utils/parseData';
 import { metadata } from '@/utils/mdx/metaData';
-import { loadBlogCategory } from '@/utils/parseData';
+import { loadBlogCategoryCount } from '@/utils/parseData';
 import { siteConfig } from '@/config/siteconfig';
 
 const BASE_DIR = 'posts';
@@ -43,7 +43,7 @@ export async function generateStaticParams() {
 }
 export default async function Page({ params }: { params: { category: string } }) {
     const { category } = params;
-    const blogCategory = await loadBlogCategory();
+    const blogCategory = await loadBlogCategoryCount();
     const blogs = await getPosts(category);
 
     return (

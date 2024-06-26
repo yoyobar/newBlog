@@ -1,0 +1,261 @@
+---
+title: 'Zustand 사용해보기'
+description: 'Zustand의 기초적인 내용을 다룹니다.'
+image: '/img/zustand.webp'
+tags: [react, zustand, 주스탄드, 전역 상태관리]
+date: 2024-05-26 11:20:19
+update: 2024-06-26 11:20:19
+---
+
+
+
+
+# Zustand
+
+리액트를 어느정도 사용해보았으면 상태관리에 대해 관심이 생길 것이다.
+
+나또한 혼자서 여러 프로젝트를 직접 구현해보던중, 상태관리쪽이 문제가 있어 여러 라이브러리를 조사해보다가
+
+요즘 뜨고있고 좋은 사용성을 제공하는 `Zustand`를 공부해보았고, 이 내용을 정리해보고자 한다.
+
+## Zustand란?
+
+![sample](/img/2024-05-28-15-30-54.webp)
+
+리액트의 기본적으로 존재하는 `props`와 `useContext`를 통해 상태 관리를 할경우, `provider`에 감싸져 있는 모든 요소가 같이 렌더링되는 이슈가 있기때문에 상태관리는 반필수적이라고 생각할 수 있다.
+
+아직까지도 현업에서 가장 흔히 쓰이는 상태관리 라이브러리는 `Redux`다. 하지만 최근 기업들이 리덕스의 보일러 플레이트가 너무 무겁고 복잡하고, 비동기 상태관리의대한 문제점 때문에 탈 Redux를 진행하고 있다. 
+
+나는 여기서 요즘 핫하다고 하는 `zustand`를 다뤄보고, `zustand`로 간단한 투두리스트를 만들어보면서 `zustand`의 대해 학습해보고자 한다.
+
+## 기본 사용법
+
+`Zustand`에서는 기본적으로 `store.js`를 만들어서 `Global State`를 관리하게 된다. 다른 파일에 `state`가
+
+분리되어있어 유지보수가 간편하고, 코드도 간결하다.
+
+```jsx
+import {create} from 'zustand'
+
+const useStore = create((set) => ({
+    count: 0,
+    increase: () => {
+        set((state) => ({
+            count: state.count + 1,
+        }));
+    },
+    decrease: () => {
+        set((state) => ({
+            count: state.count - 1,
+        }));
+    },
+}));
+```
+
+간단 해보이면서도 문법적으로 실수를 많이할 것 같은 구조다. 잘 알아보자
+
+`create`를 선언해서 스토어를 만든다. 스토어는 객체형태를 지니고 있으며, 함수를 넣어서 사용할 수 있다.
+
+우리가 객체에서의 함수를 기억하듯이 첫번째 인자를 사용할경우, 매개변수로서 사용할 수 있고
+
+`set`을 활용한 두번째인자는 현재 `store`의 `this`에 해당한다. 즉 객체를 리턴하기위해 ()에 대해 신경쓰고
+
+설계해야 한다.
+
+## 투두리스트 만들면서 익숙해지기
+
+### `CREATE 함수` 
+
+간단하게 `id`, `description`, `check`여부를 가지고있는 투두리스트를 제작해보자.
+
+```jsx filename="Jsx"
+import {create} from 'zustand'
+
+const useTodo = create((set) => ({
+	todo: [{
+		id: new Date().getTime(),
+		description: '투두 리스트1',
+		check: false,
+	}]
+})
+```
+
+global state인 todo에 대해서는 제작이 완료되었다. 이제 데이터를 추가하는 함수를 제작해보자.
+
+```jsx filename="jsx"
+import {create} from 'zustand'
+
+const useTodo = create((set) => ({
+
+	todo: [{
+		id: new Date().getTime(),
+		description: '투두 리스트1',
+		check: false,
+	}],
+	
+    newTodo: (description) => {
+        set((state) => ({
+            todo: [
+                ...state.todo,
+                {
+                    id: new Date().getTime(),
+                    description: description,
+                    check: false,
+                },
+            ],
+        }));
+    },
+})
+```
+
+`description`이라는 매개변수를 받아들여서 기존의 투두리스트를 할당하고, 그 후 신규 데이터를 추가하는
+
+함수를 제작하였다. 괄호가 좀 심하게 사용되는 감이 있긴하지만, 동작은 문제없이 구현된다!
+
+### `DELETE 함수`
+
+이제 ID를 비교해서 데이터를 삭제하는 함수를 추가해주자.
+
+```jsx filename="jsx"
+(...)
+
+    deleteTodo: (todoId) => {
+        set((state) => ({
+            todo: state.todo.filter((item) => Number(item.id) !== Number(todoId)),
+        }));
+},
+```
+
+투두리스트를 필터를 돌려 아이디를 매개변수로 받아 아이디가 같지않을 경우를 반환한다. 즉 같은 아이디일 경우는 삭제되어 처리된다.
+
+### `POST 함수` 
+
+```jsx filename="jsx"
+(...)
+
+    postTodo: (todoId, text) =>{
+        set((state) => ({
+            todo: state.todo.map((item) => {
+                if(Number(item.id) === Number(todoId)){
+                    return {
+                        ...item,
+                        description: text,
+                    }
+                } else {
+                    return {
+                        ...item,
+                    }
+                }
+            })
+        }))
+    }
+```
+
+투두리스트를 맵을 돌려 아이디, 텍스트를 매개변수로 받아 아이디가 같을경우 description을 수정해서 반환하고,
+아닐 경우 그대로 리턴한다. 따라서 `description`을 수정할 수 있다.
+
+
+### `완성 코드`
+
+```jsx filename="store.jsx"
+const useTodo = create((set) => ({
+    todo: [
+        {
+            id: 313141,
+            description: '디자인 테스트',
+            completed: true,
+        },
+    ],
+    addTodo: (description) => {
+        set((state) => ({
+            todo: [
+                ...state.todo,
+                {
+                    id: new Date().getTime(),
+                    description: description,
+                    completed: false,
+                },
+            ],
+        }));
+    },
+    removeTodo: (todoId) => {
+        set((state) => ({
+            todo: state.todo.filter((item) => {
+                return Number(item.id) !== Number(todoId);
+            }),
+        }));
+    },
+    changeTodo: (todoId, text) => {
+        set((state) => ({
+            todo: state.todo.map((item) => {
+                if (Number(item.id) === Number(todoId)) {
+                    return {
+                        ...item,
+                        description: text,
+                    };
+                } else {
+                    return {
+                        ...item,
+                    };
+                }
+            }),
+        }));
+    },
+    checkTodo: (todoId) => {
+        set((state) => ({
+            todo: state.todo.map((item) => {
+                if (Number(item.id) === Number(todoId)) {
+                    return {
+                        ...item,
+                        completed: !item.completed,
+                    };
+                } else {
+                    return {
+                        ...item,
+                    };
+                }
+            }),
+        }));
+    },
+}));
+```
+
+괄호를 읽기가 힘들지만, 완벽히 동작하는 `CRUD`를 구현했다!
+
+### `Action 기능분리`
+
+각각의 함수가 전부 내부에 써져있어 복잡해 보일 수 있다. 이럴 경우 함수를 호출해서 기능을 분리하면 된다. <br/>
+예시로 `Add` 기능만 분리해보겠다.
+
+
+```jsx filename="jsx"
+const add = (description, state) => {
+    return [
+        ...state.todo,
+        {
+            id: new Date().getTime(),
+            description: description,
+            completed: false,
+        },
+    ];
+};
+
+const useTodo = create((set) => ({
+    todo: [
+        {
+            id: 313141,
+            description: '디자인 테스트',
+            completed: true,
+        },
+    ],
+    addTodo: (description) => {
+        set((state) => ({
+            todo: add(description, state),
+        }));
+    },
+```
+
+위와 같이 데이터 분할해서 제작할수도 있겠다. 굳이 이렇게할 필요가 있을까? 싶겠지만
+
+만약 복잡한 로직을 거쳐 데이터가 할당된다면, 파일을 분리해서 작성하는게 훨씬 나을수도 있다. `Redux`에서
+`Store`와 리듀서를 나누듯이 말이다.

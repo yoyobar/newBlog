@@ -58,6 +58,20 @@ export const metadata: metaType = {
         link: '/posts/React',
         visible: true,
     },
+    State_Management: {
+        icon: Icon.React,
+        boxClass: metaStyle.react,
+        title: '전역 상태 관리',
+        link: '/posts/State_Management',
+        visible: true,
+    },
+    Project: {
+        icon: Icon.Archives,
+        boxClass: metaStyle.react,
+        title: '프로젝트',
+        link: '/posts/Project',
+        visible: true,
+    },
     Dev: {
         icon: Icon.Dev,
         boxClass: metaStyle.dev,

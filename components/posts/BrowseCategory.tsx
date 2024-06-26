@@ -16,7 +16,9 @@ const BrowseCategory = ({ categories }: BrowseCategoryProps) => {
         <>
             {categoryKey.map((category, index) => {
                 const isAll = category === 'All';
-                const isActive = (isAll && path === '/posts') || (!isAll && path === `/posts/${category}`);
+                const isActive =
+                    (isAll && path === '/posts') ||
+                    (!isAll && path === `/posts/${category}`);
 
                 return (
                     <Link

@@ -1,0 +1,67 @@
+---
+title: 'Zustand의 Persist'
+description: 'Persist 기능에 대해 알아보자'
+image: '/img/zustand.webp'
+tags: [react, zustand, 주스탄드, 전역 상태관리]
+date: 2024-06-26 11:22:27
+update: 2024-06-26 11:22:27
+toc: false
+---
+
+# Persist
+
+`Zustand`에서 사용되는 전역 상태는 아주 간단하게 스토리지나, 외부 API와의 통신을 지원한다. 
+
+상태가 업데이트 될때마다 사용자가 커스텀한 행위를 자동으로 진행하고
+상태변화를 렌더링해준다면 더할나위 없이 편리할 것이다. 그 기능중 하나인 `Persist`를 소개해보겠다.
+
+
+## 대표적인 사례
+사용자에게 웹 접속시 상시로 유지되는 상태를 관리하고싶다고 가정해보자.
+
+현재 이 웹사이트는 사용자가 웹페이지를 최대화했는지, 안했는지 여부를 전역상태로 업데이트 하고 있다.
+
+![persist](/img/2024-06-26-11-30-58.webp)
+
+`maximize` 여부를 통해 항상 최대화할지, 최소화할지를 컨트롤 하고 있다. 이 예시를 한번 들어보자.
+
+## 사용 방법
+
+```typescript
+interface MaximizeStore {
+    maximize: boolean;
+    setMaximize: () => void;
+}
+type MaxiMizePersist = (
+    config: StateCreator<MaximizeStore>,
+    options: PersistOptions<MaximizeStore>
+) => StateCreator<MaximizeStore>;
+
+export const useMaximize = create<MaximizeStore>(
+    (persist as MaxiMizePersist)(
+        (set) => ({
+            maximize: true,
+            setMaximize: () => set((state) => ({ maximize: !state.maximize })),
+        }),
+        {
+            name: 'maximize',
+        }
+    )
+);
+```
+
+사용방법은 간단하다. 기존 `Zustand` 문법에 `persist`를 추가하는 점 말고는 기존 문법과 동일하다.
+
+여기서 `persist`에 추가적인 옵션을 줄 수 있는데, 기본값으로 로컬스토리지에 저장하므로 나는 `name` 속성만 전달하였다.
+
+이제 상태가 업데이트 될때마다 `persist`로 인해 로컬 스토리지에 업데이트되고, 페이지 새로고침시에도 스토리지에서 자동으로 값을 불러와 갱신하므로 재렌더링시에도 상태를 유지할 수 있다.
+
+<Callout type='info'>타입 스크립트 사용시 `StateCreator` `PersistOptions`의 타입을 추가적으로 명시해줘야한다.</Callout>
+
+사실 로컬스토리지는 그냥 직접 사용할 수도 있을텐데, 왜 굳이 `persist`를 사용할까?
+
+### Next.js의 Hydration 문제
+`Next.js`에서는 `window`객체는 클라이언트 환경에서만 사용할 수 있다. 일반적으로
+명시할 경우 `window undefined` 에러가 발생하고, 렌더링 불일치로 인한 **hydration Error** 또한 방심 할 수 없다. 이러한 에러를 방지하기 위해서 대부분의 상태관리 라이브러리가 지원하는 `persist` 기능을 유용하게 사용해보는것이 중요하다.
+
+> [추가적인 Persist Option 알아보기](https://docs.pmnd.rs/zustand/integrations/persisting-store-data)

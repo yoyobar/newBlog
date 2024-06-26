@@ -24,10 +24,11 @@ const Browse = ({ blogs, categories }: BrowseProps) => {
     const sortedBlogs = blogs.sort((a, b) => b.meta.date.localeCompare(a.meta.date));
     const filteredBlogs = sortedBlogs.filter(
         (blog) =>
-            blog.meta.title.toUpperCase().includes(debouncedSearch.toUpperCase()) ||
-            blog.meta.tags.some(
-                (item) => item.toUpperCase() === debouncedSearch.toUpperCase()
-            )
+            !blog.meta.hidden &&
+            (blog.meta.title.toUpperCase().includes(debouncedSearch.toUpperCase()) ||
+                blog.meta.tags.some(
+                    (item) => item.toUpperCase() === debouncedSearch.toUpperCase()
+                ))
     );
 
     //? Search Focus Effect

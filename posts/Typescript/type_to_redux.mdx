@@ -1,0 +1,127 @@
+---
+title: 'Typescript환경에서의 Redux'
+description: '타입스크립트 환경에서 리덕스의 운용에 대해 설명합니다.'
+image: '/img/2024-05-29-14-10-40.webp'
+tags: [react, redux, typescript, 전역 상태관리]
+date: 2024-06-26 10:57:33
+update: 2024-06-26 10:57:33
+---
+
+<Callout>타입스크립트 환경에서 `Redux`를 사용할 때 발생한 트러블을 기록해둡니다.</Callout>
+
+## Enum의 사용
+기본적으로 `Reducer`문을 작성하다보면 어떠한 상수가 자주 사용될 것이다.
+이럴 경우 번호로 관리하는 것보다 상수를 `enum`으로 등록하여 사용하는게 더 도움이 된다.
+실제로 `redux`에서 작업유형을 상수로 정의하는것이 일반적인 관행이다.
+
+```ts filename="TypeScript"
+export enum ViewTypes {
+    ALL = 1,
+    COMPLETED = 2,
+    NOT_COMPLETED = 3
+}
+```
+
+더욱 직관적으로 코드의 가독성을 향상 시켜주며, 잘못된 값이 전송되는 것을 방지할 수 있다.
+
+## Action의 유형
+
+작업을 요구하는 `Action`자체에서 `Payload`로 들어오는 데이터의 타입이 명시되어 있지않을경우
+`any`타입으로 추론되는 문제가 있다. 해당부분도 직접 명시하여 해결해야 한다.
+
+```ts filename="TypeScript"
+export enum ActionTypes {
+    ADD_TODO = "ADD_TODO",
+    EDIT_TODO = 'EDIT_TODO',
+    DELETE_TODO = "DELETE_TODO",
+    FILTER_TODO = "FILTER_TODO",
+}
+```
+
+```ts filename="TypeScript"
+export interface TodoBaseAction {
+    type: ActionTypes
+}
+```
+
+우선 `enum`으로 타입을 명시한다. 제3자가 코드를 쉽게 살펴 볼 수 있는 가독성을 확보할 수 있다.
+
+
+```ts filename="TypeScript"
+export interface PayloadTypes {
+    ADD_TODO: {
+        data: {
+            id: string,
+            text: string
+        }
+    },
+    EDIT_TODO: {
+        data: {
+            id: string,
+            text: string
+        }
+    },
+    DELETE_TODO: {
+        data: {
+            id: string
+        }
+    },
+    FILTER_TODO: {
+        view: ViewTypes.ALL | ViewTypes.COMPLETED | ViewTypes.NOT_COMPLETED
+    }
+}
+```
+
+위와 같이 `Action`, `Payload`의 `interface`를 선언할 경우, 뛰어난 확장성을 제공하는 액션의 타입을 명시 할 수 있다.
+
+```ts filename="TypeScript"
+export interface AddTodoAction extends TodoBaseAction {
+    type: ActionTypes.ADD_TODO,
+    payload: PayloadTypes.ADD_TODO
+}
+export interface DeleteTodoAction extends TodoBaseAction {
+    type: ActionTypes.DELETE_TODO,
+    payload: PayloadTypes.DELETE_TODO
+}
+export interface EditTodoAction extends TodoBaseAction {
+    type: ActionTypes.EDIT_TODO,
+    payload: PayloadTypes.EDIT_TODO
+}
+export interface FilterTodoAction extends TodoBaseAction {
+    type: ActionTypes.FILTER_TODO,
+    payload: PayloadTypes.FILTER_TODO
+}
+```
+
+타입을 깔끔하게 정리할 수 있고, 타입만으로도 동작을 유추할 수 있는 깔끔한 코드가 작성된다.
+이러한 타입의 확장을 고려하면서 타입을 선언하도록 신경써보자.
+
+## dispatch의 타입 export
+
+기본적으로 리덕스의 `Store`에도 타입이 명시되어 있지만, 파일이 다를 경우 컴포넌트에서 `Store`의 타입을 인식하지 못
+`dispatch`의 제네릭타입이 `<UnknownAction>`이 되어, 정상적으로 값을 보내려면 타입에러가 발생하는 경우가 있었다.
+
+```ts {10} filename="TypeScript"
+import { configureStore } from '@reduxjs/toolkit';
+import todoSlice from './reducers';
+
+const store = configureStore({
+    reducer: {
+        todo: todoSlice.reducer,
+    },
+});
+
+export type AppDispatch = typeof store.dispatch;
+export default store;
+
+```
+
+`export type AppDispatch = typeof store.dispatch{:ts}`를 `export`하여
+해당 컴포넌트에 `import`하면 문제는 해결되었다.
+
+![sample](/img/2024-05-29-14-48-38.webp)
+
+제대로 읽어보지 않았었지만, `Redux-toolkit`의 doc에도 소개되어있었다. 공식문서를 참고하지 못한 내 실수였다.
+
+
+> Reference [Doc](https://redux-toolkit.js.org/usage/usage-with-typescript) / [Dev.to](https://dev.to/leomeloxp/taking-react-and-redux-to-the-next-level-with-typescript-1m84)

@@ -1,0 +1,81 @@
+---
+title: '어드민 페이지 프로젝트 회고'
+description: '어드민 페이지'
+image: '/img/2024-05-22-23-53-31.webp'
+tags: [Project, 회고, AdminMe]
+date: 2024-06-26 12:00:06
+update: 2024-06-26 12:00:06
+---
+
+
+
+<div className="w-full mt-4 mb-4 flex justify-center text-2xl font-bold">Admin 페이지 구현 개인 프로젝트 04/28 ~ 05/13</div>
+
+<div className="flex flex-col">
+    <div className="w-full flex flex-wrap justify-center gap-2">
+        <img className="rounded-md" src="https://img.shields.io/badge/-typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=48a0eb"/>
+        <img className="rounded-md" src="https://img.shields.io/badge/-React-20232a?style=for-the-badge&logo=React&logoColor=61dafb"/>
+        <img className="rounded-md" src="https://img.shields.io/badge/-Docker-2ca4e0?style=for-the-badge&logo=docker&logoColor=white"/>
+        <img className="rounded-md" src="https://img.shields.io/badge/-mySQL-0c0b13?style=for-the-badge&logo=mysql&logoColor=white"/>
+        <img className="rounded-md" src="https://img.shields.io/badge/-Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white"/>
+        <img className="rounded-md" src="https://img.shields.io/badge/-TailwindCSS-647f8d?style=for-the-badge&logo=tailwindcss&logoColor=06B6D4"/>
+        <img className="rounded-md" src="https://img.shields.io/badge/-ZUSTAND-5c1f70?style=for-the-badge"/>
+        <img className="rounded-md" src="https://img.shields.io/badge/-React_Query-20232a?style=for-the-badge&logo=ReactQuery&logoColor=FF4154"/>
+    </div>
+</div>
+
+<hr/>
+
+### 기능별 구현 과정
+
+
+### 프로젝트 목적
+
+
+
+`OAuth`를 통해 일반적인 회원가입 / 로그인을 지원하는 간단한 태스크매니저 프로젝트입니다.
+
+데이터베이스`Mysql`을 이용해 서버단과 직접 통신하고 `CRUD`을 구현했습니다.
+
+`Dark Theme`, `Modal`등 간단한 사용자 친화적인 기능을 추가하였습니다.
+
+<br/>
+
+### 기술스택 사용목적
+
+-   `TypeScript`를 직접적으로 연습해보고자 도입 했습니다.
+-   `mySql`과 효율적인 통신을 위해 `Docker`를 활용하여 구현 하였습니다.
+-   `Global State`를 통한 상태관리에 익숙해지기위해 `Zustand`를 도입하여 사용 했습니다.
+-   간단한 테마 지원과 빠른 스타일링 작성을 위해 `Tailwind CSS`를 도입하여 사용 했습니다.
+-   `Token Verify`등 간단한 사용자 정보 비동기관리를 위해 `React-query`를 도입하여 사용 했습니다.
+
+<br/>
+
+### 디렉토리 구조
+
+![sample](/img/2024-05-22-23-53-31.webp)
+
+### 배우게 된 점
+
+- Array method `(Filter, map, reduce)`의 종합적인 활용
+같은 구조더라도 상황에따라 `filter, map, reduce`를 다양하게 활용하여 배열메소드의 활용에대해 깊게 탐구하였다.
+<br/>
+
+- `Token`과 `oAuth`의 구현
+사설회원가입과 로그인을 구현할 수 있고, 이에 따른 사용자 데이터를 관리하는 로직을 구현했다.
+<br/>
+
+- 서버와 데이터베이스의 통신
+`Docker`를 통해 `mySql` 데이터베이스와 통신해보면서 간단한 `CRUD`를 통해 데이터 로직을 구현해보며 백엔드 지식을 배웠다.
+<br/>
+
+- 단일책임 `(SR)`
+첫 설계당시 `SR`를 전혀 고려하지않아 문제요소가 다분한 `1회성 컴포넌트`를 리팩토링을 통해 약간은 지원하게 변경하였으며, 다음부터 가장 고려해야할 우선순위로 고려하게 되었다.
+<br/>
+
+- 다양한 라이브러리
+`Zustand`를 자유롭게 사용하게 되었고, `React-query`의 기본적인 작동을 이해하고 `nivo`, `tailwindcss`, `react/oAuth`등 다양한 라이브러리를 직접 Doc를 보며 사용해보며 라이브러리의 중요성에 대해 좀더 탐구해보게 되었다.
+<br/>
+
+- UI 로직
+상당히 간단한 구조를 가지고 있지만, 카테고리 분류 / 사용자 데이터 갱신 / 모달창 등 다뤄보지 않았던 다양한 UI로직을 직접 구현해보며 배울 수 있었다.

@@ -1,5 +1,5 @@
 import PageContainer from '@/components/PageContainer';
-import { loadBlogCategory, loadBlogResource } from '@/utils/parseData';
+import { loadBlogCategoryCount, loadBlogDetails } from '@/utils/parseData';
 import Browse from '@/components/posts/Browse';
 import type { Metadata } from 'next';
 import { siteConfig } from '@/config/siteconfig';
@@ -22,8 +22,8 @@ export const metadata: Metadata = {
     },
 };
 export default async function Home() {
-    const blogs = await loadBlogResource();
-    const category = await loadBlogCategory();
+    const blogs = await loadBlogDetails();
+    const category = await loadBlogCategoryCount();
 
     return (
         <PageContainer>

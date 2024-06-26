@@ -1,0 +1,229 @@
+---
+title: 'Redux 기본적으로 다뤄보기'
+description: '리덕스의 기본적인 사용법에 대해 익혀봅니다.'
+image: '/img/redux.webp'
+tags: [react, redux, 전역 상태관리]
+date: 2024-05-26 10:43:35
+update: 2024-06-26 10:43:35
+---
+
+
+
+## 리액트의 동작
+
+![sample](/img/2024-05-28-15-43-17.webp)
+
+
+
+리액트의 작은 데이터의 흐름에 대해서 살펴보자.
+
+
+### Actions
+1. 버튼 이벤트등, 이벤트에 해당하는 액션이 발생할 경우, `State`에게 전달한다.
+
+### State
+2. 변경된 `State`를 갱신하고, `View`에게 전달한다.
+
+### View
+3. `컴포넌트`를 재렌더링하고, 다시 반복한다.
+
+이렇게 단순한 구조로 동작하게 되지만, <span className="text-red-600 font-bold">동일한 상태를 공유하고 사용하는 여러 컴포넌트가 있을경우</span> 
+이러한 단순성이 무너지고 복잡한 형태를 지니게된다. 
+이 문제는 `State`를 더욱 상위요소에게 전달해서 해결 할 수있지만, 항상 그런 것은 아니다.
+
+이러한 문제점 때문에 `Redux`에서는 `Store`라는 별개의 **전역저장소**를 만들고 
+해당 저장소를 통해 데이터에 접근하고, 변경하는 방식으로 설계되었다. 
+
+## 리덕스의 동작
+
+![sample](/img/2024-05-28-17-51-21.webp)
+
+> 리덕스는 Flux 패턴을 기반으로한 라이브러리 입니다.
+
+데이터의 흐름을 순서대로 살펴보자.
+
+### Action
+1. `Action` 객체를 통해 행위와 데이터를 전달
+
+### Reducer
+2. `Dispatcher`는 요청된 `Action`으로 어떠한 `Store`를 갱신할지 결정
+
+### Store
+3. `Store`는 이전 상태 데이터와 현재 상태 데이터를 **병합** 하고 상태를 **갱신**
+
+### UI
+4. `Store`에서 갱신된 데이터는 `View`로 전달되어 화면에 렌더링
+
+위에서 설명한 `Store`를 활용해서 리덕스에서 `Flux 아키텍쳐`에 따라 상태를 관리하는 법을 정리해보았다. 
+이제 리액트와 리덕스의 동작의 대한 차이를 어느정도 이해했을거라고 생각된다. 
+간단한 카운트앱을 만들어보며, 리덕스의 사용방법에 대해 배워보겠다. 
+리덕스는 공식 `doc`에서도 `redux-toolkit` 의 사용을 권장하고있으며, `toolkit`을 적용한 예시로 바로 작성 하겠다. 
+
+---
+
+## 카운트 앱 만들기
+
+
+### 리듀서 만들기
+```javascript
+import {createSlice} from '@reduxjs/toolkit'
+
+const counterReducer = createSlice({
+    name: 'counter',
+    initialState: { value: 0 },
+
+    reducers: {
+        up: (state, action) => {
+            state.value = state.value + action.payload;
+        },
+        down: (state, action) => {
+            state.value = state.value - action.payload;
+        },
+    }
+});
+
+export const { up, down } = counterReducer.actions;
+export default counterReducer;
+```
+- **name** 
+`reducer`의 이름이라고 하니까 괜히 어려워 보일 수 있는데, 쉽게 말해서 
+개발자가 접근하기위한 이름이라고 할 수 있다. 현재 상태에 접근하는 방법은 조금 있다 다뤄보겠다.
+- **initialState** 
+우리가 `useState`의 초기값을 설정하는것과 동일하다고 볼 수 있다. 
+객체가 필요하다면 객체, 숫자만 필요할 경우 숫자로 명시할 수 있다.
+- **reducers** 
+코드로 접근하게 될 때, `action.type`를 명시해서 지금 내가 보내는 액션이 어떤 작업인지 
+알려줘야 할 것이다. 객체 자체의 이름 (`up, down`)이 코드로 접근하게 될때의 키(`key`) 값이 된다.
+
+<Callout type="warn">참조 자료형의 경우 toolkit을 사용하지 않을 경우 상태의 `불변성` 을 지켜야 한다.
+지금 같은 경우 사용하므로 해당 부분은 문제없다.</Callout>
+
+
+이제 간단한 카운트 작업을 진행할 수 있는 코드를 작성했으니, 이걸 `Store`에 등록해보겠다.
+
+### Store에 등록하기
+
+```jsx filename="/store/index.js"
+import {configureStore} from '@reduxjs/toolkit'
+import {counterReducer} from './countReducer'
+
+const store = configureStore({
+    reducer: {
+        count: counterReducer,
+    }
+})
+
+export default store;
+
+```
+
+`configureStore`는 `redux/toolkit`의 컨벤션과 같은 문법이라고 생각하면 된다. 
+내가 작성해둔 리듀서를 `import`하여 원하는 이름으로 등록해준다. 이제 `count`라는 이름으로 각각의 
+컴포넌트에서 접근할 수 있는 것이다.
+
+### Provider 제공하기
+이제 아까 만든 `Store`를 `App.js` (`Vite`의 경우 `Main.jsx`)에 전달하여
+`Provider`를 통해 부모 컴포넌트를 감싸 어디서든 사용할 수 있게 해주면 된다.
+
+```jsx filename="src/main.jsx"
+import ReactDOM from 'react-dom/client';
+import App from './App.jsx';
+import './index.css';
+import { Provider } from 'react-redux';
+import store from './store/index';
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+    <Provider store={store}>
+        <App />
+    </Provider>
+);
+```
+
+이제 리덕스를 사용할 준비는 완료되었다! 원하는 컴포넌트 어디서든 사용할 수 있게 된 것이다. 
+그 사용방법을 한번 알아보자.
+
+---
+
+### 전역 상태에 접근하기 `useSelector()`
+
+원하는 컴포넌트에서 `useSelector` 훅을 호출해서 현재 전역상태를 가져올 수 있다.
+
+```jsx filename="src/App.jsx"
+import {useSelector} from 'react-redux'
+
+export default function App () {
+    const count = useSelector((state) => state.count.value)
+    
+    return (
+        <div>
+            <div>현재 숫자 {count}</div>
+        </div>
+    )
+}
+```
+여기서 `useSelector((state) => state.count.value){:js}`로 접근하는 코드를 확인할 수 있을 텐데 
+- `index.js`의 `reducer`의 명칭
+- `countReducer.js`의 `initialState`의 `key`
+
+에 접근한 것이다. 따라서 초기값 `0`이 나오게 된다.
+
+---
+
+
+### 전역 상태 업데이트하기 `useDispatch()`
+
+원하는 컴포넌트에서 `useDispatch` 훅을 호출해서 현재 전역상태를 업데이트 할 수 있다.
+
+```jsx {2,5,8,11} filename="src/App.jsx"
+import {useSelector, useDispatch} from 'react-redux'
+import {up, down} from './store/countReducer'
+export default function App () {
+    const count = useSelector((state) => state.count.value)
+    const dispatch = useDispatch()
+
+    const plusHandler = () => {
+        dispatch(up(1))
+    }
+    const minusHandler = () => {
+        dispatch(down(1))
+    }
+    
+    return (
+        <div>
+            <div>현재 숫자 {count}</div>
+            <button onClick={plusHandler}>PLUS</button>
+            <button onClick={minusHandler}>MINUS</button>
+        </div>
+    )
+}
+```
+
+이전에 작성해두었던 `countReducer.js`를 잘 살펴보면 최하단에 
+`export const { up, down } = counterReducer.actions{:jsx}`를 확인할 수 있다. 
+각각의 액션을 `export` 해준 것으로, 여기로 전달된 인수는 자동으로
+ `.payload`에 담겨 리듀서에게 전달되게 된다. 
+
+---
+
+### 전역 상태 중간작업 추가하기 `store.subscribe()`
+
+컴포넌트가 업데이트 될 때 중간에 하게 될 동작을 `store.subscribe`를 활용해서 구현할 수 있다. 
+`미들웨어`라는 개념으로서, `node.js`에서도 다루게 되니 잘 알아두면 좋다.
+
+```jsx filename="/store/index.js"
+import {configureStore} from '@reduxjs/toolkit'
+import {counterReducer} from './countReducer'
+
+const store = configureStore({
+    reducer: {
+        count: counterReducer,
+    }
+})
+
+store.subscribe(() => {
+    const nowCount = store.getState().count.value;
+    console.log(nowCount)
+})
+
+export default store;
+```
