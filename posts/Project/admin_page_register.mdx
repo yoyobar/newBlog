@@ -1,0 +1,256 @@
+---
+title: 'Register / Login 구현'
+description: 'Register / Login 구현 회고'
+tags: [Project, registerPage, AdminMe]
+date: 2024-05-21 13:26:57
+update: 2024-06-26 13:26:57
+hidden: true
+comment: false
+---
+
+
+
+<Cards>
+<Card title='돌아가기' href='admin_page'  />
+</Cards>
+<br/>
+
+
+# 회원가입과 로그인 구현
+
+기본적으로 어드민은 데이터베이스에 어드민을 따로 추가해서 진행할려고 했기 때문에, 어드민 회원가입을 따로 구현하진 않았다.<br/>
+일반 사용자는 `oAuth`를 통한 구글로그인만 지원하도록 작업을 최소화하였다. <br/>
+
+일단 내가 구현해보고자 하는건 구글 회원가입이였기 때문에 사설 회원가입은 원리만 파악하고 따로 다루진 않았다. <br/> 
+사실 `oAuth`는 오픈소스로 공개되어있기 때문에 이를 참고하면 간단하게 안전한 가입을 구현할 수 있다. 
+
+### [프론트 단]
+
+```typescript filename="LoginPage.tsx"
+import { useEffect, useState } from "react";
+import Login from "../components/Login";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import axios from "axios";
+import { CredentialResponse } from "@react-oauth/google";
+
+interface LoginType {
+  email: string;
+  name: string;
+  exp: string;
+}
+interface AdminLoginType {
+  email: string;
+  password: string;
+  key: string;
+}
+
+export default function LoginPage() {
+  const router = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      router("/task", { replace: true });
+    }
+  }, []);
+
+  const [id, setId] = useState("");
+  const [pw, setPw] = useState("");
+  const [key, setKey] = useState("");
+
+  //? INPUT HANDLER
+  const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const event = e.target;
+    if (event.name === "id") setId(event.value);
+    if (event.name === "pw") setPw(event.value);
+    if (event.name === "key") setKey(event.value);
+  };
+
+  //? ERROR HANDLER
+  const errorHandler = () => {
+    console.error("login Request Error");
+  };
+
+  //? USER LOGIN
+  const googleLoginHandler = (response: CredentialResponse) => {
+    if (response.credential === undefined) return errorHandler();
+
+    const decodeToken: LoginType = jwtDecode(response.credential);
+    const dataForm = {
+      email: decodeToken.email,
+      name: decodeToken.name,
+      exp: decodeToken.exp,
+    };
+    axios
+      .post("http://localhost:3001/login", dataForm, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        const myToken = {
+          token: response.data,
+          expire: Date.now() + 60 * 60 * 1000,
+        };
+        localStorage.setItem("token", JSON.stringify(myToken));
+        router("/task", { replace: true });
+      })
+      .catch(() => errorHandler());
+  };
+
+  //? ADMIN LOGIN
+  const adminLoginHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const dataForm: AdminLoginType = {
+      email: id,
+      password: pw,
+      key: key,
+    };
+    axios
+      .post("http://localhost:3001/login", dataForm, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        const myToken = {
+          token: response.data,
+          expire: Date.now() + 60 * 60 * 1000,
+        };
+        localStorage.setItem("token", JSON.stringify(myToken));
+        router("/task", { replace: true });
+      })
+      .catch(() => errorHandler());
+  };
+
+  return (
+    <div className="w-full h-full bg-slate-700">
+      <Login
+        Props={{
+          inputHandler: inputHandler,
+          googleLoginHandler: googleLoginHandler,
+          adminLoginHandler: adminLoginHandler,
+          errorHandler: errorHandler,
+          id: id,
+          pw: pw,
+          key: key,
+        }}
+      />
+    </div>
+  );
+}
+```
+
+내용은 길어보이지만 매우 간단한 폼을 작성하였다. 어드민은 따로 `input`이 존재해서 해당 인풋의 3가지 값 `(ID / PW / KEY)`를 요구하고 <br/>
+이를 서버의 `/login`에 요청을 보내는 간단한 구조를 지니게 하였다.<br/>
+
+이를 Props로 로그인 컴포넌트에 전달하여 이벤트를 처리하였다. <br/>
+
+<Callout type="info">
+회원가입과 로그인의 분리가 필요할까?
+</Callout>
+
+일반적인 경우에는 회원가입 창과 로그인의 분리가 필요하다고 판단하였으나, `oAuth`를 다루는 과정에서 리다이렉트되는 정보를 바탕으로 간단하게 <br/>
+회원가입/로그인을 통합해서 구현할 수 있을거라고 생각하였고, 그렇게 진행했다. <br/>
+들어오는 데이터를 서버에서 `if`문을 통해서 검증해야되는 부분이 조금 걸렸지만, 컴포넌트를 나누지않고도 구현이 가능하다는 점을 배우게 되었다. <br/>
+Oauth의 대한 처리를 직접 구현해도 되지만, 간편한 스타일링을 위해 타입스크립트를 지원하는 React-oauth/google 라이브러리를 추가해서 간단하게 다루었다.
+
+### [백엔드 단]
+
+```javascript filename="server.js"
+const createToken = (user, exp, ROLE) => {
+    const payload = {
+        user,
+        exp,
+        ROLE,
+    };
+
+    const token = jwt.sign(payload, process.env.SECRET_KEY, { algorithm: 'HS256' });
+    return token;
+};
+```
+
+
+![sample](/img/2024-05-23-00-23-02.webp) <br/>
+우선 토큰을 발급하는 간단한 함수를 만들어 두었다. <br/>
+데이터베이스의 유저정보, 토큰만료기한, 어드민여부를 체크하기위해 이를 데이터 베이스에 추가하였다. <br/><br/>
+
+### 문제점
+
+구현 단계에서는 몰랐으나, `oAuth` 구글에서는 리프레시 토큰을 따로 제공해주지않고, 토큰자체를 1시간 정도로 짧게 제공해주었다. <br/>
+이는 내가 리프레시 토큰을 발급해주는 방식으로 해결했어야됫는데, 데이터베이스에 토큰만료기한을 추가해놓고 <br/>
+이 데이터를 따로 사용하질 않았다. 반성할만한 부분이다. <br/>
+약 1시간마다 유저의 토큰이 만료되어 로그인이 풀리게 되었지만, 다음번에는 쿠키나 리프레시토큰을 활용하는 방식으로 토큰을 발급해줄 필요성이 있을 것 같다.
+
+``` javascript filename="server.js"
+app.post('/login', (req, res) => {
+    //? 일반 유저 정보
+    const request = req.body;
+    const email = request?.email;
+    const name = request?.name;
+    const expire = request?.exp;
+    if (Object.values(request).length === 0) {
+        return res.status(400).send('BAD REQUEST');
+    }
+    const key = request?.key;
+    //? KEY값이 존재하는 어드민의 경우
+    if (key) {
+        const password = request?.password;
+        const info = {
+            adminId: email,
+            adminPw: crypto.createHash('sha256').update(password).digest('base64'),
+            adminKey: key,
+            ROLE: 2,
+        };
+        db.query(`SELECT adminId, adminPw, adminKey, ROLE FROM admin`, (err, data) => {
+            if (err) return;
+            if (data.length === 0) return;
+            if (JSON.stringify(info) !== JSON.stringify(data[0])) {
+                return null;
+            }
+            const exp = Date.now() + 60 * 1000;
+            const ROLE = data[0].ROLE;
+
+            const token = createToken(email, exp, ROLE);
+            res.json({
+                token,
+                token_type: 'Bearer',
+            });
+        });
+    }
+
+    //? 아이디가 있을 경우
+    db.query(`SELECT email, username, ROLE FROM people WHERE email = '${email}'`, (err, data) => {
+        if (err) return;
+        if (data.length === 0) return;
+        console.log('DB ID UPDATE');
+
+        const ROLE = data[0].ROLE;
+        const token = createToken(email, expire, ROLE);
+        res.json({
+            token,
+            token_type: 'Bearer',
+        });
+    });
+
+    //? 아이디가 없을 경우
+    db.query(`INSERT INTO people (email, username, exp, ROLE) VALUES ('${email}', '${name}', '${expire}' '${1}')`, (err, data) => {
+        if (err) return;
+        if (data.length === 0) return;
+        console.log('DB ID CREATE');
+
+        const ROLE = data[0].ROLE;
+        const token = createToken(email, expire, ROLE);
+        res.json({
+            token,
+            token_type: 'Bearer',
+        });
+    });
+});
+```
+
+`/login`에게 요청을 보내게 될 경우 해당데이터의 존재여부를 확인하고, 만약 `key`값이 존재한다면 어드민 로그인검증 함수로 이동하게끔 함수를 설계하였다. <br/> 
+토큰은 암호화해서 `localstorage`에 저장하는 방식을 채택했지만 `localstorage`의 토큰이 훼손/변조될경우의 검증함수도 따로 작성을 할 예정이여서 크게 문제가 되진 않을거로 판단하고 우선 회원가입/로그인 구현을 신경썻다. <br/>
+
+만약 데이터베이스에 유저 정보가 없을경우 새로운 데이터를 생성하고 (회원가입), 유저 정보가있을경우 토큰을 새로 발급하는 방식(로그인)을 구현하였다.
+간단한 데이터베이스 `WHERE` 쿼리문을 통해 로그인과 회원가입을 구현했는데, 생각보다 간단하게 작동해서 만족했었다.

@@ -14,8 +14,11 @@ import { Table, Td, Th, Tr } from './modules/Table';
 import { Hr } from './modules/Hr';
 import rehypeSlug from 'rehype-slug';
 import { Strong } from './modules/Strong';
+import { Card, Cards } from './modules/Card';
 
 const Mdx_Module = {
+    Card,
+    Cards,
     Callout,
     img: Image as any,
     strong: Strong,

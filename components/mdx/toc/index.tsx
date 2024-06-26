@@ -13,7 +13,7 @@ import { useCopyToClipboard } from 'react-use';
 import { usePathname } from 'next/navigation';
 import { FaCheckCircle } from 'react-icons/fa';
 
-const Mdx_Toc = () => {
+const Mdx_Toc = ({ footControl }: { footControl: boolean }) => {
     const { collapse, setCollapse } = useCollapse();
     const [currentId, setCurrentId] = useState<string>('');
     const [copy, setCopy] = useState(false);
@@ -108,10 +108,12 @@ const Mdx_Toc = () => {
                             ></BiArrowToTop>
                         </div>
                         <div>
-                            <TfiCommentAlt
-                                onClick={scrollToBottomHandler}
-                                className='bg-white dark:bg-darkInner-content dark:text-white text-black border border-gray-400 p-2 rounded-md text-5xl dark:hover:bg-white dark:hover:text-black hover:bg-whiteInner-border cursor-pointer transition'
-                            ></TfiCommentAlt>
+                            {footControl && (
+                                <TfiCommentAlt
+                                    onClick={scrollToBottomHandler}
+                                    className='bg-white dark:bg-darkInner-content dark:text-white text-black border border-gray-400 p-2 rounded-md text-5xl dark:hover:bg-white dark:hover:text-black hover:bg-whiteInner-border cursor-pointer transition'
+                                ></TfiCommentAlt>
+                            )}
                         </div>
                         <div>
                             {copy ? (

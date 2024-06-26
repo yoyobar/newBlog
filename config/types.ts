@@ -12,6 +12,7 @@ export interface FrontMatterTypes {
     date: Date;
     [key: string]: any;
     toc?: boolean;
+    comment: boolean;
     hidden?: boolean;
 }
 

@@ -51,13 +51,13 @@ export const metadata: metaType = {
         link: '/posts/Typescript',
         visible: true,
     },
-    React: {
-        icon: Icon.React,
-        boxClass: metaStyle.react,
-        title: '리액트',
-        link: '/posts/React',
-        visible: true,
-    },
+    // React: {
+    //     icon: Icon.React,
+    //     boxClass: metaStyle.react,
+    //     title: '리액트',
+    //     link: '/posts/React',
+    //     visible: true,
+    // },
     State_Management: {
         icon: Icon.React,
         boxClass: metaStyle.react,
@@ -75,7 +75,7 @@ export const metadata: metaType = {
     Dev: {
         icon: Icon.Dev,
         boxClass: metaStyle.dev,
-        title: '개발',
+        title: 'Dev',
         link: '/posts/Dev',
         visible: true,
     },

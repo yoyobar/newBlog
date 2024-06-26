@@ -67,15 +67,16 @@ export default async function Page({
     const { frontMatter, content } = await getPost(category, slug);
     const footMatter = (await getCategoryPost(category)) as FootMatterTypes[];
     const tocControl = frontMatter?.toc === undefined && true;
+    const footControl = frontMatter?.comment === undefined && true;
 
     return (
         <PageContainer>
-            {tocControl && <Mdx_Toc />}
+            {tocControl && <Mdx_Toc footControl={footControl} />}
 
             <div className='m-auto w-[95%] md:w-[75%] 3xl:w-[50%]'>
                 <Mdx_Header frontMatter={{ ...frontMatter, category: category }} />
                 <Mdx_Body content={content} />
-                <Mdx_Footer footMatter={footMatter} />
+                {footControl && <Mdx_Footer footMatter={footMatter} />}
             </div>
         </PageContainer>
     );

@@ -1,0 +1,95 @@
+---
+title: 'Server 구현'
+description: 'Server 구현 회고'
+tags: [Project, serverPage, AdminMe]
+date: 2024-05-21 13:29:45
+update: 2024-06-26 13:29:45
+hidden: true
+comment: false
+---
+
+<Cards>
+<Card title='돌아가기' href='admin_page'  />
+</Cards>
+<br/>
+
+
+# 서버를 직접 다룸으로서 고민한 내용
+
+아무래도 이번이 직접적으로 서버 - Database간 통신을 구현하는 첫 과정이여서 우여곡절이 많았다. <br/> 
+우선 Docker에 사용법에 대해 배우게됨으로서 mysql을 연동하였다.
+
+## Docker - Mysql 연동방법
+
+### Docker 설치
+
+[Docker Image 설치]
+`docker pull mysql{:zsh}` <br/>
+[Docker Container 세팅]
+```zsh
+docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=<password> -d -p 3306:3306 mysql:latest{:zsh}
+```
+
+* `--name` 컨테이너 이름
+* `-e` 환경 변수 설정
+* `MYSQL_ROOT_PASSWORD` 비밀번호 설정, `mysql -p`로 터미널 접근 가능
+* `-d detach`모드로 컨테이너 실행, 백그라운드 실행을 의미
+* `-p` 컨테이너 가동 포트
+* `mysql:latest` 컨테이너에서 가동할 이미지 <br/>
+
+컨테이너가 잘 생성되었다면 `docker`내 `mysql Exec`에서 직접 구동으로 테스트 해볼 수 있었다. 
+
+<br/>
+
+### Server - Database 연동
+```javascript filename="database.js"
+const mysql = require('mysql');
+
+const conn = mysql.createConnection({
+    host: 'localhost',
+    port: '3306',
+    user: 'root',
+    password: '1325',
+    database: 'USER',
+});
+
+conn.connect((err) => {
+    if (err) console.log(err);
+    else console.log('Connected to the database');
+});
+
+module.exports = conn;
+```
+
+만약 내가 사설에서 서버를 가동할 경우, `.env` 환경변수를 활용해서 암호와 호스트를 숨길 필요성이 있었지만, <br/>
+따로 배포를 진행할 예정을 없었으므로 토큰과 관련된 내용만 환경변수에 추가하였다. 
+
+### Server 기본 기능 작성
+```javascript filename="server.js"
+require('dotenv').config();
+const db = require('./database/db');
+const express = require('express');
+const cors = require('cors');
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+
+//? CONST
+const port = 3001;
+const app = express();
+
+//? Parser MiddleWare
+app.use(express.json());
+app.use(
+    cors({
+        origin: 'http://localhost:5173',
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        credentials: true,
+    })
+);
+```
+
+처음 서버를 가동할 때, `cors`에 대한 미들웨어 설정을 깜박해서 `CORS`에러로 인해 프론트와 통신이 불가능하였다. <br/> 
+이에대해 주의하고 다음에는 실수하지 않아야겠다. <br/><br/>
+`OAuth`와 비밀번호 암호화를 적용할 예정이므로, `jsonwebtoken`과 `crypto`를 추가하였다.
+
+이를 통해 기본적인 서버의 형태를 구현하였다. 자세한 내용은 각각의 기능 설명에서 다뤄보도록 하겠다.

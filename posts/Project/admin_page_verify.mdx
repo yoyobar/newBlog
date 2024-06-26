@@ -1,0 +1,176 @@
+---
+title: 'Verify 구현'
+description: '개인 프로젝트인 AdminMe 프로젝트의 유저페이지 작성 회고'
+tags: [Project, verifyPage, AdminMe]
+date: 2024-05-21 11:50:24
+update: 2024-06-26 11:50:24
+hidden: true
+comment: false
+---
+
+<Cards>
+<Card title='돌아가기' href='admin_page'  />
+</Cards>
+<br/>
+
+
+## 토큰 검증 기능 구현
+
+
+### [프론트]
+```typescript filename="TaskPage.tsx"
+  const router = useNavigate();
+  const { logoutTask, loadTask } = useTask();
+
+  const logoutHandler = () => {
+    logoutTask();
+    router("/", { replace: true });
+    window.location.reload();
+  };
+
+  const { isLoading, data } = useQuery(
+    "Verify-token",
+    () => {
+      loadTask();
+      return verifyToken();
+    },
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  if (isLoading) return <Loading />;
+```
+
+`useQuery`를 이용해서 간단하게 구현하였다. 비동기로 `verifyToken()` 함수를 실행해서<br/> 
+해당 함수를 통해 토큰을 검증하고 검증한 데이터에 따라 컴포넌트를 렌더링하게 연결하였다.
+
+```typescript filename="TaskPage.tsx"
+//검증한 데이터의 따른 렌더링
+  switch (data) {
+    case "FALSE":
+      return <WrongPage />;
+    case "USER":
+      return (
+        <div className="w-full h-full overflow-auto">
+          <Header logout={logoutHandler} ROLE="USER" />
+          <div className="w-full h-full flex dark:bg-slate-700 transition">
+            <Category />
+            <Task ROLE="USER" />
+          </div>
+        </div>
+      );
+    case "ADMIN":
+      return (
+        <div className="w-full h-full overflow-auto">
+          <Header logout={logoutHandler} ROLE="ADMIN" />
+          <div className="w-full h-full flex flex-col dark:bg-slate-700 transition">
+            <UserAnalyze />
+            <Task ROLE="ADMIN" />
+          </div>
+        </div>
+      );
+    default:
+      return <WrongPage />;
+  }
+```
+
+`FALSE`가 전달될 경우 `WrongPage`로 이동시켜 토큰을 초기화시키고, 메인페이지로 이동시키게 하였다.
+
+<Callout type="info">
+커스텀 훅으로 토큰을 초기화하면 되지 않을까?
+</Callout>
+
+최초에 작성할때는 커스텀 훅을 만들어 `token`을 초기화하고자 했지만, <br/>
+그럴경우 어떠한 화면도 렌더링하지않게 되어 타입스크립트에서 `Node Type 은 Null일수 없다` 라는<br/>
+에러가 발생하게되어 곤란하였다. <br/>
+실제로 `null`이 되는건 아니지만 타입스크립트에서 라우팅을 인식하지 못함으로서 발생하는 문제였다. <br/>
+그렇다고 빈 페이지를 할당하고 그후에 토큰을 초기화 하게끔 설계한다면 본말전도가 된다고 판단하여, `WrongPage.tsx`라는 가상의 빈 페이지를 만들어 라우팅으로 토큰을 처리하게 만들었다.
+
+```typescript filename="WrongPage.tsx"
+
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
+export default function WrongPage() {
+  const [timer, setTImer] = useState(3);
+  const router = useNavigate();
+
+  const time = setInterval(() => {
+    if (timer === 1) {
+      clearInterval(time);
+      router("/", { replace: true });
+    }
+    setTImer(timer - 1);
+  }, 1000);
+
+  return <div>잘못된 경로 요청입니다. {timer}초뒤 복귀합니다...</div>;
+}
+```
+
+딱히 많은 작업을 하는 페이지 컴포넌트도 아니다. 별개의 커스텀훅으로 활용하지 못한건 아쉽다. <br/>
+다음에는 커스텀훅과 정보를 가져오는 동안 사용할 컴포넌트를 활용해서 데이터를 구축해보는 것도 나쁘지 않을 것 같다.
+
+```typescript filename="utils/VerifyToken.tsx"
+export default async function verifyToken() {
+  const localToken = localStorage.getItem("token");
+  if (localToken === null) return null;
+  const myToken: TokenType = JSON.parse(localToken);
+
+  const { data } = await axios.post("http://localhost:3001/verify", myToken);
+  switch (data.verify) {
+    case "FALSE":
+      return "FALSE";
+    case "USER":
+      return "USER";
+    case "ADMIN":
+      return "ADMIN";
+    default:
+      return "FALSE";
+  }
+}
+```
+
+위의 검증 데이터에 따른 렌더링과 이어진다. `/verify`로 보내지는 데이터에서 반환되는 `request` 값을 기준으로 `switch`문으로 반환데이터를 정해주었다. <br/><br/>
+
+### [백엔드]
+
+```javascript filename="server.js"
+//! 토큰 검증
+const verifyToken = ({ token }) => {
+    const data = jwt.decode(token, process.env.SECRET_KEY, { algorithm: 'HS256' });
+    if (!data) {
+        console.log('No Verify!' + new Date().toLocaleTimeString());
+        return 'FALSE';
+    }
+    if (data.ROLE === 2) {
+        console.log('Verify-AdminAccount! ' + new Date().toLocaleTimeString());
+        return 'ADMIN';
+    }
+    console.log('Verify!' + new Date().toLocaleTimeString());
+    return 'USER';
+};
+
+app.post('/verify', (req, res) => {
+    const token = verifyToken(req.body.token);
+    switch (token) {
+        case 'FALSE':
+            return res.json({
+                verify: 'FALSE',
+            });
+        case 'USER':
+            return res.json({
+                verify: 'USER',
+            });
+        case 'ADMIN':
+            return res.json({
+                verify: 'ADMIN',
+            });
+    }
+});
+```
+
+암호화된 데이터 자체를 `decode`를 진행하여, 디코드가 정상적으로 되지 않을경우 null이 발생하므로,<br/> 
+이를 통해 간단하게 인증을 구현 하였다. <br/>
+이러한 검증은 페이지가 새로고침 되거나 `Task(사용자 데이터)`가 변할때만 작동하므로,<br/>
+렌더링 성능측면에서도 크게 문제되지 않게 설계하였다.
