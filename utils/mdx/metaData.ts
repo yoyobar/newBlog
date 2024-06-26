@@ -18,6 +18,7 @@ export const metaStyle = {
     js: 'text-[#F7DF1E]',
     ts: 'text-[#3178C6]',
     react: 'text-[#61DAFB]',
+    next: 'text-black',
     redux: 'text-[#764ABC]',
     dev: 'text-rose-400',
 };
@@ -51,18 +52,18 @@ export const metadata: metaType = {
         link: '/posts/Typescript',
         visible: true,
     },
-    // React: {
-    //     icon: Icon.React,
-    //     boxClass: metaStyle.react,
-    //     title: '리액트',
-    //     link: '/posts/React',
-    //     visible: true,
-    // },
     State_Management: {
         icon: Icon.React,
         boxClass: metaStyle.react,
         title: '전역 상태 관리',
         link: '/posts/State_Management',
+        visible: true,
+    },
+    NextJS: {
+        icon: Icon.Next,
+        boxClass: metaStyle.next,
+        title: 'Next.js',
+        link: '/posts/NextJS',
         visible: true,
     },
     Project: {

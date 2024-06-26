@@ -17,13 +17,12 @@ export const allDirectoryLoad = () => {
             !item.includes('.mdx') &&
             fs.lstatSync(path.join(BASE_DIR, item)).isDirectory()
     );
-    const mdx = allItems.filter((item) => item.includes('.mdx'));
-    return { category, mdx };
+    return category;
 };
 
 //? 전체 File 로드
 export const allFilesLoad = (category: string[]) => {
-    const files = category.flatMap((categoryItem) => {
+    const files = category.flatMap((categoryItem: string) => {
         const fileNames = fs.readdirSync(path.join(BASE_DIR, categoryItem));
         return fileNames.map((file) => ({
             category: categoryItem,
@@ -36,9 +35,9 @@ export const allFilesLoad = (category: string[]) => {
 //? 전체 카테고리와 전체 파일을 인식 후 matter정보, 경로 불러옴
 //! /posts/[category]
 export const loadBlogDetails = async () => {
-    const { category, mdx }: AllBrowseType = allDirectoryLoad();
+    const category = allDirectoryLoad();
     const categoryFiles = allFilesLoad(category);
-    const allFiles = [...mdx.map((file) => ({ category: '', file })), ...categoryFiles];
+    const allFiles = [...categoryFiles];
 
     const blogs = allFiles.map(({ category, file }) => {
         const filePath = category
@@ -84,16 +83,6 @@ export const loadBlogCategoryCount = async () => {
     return categoryCount;
 };
 
-//? 전체 카테고리와 전체 파일중 카테고리에 맞는 항목만 추출
-//! matter 내 hidden 속성 제외
-//! /posts/[category]
-export async function getPosts(category: string) {
-    const allBlogs = await loadBlogDetails();
-    return allBlogs.filter(
-        (blog) => blog.meta.category === category && !blog.meta.hidden
-    );
-}
-
 //? 이전, 현재, 다음의 해당하는 게시물을 불러옴
 //! matter 내 hidden 속성 제외
 //! /posts/[category]/[slug]
@@ -116,6 +105,16 @@ export async function getCategoryPost(category: string) {
     }
 
     return posts;
+}
+
+//? 전체 카테고리와 전체 파일중 카테고리에 맞는 항목만 추출
+//! matter 내 hidden 속성 제외
+//! /posts/[category]
+export async function getPosts(category: string) {
+    const allBlogs = await loadBlogDetails();
+    return allBlogs.filter(
+        (blog) => blog.meta.category === category && !blog.meta.hidden
+    );
 }
 
 //? 게시물 내부 컨텐츠와 상세정보를 불러옴

@@ -11,10 +11,24 @@ import React, {
 import { motion } from 'framer-motion';
 import { useCopyToClipboard } from 'react-use';
 import { FaCheck } from 'react-icons/fa';
+import { FaFile } from 'react-icons/fa6';
+export const FigCaption = ({
+    children,
+}: ComponentProps<'figcaption'> & {
+    children?: ReactNode;
+}): ReactElement => {
+    return (
+        <div className='text-sky-200 text-2xl flex gap-1 items-center CiFileOn relative top-10 left-32 z-20'>
+            <div>
+                <FaFile />
+            </div>
+            <div>{children}</div>
+        </div>
+    );
+};
 
 export const CodeBlock = ({
     children,
-    title,
     ...props
 }: ComponentProps<'pre'> & {
     filename?: string;
@@ -53,7 +67,7 @@ export const CodeBlock = ({
                         <div className='w-[12px] h-[12px] rounded-full bg-[#f0bf4f]'></div>
                         <div className='w-[12px] h-[12px] rounded-full bg-[#6fc855]'></div>
                     </div>
-                    <div className='text-orange-500'>{language}</div>
+                    <div className='text-rose-500 text-2xl'>{language}</div>
                 </div>
                 <pre
                     className='p-0 m-0 w-full rounded-b-md rounded-t-none border dark:border-[#3a3b45]'

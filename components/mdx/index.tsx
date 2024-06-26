@@ -8,7 +8,7 @@ import remarkA11yEmoji from '@fec/remark-a11y-emoji';
 // Modules
 import { Image } from './modules/Image';
 import { Callout } from './modules/Callout';
-import { CodeBlock } from './modules/CodeBlock';
+import { CodeBlock, FigCaption } from './modules/CodeBlock';
 import { Blockquote } from './modules/Blockquote';
 import { Table, Td, Th, Tr } from './modules/Table';
 import { Hr } from './modules/Hr';
@@ -29,6 +29,7 @@ const Mdx_Module = {
     td: Td,
     table: Table,
     hr: Hr,
+    figcaption: FigCaption,
 };
 
 const options = {

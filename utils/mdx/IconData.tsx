@@ -11,7 +11,7 @@ import { FaInfoCircle } from 'react-icons/fa';
 import { BsLightbulbFill } from 'react-icons/bs';
 import { MdDangerous } from 'react-icons/md';
 import { AiFillTags } from 'react-icons/ai';
-import { IoIosSettings } from 'react-icons/io';
+import { RiNextjsFill } from 'react-icons/ri';
 
 export const Default = () => <FaArrowRight />;
 export const WarnCallout = () => <IoIosWarning />;
@@ -24,6 +24,7 @@ export const Html = () => <FaHtml5 />;
 export const Css = () => <FaCss3 />;
 export const Js = () => <IoLogoJavascript />;
 export const Ts = () => <SiTypescript />;
+export const Next = () => <RiNextjsFill />;
 export const React = () => <FaReact />;
 export const Redux = () => <TbBrandRedux />;
 export const Dev = () => <SiNextra />;
