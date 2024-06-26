@@ -17,6 +17,29 @@ update: 2024-06-26 17:51:21
 `MDX_Body`에게 어떤 내용을 파싱해서 가져다 줄 것이고,
 어떤식의 포맷을 적용시킬지 세팅해야 합니다.
 
+## next.config.js 세팅
+```javascript title="next.config.js"
+const withMDX = require('@next/mdx')({
+    extension: /\.mdx?$/,
+});
+
+module.exports = withMDX({
+    pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
+    webpack: (config, { dev, isServer }) => {
+        config.module.rules.push({
+            test: /\.mdx?$/,
+            use: ['raw-loader', '@mdx-js/loader'],
+        });
+
+        return config;
+    },
+});
+```
+
+next.config.js에서 MDX 파싱로더를 같이 사용하도록 설정합니다. 
+설정은 따로 더 추가적인 설정은 없으므로 그대로 사용하셔도 되겠습니다.
+
+
 ## MDX_Body 세팅
 
 ```tsx title="components/mdx/index.tsx"
