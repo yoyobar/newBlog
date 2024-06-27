@@ -9,25 +9,14 @@ import { useEffectOnce } from 'react-use';
 
 dayjs.locale('ko');
 
-const formatTime = (date: Date) => {
-    const formattedDate = dayjs(date);
-
-    const month = formattedDate.format('MM');
-    const day = formattedDate.format('DD');
-    const week = formattedDate.format('ddd');
-    const ampm = formattedDate.format('A');
-    const hour = formattedDate.format('hh');
-    const minute = formattedDate.format('mm');
-
-    return `${month}월 ${day}일 (${week}) ${ampm} ${hour}:${minute}`;
-};
-
 const Clock = () => {
     const [time, setTime] = useState<string>('');
 
-    useEffectOnce(() => {
-        setTime(formatTime(new Date()));
-    });
+    const formatTime = (date: Date) => {
+        const formattedDate = dayjs(date).format('MM월 DD일 (ddd) A hh:mm');
+
+        return formattedDate;
+    };
 
     useEffect(() => {
         const timeInterval = setInterval(() => {
