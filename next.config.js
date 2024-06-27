@@ -12,7 +12,7 @@ module.exports = withMDX({
     env: {
         nextImageExportOptimizer_imageFolderPath: 'public/img',
         nextImageExportOptimizer_exportFolderPath: 'out',
-        nextImageExportOptimizer_quality: '75',
+        nextImageExportOptimizer_quality: '100',
         nextImageExportOptimizer_storePicturesInWEBP: 'true',
         nextImageExportOptimizer_exportFolderName: 'nextImageExportOptimizer',
         nextImageExportOptimizer_generateAndUseBlurImages: 'true',
