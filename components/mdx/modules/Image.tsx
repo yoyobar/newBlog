@@ -24,10 +24,8 @@ export const Image = ({ src, alt }: ImageProps) => {
                     setZoom((prev) => !prev);
                 }}
                 className={`${
-                    zoom
-                        ? 'w-[800px] cursor-zoom-out shadow-lg shadow-darkInner-border dark:shadow-whiteInner-border'
-                        : 'w-[500px] cursor-zoom-in'
-                } transition-width-height my-6 rounded-md border`}
+                    zoom ? 'w-[800px] cursor-zoom-out' : 'w-[500px] cursor-zoom-in'
+                } transition-width-height my-6 rounded-md border border-black dark:border-white`}
             />
         </>
     );
