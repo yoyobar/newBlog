@@ -8,7 +8,7 @@ import Cookies from 'js-cookie';
 import { getCookie, updateVisitCount, viewVisitCount } from '@/lib/visitorCount';
 
 const UserCount = () => {
-    const [visitCount, setVisitCount] = useState('-');
+    const [visitCount, setVisitCount] = useState('1');
     const [focus, setFocus] = useState(false);
 
     useEffectOnce(() => {
