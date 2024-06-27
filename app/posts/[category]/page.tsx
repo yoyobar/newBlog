@@ -19,6 +19,7 @@ export async function generateMetadata({
     return {
         title: `${titleName} | Trouble Wiki`,
         keywords: [category, titleName, 'wiki', 'Trouble Wiki'],
+        description: `Trouble Wiki, 개인 블로그. ${titleName} 카테고리의 게시물`,
         openGraph: {
             title: `${titleName} | Trouble Wiki`,
             images: ['/img/template_og_browse.webp'],

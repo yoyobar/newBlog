@@ -1,8 +1,405 @@
 ---
 title: '07. 댓글 기능 만들기'
-description: ''
+description: '블로그 만들기, supabase 댓글기능 구현을 다룹니다.'
 image: '/img/2024-06-26-13-52-42.webp'
 tags: [typescript,next.js,tailwindCSS]
-date: 2024-07-03 13:56:38
-update: 2024-06-26 13:56:38
+date: 2024-06-27 14:11:16
+update: 2024-06-27 14:11:16
 ---
+
+## 개요
+해당 블로그는 처음에는 [giscus](https://giscus.app/ko)를 통한 댓글 기능을 구현했습니다. 다만 아무래도 아쉬운 부분이 있었습니다.
+
+
+### 왜 직접 댓글을 제작하게 되었는가?
+
+<Callout type=''>사용자 편의성</Callout>
+
+블로그 등의 댓글 경험에서 중요한 부분은 `사용자 편의성`이라고 생각합니다.
+사용자가 항상 `github`로 로그인하고
+그 이후에만 댓글을 작성할 수 있다는 점은 편의성을 저해한다고 생각했습니다.
+
+`디시인사이드`의 비회원 댓글 기능처럼, 간단하게 비회원에게도 댓글을 지원하고
+어드민의 댓글만 추가적인 처리를 지원한다면 편의성이 좋은 댓글 기능을
+직접 제작할 수 있다고 생각했습니다.
+
+<Callout type=''>커스텀마이징</Callout>
+
+다양한 테마를 지원하는 댓글기능이더라도, 제가 생각하는 블로그에
+어울리는 댓글테마와는 거리가 멀었습니다.
+그래서 직접 기능을 구현했습니다.
+
+## 댓글 제작하기
+
+우선 `supabase`를 통해 댓글을 처리할겁니다. 저는 `auth`, 사용자 가입을
+따로 지원하지않으므로 어드민 계정은 환경변수로서 관리할 필요가 있습니다.
+
+![](/img/2024-06-27-13-41-57.webp)
+우선 어드민 정보를 환경변수에 넣습니다.
+이정보는 상당히 민감한편으로, `PUBLIC`이 아닌 일반 환경변수로 제작합니다.
+일반 환경변수로 생성할경우 `Next.js`의 경우 서버측에서만 값을 받을 수 있게 됩니다.
+
+간단하게 서버측으로부터 환경변수를 가져오는 `route.ts`를 작성합니다.
+
+### 어드민정보 환경변수 가져오기
+```typescript title="app/api/comments/route.ts"
+import { NextRequest, NextResponse } from 'next/server';
+
+export async function GET(req: NextRequest) {
+    const adminId = process.env.ADMIN_ID as string;
+    const adminPw = process.env.ADMIN_PW as string;
+
+    const response = {
+        adminId: adminId,
+        adminPw: adminPw,
+    };
+
+    return NextResponse.json(response);
+}
+```
+
+`fetch`요청을 보낼경우 간단하게 `ID`, `PW`를 환경변수로 담아 전달해주는 함수입니다.
+
+이제 댓글을 `POST` 할 때, `ID`와 `PW`가 어드민 정보와 동일할 경우
+스타일을 변경해서 댓글로 보여주면 됩니다.
+
+댓글 기능을 하나씩 제작해봅시다.
+
+---
+
+### 공통 요소 만들기
+우선, 필요한 테이블을 `supabase`에서 만들어야 합니다.
+
+![](/img/2024-06-27-13-57-28.webp)
+
+- 작성 일자 (created_at)
+- 수정 일자 (updated_at)
+- 암호 (VARCHAR) [단방향 암호화 적용]
+- 내용 (TEXT)
+- 경로 (VARCHAR) [댓글의 경로]
+- 닉네임 (VARCHAR)
+- 어드민여부 (BOOL)
+
+위와 같은 정보가 필요할걸로 예상됩니다. 이 정보의 처리과정을 일단 생각해봅시다.
+
+- 댓글을 작성일자 순서로 분류
+- 댓글에 경로를 확인하여 경로에 맞는 댓글만 요청
+- 댓글을 수정할경우 암호가 일치할 경우 수정일자 갱신, 내용 수정
+- 댓글을 삭제할경우 암호가 일치할 경우 삭제
+- 어드민여부가 `TRUE` 일 경우 렌더링 스타일 변경
+
+이렇게 5가지로 분류할 수 있겠습니다.
+
+가장 먼저 `row`의 타입을 선언해서 타입에 맞춰 데이터를 받아야합니다.
+
+```typescript title="config/types.ts"
+export interface Comment {
+    status: boolean;
+    content: string;
+    created_at: Date;
+    updated_at: Date;
+    name: string;
+    id: string;
+    admin: string;
+}
+export interface CommentFormType {
+    name: string;
+    password: string;
+    path: string;
+    content: string;
+}
+export interface CommentStatus {
+    status: boolean;
+    message: string;
+}
+```
+
+폼으로부터 받을 `CommentFormType`
+에러 발생시 값을 돌려줄 `CommentStatus`
+요청시 전달받을 모든데이터가 담긴 `Comment`
+이렇게 3개의 타입을 선언합니다.
+
+이제 모든 `Request`에서 통신에러가 발생할때 사용할 `handleError` 함수를 제작해야 합니다.
+
+```typescript title="lib/commentParse.ts"
+function handleError(error: any, message: string): CommentStatus {
+    console.error(message, error);
+    return {
+        status: false,
+        message: `${message}: ${error.message}`,
+    };
+}
+```
+
+또, 암호를 전달받아 단방향 암호화(`SHA-256`)를 적용할 함수를 제작합니다.
+아무리 비회원용 단순 암호라고 하더라도 약간의 보안은 필요하다고 판단됩니다.
+
+```typescript title="lib/commentParse.ts"
+function hashPassword(password: string): string {
+    const hash = crypto.createHash('sha256');
+    hash.update(password);
+    return hash.digest('hex');
+}
+```
+
+이제 공통적인 부분은 준비가 끝났습니다. `CRUD`를 구현하면 됩니다.
+
+---
+
+### 댓글 가져오기 (GET)
+
+게시글 링크 접속시 `path` 에 알맞는 댓글 데이터를 가져와야 합니다.
+
+```typescript title="lib/commentParse.ts"
+export async function getComments(pathId: string): Promise<Comment[] | CommentStatus> {
+    const { data, error } = await supabase
+        .from('comments')
+        .select('content, created_at, updated_at, name, id, admin')
+        .eq('path', pathId);
+
+    if (error) {
+        return handleError(error, 'Failed to fetch comments');
+    }
+
+    return data as Comment[];
+}
+```
+
+`GET`요청은 아주 간단합니다.
+요청 실패시 에러 로그를 보내주고
+요청 성공시 데이터를 보내줍니다.
+
+```tsx title="components/mdx/footer/Comment.tsx"
+    useEffect(() => {
+        const fetchComments = async () => {
+            try {
+                setLoading(true);
+                const response = await getComments(path);
+                if ('status' in response) {
+                    console.error(response.message);
+                } else {
+                    setComment(response);
+                    setLoading(false);
+                }
+            } catch (error) {
+                console.error(error);
+                setLoading(false);
+            }
+        };
+
+        fetchComments();
+    }, [path]);
+```
+`useEffect`를 활용해서 `path`가 변경될경우 `GET`요청을 보내도록
+설정합니다.
+
+---
+
+### 댓글 생성하기 (POST)
+
+폼에 데이터를 입력할 경우, `path`와 `name`, `pw`를 인자로 받아 신규 `row`를 생성 해야합니다.
+
+<Callout type='warn'>NAME, PW가 어드민과 같을경우 ADMIN 여부를 TRUE 로 전달해야 합니다</Callout>
+
+```typescript title="lib/commentParse.ts"
+async function setAdminComments(form: CommentFormType): Promise<CommentStatus> {
+    const hashedPassword = hashPassword(form.password);
+    const { error } = await supabase.from('comments').insert({
+        name: form.name,
+        password: hashedPassword,
+        content: form.content,
+        path: form.path,
+        admin: true,
+    });
+
+    if (error) {
+        return handleError(error, 'Failed to insert admin comment');
+    }
+
+    return {
+        status: true,
+        message: 'Admin comment inserted successfully',
+    };
+}
+
+export async function setComments(form: CommentFormType): Promise<CommentStatus> {
+    const hashedPassword = hashPassword(form.password);
+    const adminData = await fetchAdminData();
+
+    if (adminData) {
+        const { adminId, adminPw } = adminData;
+        if (hashedPassword === adminPw && form.name === adminId){
+            return setAdminComments(form);
+        }
+    }
+
+    const { error } = await supabase.from('comments').insert({
+        name: form.name,
+        password: hashedPassword,
+        content: form.content,
+        path: form.path,
+    });
+
+    if (error) {
+        return handleError(error, 'Failed to insert comment');
+    }
+
+    return {
+        status: true,
+        message: 'Comment inserted successfully',
+    };
+}
+```
+
+예외처리가 많아 복잡해보이지만, 실제로는 간단한 코드입니다.
+1. 전달받은 암호를 암호화해서, 우선 `ID`, `PW`가 어드민가 일치하는지 확인합니다.
+2. 일치할 경우 `setAdminComments`로 인자를 전달하여 `admin`여부를 `TRUE`로 처리합니다.
+3. 일치하지 않을경우 전달받은 내용을 등록합니다.
+
+이제 수정작업을 하는 클라이언트측 코드에 해당코드를 할당합니다.
+```tsx title="components/mdx/footer/Comment.tsx"
+    const handleUpdateComments = async () => {
+        const response = await getComments(path);
+        if ('status' in response) {
+            console.error(response.message);
+        } else {
+            setComment(response);
+        }
+    };
+    const submitHandler = async (
+        e: React.FormEvent<HTMLFormElement> | React.FormEvent<HTMLTextAreaElement>
+    ) => {
+        e.preventDefault();
+
+        if (form.name.trim() === '' || form.name.trim().length <= 1)
+            return setFormAlert((prev) => ({ ...prev, name: true }));
+        if (form.password.trim() === '' || form.password.length <= 3)
+            return setFormAlert((prev) => ({ ...prev, password: true }));
+        if (form.content.trim() === '') return;
+
+        const response = await setComments(form);
+        if (response) {
+            await handleUpdateComments();
+            setForm((prev) => ({ ...prev, name: 'ㅇㅇ', password: '', content: '' }));
+        }
+    };
+```
+
+`handleUpdateComments`는 공통함수로서, `POST`,`DELETE`,`PUT` 요청이
+진행 될 때, 갱신이 된 데이터를 다시가져오기 위해 사용됩니다.
+
+---
+
+### 댓글 수정하기 (PUT)
+
+폼을 통해 받은 암호와 데이터베이스내 암호가 일치한다면, 해당 `row`를 수정해야합니다.
+
+```typescript title="lib/commentParse.ts"
+export async function editComments(
+    content: string,
+    password: string,
+    id: string
+): Promise<CommentStatus> {
+    const hashedPassword = hashPassword(password);
+
+    const { data, error } = await supabase
+        .from('comments')
+        .select('id, password')
+        .eq('id', id)
+        .single();
+
+    if (error) {
+        return handleError(error, 'Failed to fetch comment for editing');
+    }
+
+    if (data.password !== hashedPassword) {
+        return {
+            status: false,
+            message: 'Incorrect password',
+        };
+    }
+
+    const { error: updateError } = await supabase
+        .from('comments')
+        .update({ content, updated_at: new Date().toISOString() })
+        .eq('id', id);
+
+    if (updateError) {
+        return handleError(updateError, 'Failed to update comment');
+    }
+
+    return {
+        status: true,
+        message: 'Comment updated successfully',
+    };
+}
+```
+
+인자로 전달받은 `id`, `password`, `content`에서 `password`가 `id` 컬럼과
+동일할경우 데이터를 수정합니다.
+
+여기서 전달받은 `id` 매개변수는
+![post](/img/2024-06-27-14-40-36.webp)
+
+`map`으로 생성되는 각 버튼에 `id`로서 존재합니다. 해당 id를 전달해주면 됩니다.
+
+---
+
+### 댓글 삭제하기 (DELETE)
+폼을 통해 받은 암호와 데이터베이스내 암호가 일치한다면, 해당 `row`를 삭제해야합니다.
+
+``` typescript title="lib/commentParse.ts"
+export async function removeComments(
+    password: string,
+    commentId: string
+): Promise<CommentStatus> {
+    const hashedPassword = hashPassword(password);
+
+    const { data, error } = await supabase
+        .from('comments')
+        .select('password')
+        .eq('id', commentId)
+        .single();
+
+    if (error) {
+        return handleError(error, 'Failed to fetch comment for deletion');
+    }
+
+    if (!data || data.password !== hashedPassword) {
+        return {
+            status: false,
+            message: 'Incorrect password',
+        };
+    }
+
+    const { error: deleteError } = await supabase
+        .from('comments')
+        .delete()
+        .eq('id', commentId);
+
+    if (deleteError) {
+        return handleError(deleteError, 'Failed to delete comment');
+    }
+
+    return {
+        status: true,
+        message: 'Comment deleted successfully',
+    };
+}
+```
+수정과 동일하게 `id`, `password`, `content`에서 `password`가 `id` 컬럼과
+동일할경우 데이터를 삭제합니다.
+
+![delete](/img/2024-06-27-14-42-41.webp)
+
+
+### 최종 점검
+
+모든 `CRUD`를 구현 했습니다.
+이제 각 요소에 맞게 클라이언트측에서 데이터를 처리해 주시면 되겠습니다.
+
+클라이언트측에서 데이터를 처리하는 과정이 잘 이해가 안되신다면
+
+[Github](https://github.com/yoyobar/newBlog/tree/main/components/mdx/footer/Comment)를 참고해주시면 되겠습니다.
+
+<Callout>제 코드가 정답은 아닙니다. 반박시 여러분 말이 다 맞습니다.</Callout>

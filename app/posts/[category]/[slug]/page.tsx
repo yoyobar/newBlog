@@ -20,6 +20,7 @@ export async function generateMetadata({
     return {
         title: `${frontMatter.title} | Trouble Wiki`,
         keywords: frontMatter.tags,
+        description: frontMatter.description,
         openGraph: {
             images: [
                 frontMatter.image ? frontMatter.image : '/img/template_og_browse.webp',

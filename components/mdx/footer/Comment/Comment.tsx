@@ -28,6 +28,7 @@ const CommentComponent = () => {
     const [deletePassword, setDeletePassword] = useState('');
     const [editContent, setEditContent] = useState('');
     const [currentId, setCurrentId] = useState('');
+    const [loading, setLoading] = useState(true);
     const [form, setForm] = useState<CommentFormType>({
         name: 'ㅇㅇ',
         password: '',
@@ -42,11 +43,18 @@ const CommentComponent = () => {
     //? path 변경시 댓글 데이터 재요청
     useEffect(() => {
         const fetchComments = async () => {
-            const response = await getComments(path);
-            if ('status' in response) {
-                console.error(response.message);
-            } else {
-                setComment(response);
+            try {
+                setLoading(true);
+                const response = await getComments(path);
+                if ('status' in response) {
+                    console.error(response.message);
+                } else {
+                    setComment(response);
+                    setLoading(false);
+                }
+            } catch (error) {
+                console.error(error);
+                setLoading(false);
             }
         };
 
@@ -112,7 +120,7 @@ const CommentComponent = () => {
 
     //? DELETE HANDLER
     const deleteHandler = async () => {
-        const response = await removeComments(path, deletePassword, currentId);
+        const response = await removeComments(deletePassword, currentId);
         if (response) {
             await handleUpdateComments();
         }
@@ -124,7 +132,7 @@ const CommentComponent = () => {
     ) => {
         e.preventDefault();
 
-        const response = await editComments(path, editContent, deletePassword, currentId);
+        const response = await editComments(editContent, deletePassword, currentId);
         if (response) {
             setEditVisible(false);
             setDeletePassword('');
@@ -134,7 +142,7 @@ const CommentComponent = () => {
 
     //? 시간순 정렬
     const sortedComments = comment.sort((a: Comment, b: Comment) => {
-        return new Date(a.updated_at).getTime() - new Date(b.updated_at).getTime();
+        return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
     });
 
     return (
@@ -146,51 +154,61 @@ const CommentComponent = () => {
                 formAlert={formAlert}
             />
             <div className='w-full h-fit flex flex-col'>
-                {sortedComments.length === 0 ? (
-                    <div className='w-full text-center'>현재 댓글이 없습니다.</div>
+                {loading ? (
+                    <div className='w-full text-center text-sky-400 font-bold'>
+                        댓글을 불러오는 중...
+                    </div>
                 ) : (
-                    sortedComments.map((comment) =>
-                        comment.admin ? (
-                            <CommentAdmin
-                                comment={comment}
-                                setDeleteVisible={setDeleteVisible}
-                                setCurrentId={setCurrentId}
-                                setEditVisible={setEditVisible}
-                                setEditContent={setEditContent}
-                                key={comment.id}
-                            />
+                    <>
+                        {sortedComments.length === 0 ? (
+                            <div className='w-full text-center text-sky-400 font-bold'>
+                                현재 댓글이 없습니다.
+                            </div>
                         ) : (
-                            <CommentUser
-                                comment={comment}
+                            sortedComments.map((comment) =>
+                                comment.admin ? (
+                                    <CommentAdmin
+                                        comment={comment}
+                                        setDeleteVisible={setDeleteVisible}
+                                        setCurrentId={setCurrentId}
+                                        setEditVisible={setEditVisible}
+                                        setEditContent={setEditContent}
+                                        key={comment.id}
+                                    />
+                                ) : (
+                                    <CommentUser
+                                        comment={comment}
+                                        setDeleteVisible={setDeleteVisible}
+                                        setCurrentId={setCurrentId}
+                                        setEditVisible={setEditVisible}
+                                        setEditContent={setEditContent}
+                                        key={comment.id}
+                                    />
+                                )
+                            )
+                        )}
+                        {deleteVisible && (
+                            <CommentDelete
+                                onDelete={deleteHandler}
+                                deletePassword={deletePassword}
                                 setDeleteVisible={setDeleteVisible}
-                                setCurrentId={setCurrentId}
+                                setDeletePassword={setDeletePassword}
+                                deleteRef={deleteRef}
+                            />
+                        )}
+                        {editVisible && (
+                            <CommentEdit
+                                editContent={editContent}
+                                onEditSubmit={editSubmitHandler}
                                 setEditVisible={setEditVisible}
                                 setEditContent={setEditContent}
-                                key={comment.id}
+                                setDeleteVisible={setDeleteVisible}
+                                setDeletePassword={setDeletePassword}
+                                deletePassword={deletePassword}
+                                editRef={editRef}
                             />
-                        )
-                    )
-                )}
-                {deleteVisible && (
-                    <CommentDelete
-                        onDelete={deleteHandler}
-                        deletePassword={deletePassword}
-                        setDeleteVisible={setDeleteVisible}
-                        setDeletePassword={setDeletePassword}
-                        deleteRef={deleteRef}
-                    />
-                )}
-                {editVisible && (
-                    <CommentEdit
-                        editContent={editContent}
-                        onEditSubmit={editSubmitHandler}
-                        setEditVisible={setEditVisible}
-                        setEditContent={setEditContent}
-                        setDeleteVisible={setDeleteVisible}
-                        setDeletePassword={setDeletePassword}
-                        deletePassword={deletePassword}
-                        editRef={editRef}
-                    />
+                        )}
+                    </>
                 )}
             </div>
         </>

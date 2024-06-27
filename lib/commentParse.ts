@@ -3,10 +3,11 @@ import crypto from 'crypto';
 import { Comment, CommentFormType, CommentStatus } from '@/config/types';
 
 function hashPassword(password: string): string {
-    const hash = crypto.createHash('sha256'); // SHA-256 해시 알고리즘 사용
+    const hash = crypto.createHash('sha256');
     hash.update(password);
     return hash.digest('hex');
 }
+
 function handleError(error: any, message: string): CommentStatus {
     console.error(message, error);
     return {
@@ -91,7 +92,6 @@ export async function setComments(form: CommentFormType): Promise<CommentStatus>
 }
 
 export async function removeComments(
-    pathId: string,
     password: string,
     commentId: string
 ): Promise<CommentStatus> {
@@ -100,7 +100,6 @@ export async function removeComments(
     const { data, error } = await supabase
         .from('comments')
         .select('password')
-        .eq('path', pathId)
         .eq('id', commentId)
         .single();
 
@@ -131,7 +130,6 @@ export async function removeComments(
 }
 
 export async function editComments(
-    pathId: string,
     content: string,
     password: string,
     id: string

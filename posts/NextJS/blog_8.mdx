@@ -1,8 +1,541 @@
 ---
 title: '08. 최적화, 동적 메타데이터 작성하기'
-description: ''
+description: '블로그 만들기, 최적화 및 메타데이터 생성을 다룹니다.'
 image: '/img/2024-06-26-13-52-42.webp'
 tags: [typescript,next.js,tailwindCSS]
-date: 2024-07-04 13:56:38
-update: 2024-06-26 13:56:38
+date: 2024-06-27 16:14:24
+update: 2024-06-27 16:14:24
 ---
+여기까지 따라오셨다면 축하드립니다! 모든 블로그의 기능을 완성하셨습니다. 🎉
+
+하지만, 모든 기능은 완성했지만 아직 검색엔진에 등록도 안되어있고
+
+오픈그래프 설정도 안되어있고, 최적화도 하나도 안되어있어요.
+
+지금 만드신 블로그는 배포하더라도 아무도 접근할 수 없습니다. 
+
+검색해도 주소를 모르니깐요, 이제 최적화와 관련된 작업을 해봅시다.
+
+![](/img/2024-06-27-14-50-06.webp)
+![](/img/2024-06-27-14-51-11.webp)
+
+
+성공적인 블로그의 최적화입니다. 링크 공유시에도 썸네일과 제목이 잘 나오고
+성능점수와 검색엔진 최적화([SEO](https://developers.google.com/search/docs/fundamentals/seo-starter-guide?hl=ko)) 점수가 아주 높게 잡힙니다.
+
+왠만한 블로그 수준을 벗어난 최적화를 한번 적용해봅시다.
+
+---
+
+## SEO 개선하기
+
+우선 `SEO`가 뭔지부터 알아볼까요?
+
+SEO는 `Search Engine Optimization`의 약자로서, 검색엔진 최적화를 의미합니다.
+웹사이트가 검색엔진 결과페이지에서 상위에 나오도록 키워드와 내용을 최적화하고
+관련성이 높은 정보를 사용자에게 제공하는게 프론트엔드 개발자에게 매우 중요한 역량입니다.
+
+`Next.js`에서는 크게 정적 메타데이터와 동적 메타데이터가 존재합니다.
+보통 섞어서 많이 사용하는데요, 블로그의 메인 페이지는 정적 메타태그로 기본값을 할당하고
+그 외 페이지는 페이지의 내용이나 키워드를 파싱해서 메타태그에 변화를 주면 되는겁니다.
+
+한번 적용해봅시다.
+
+---
+
+### 정적 메타데이터 태그
+
+우선 정적메타데이터는 간단합니다. 필요한 페이지에서 `export const metadata`
+를 선언하여 필요한 데이터를 작성해주면 끝입니다. 하지만 저는
+유연성을 위해서, 따로 `siteConfig.ts`라는 상수 함수를 만들어서 값을 가져와 보겠습니다.
+
+```typescript title="config/siteconfig.ts"
+export const siteConfig = {
+    url: 'https://trouble-wiki.vercel.app/',
+    manifest: '/favicon/site.webmanifest',
+    author: {
+        name: 'yoyobar',
+        contacts: {
+            email: 'barwait@naver.com',
+        },
+        creator: 'Minsu Kim',
+    },
+    title: 'Trouble Wiki',
+    description: 'Trouble Wiki, 개인 블로그. 다양한 개발정보를 다룹니다.',
+    keywords: [
+        'trouble Wiki, 트러블 위키, 위키, 트러블위키, 자바스크립트, 타입스크립트, 개발블로그, 개발정보, 개발, js, ts, typescript, javascript, react, next.js',
+    ],
+    icons: {
+        icon: [
+            { rel: 'apple-touch-icon', sizes: '180x180', url: '/favicon/apple-touch-icon.png' },
+            { rel: 'icon', type: 'image/png', sizes: '32x32', url: '/favicon/favicon-32x32.png' },
+            { rel: 'icon', type: 'image/png', sizes: '16x16', url: '/favicon/favicon-16x16.png' },
+        ],
+    },
+    since: 2024,
+
+    openGraph: {
+        url: 'https://trouble-wiki.vercel.app/',
+        siteName: 'Trouble Wiki',
+        images: ['/logo/template_og.webp'],
+        description: 'Trouble Wiki, 개인 블로그. 다양한 개발정보를 다룹니다.',
+        type: 'article',
+        authors: ['Minsu Kim', 'yoyobar'],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: `Trouble Wiki`,
+        description: 'Trouble Wiki, 개인 블로그. 다양한 개발정보를 다룹니다.',
+        creator: 'yoyobar',
+        images: ['/logo/template_og.webp'],
+    },
+    verification: {
+        google: 'YOUR_VERIFICATION',
+        other: {
+            'naver-site-verification': 'YOUR_VERIFICATION',
+        },
+    },
+    canonical: 'https://trouble-wiki.vercel.app',
+};
+```
+
+각각의 태그의 역할을 가볍게 소개해드리겠습니다.
+- title: 사이트 상단에 보이는 사이트 제목을 나타냅니다.
+- description: 검색창에서 사이트 밑부분에 나오는 설명을 나타냅니다.
+- keywords: 검색 중요 키워드를 나타냅니다.
+- icons: 사이트의 아이콘을 나타냅니다. `favicon`이라고 칭하는데요, [generator](https://realfavicongenerator.net)를 활용해서 생성
+- openGraph : 카카오톡이나 페이스북에서 링크를 공유할 경우 보여줄 썸네일 카드
+- twitter : 트위터는 별개의 opengraph를 사용합니다(...) 거기에 맞춘 카드
+- Verification: 추후 검색엔진 등록에 중요한 역할을 합니다. **기억 해두세요**
+- Canonical : 검색엔진이 해당 URL에서 어떤 URL을 우선해야 할지 결정합니다. **SEO에서 매우 중요한 개념입니다.**
+
+이제 해당 데이터를 알맞게 정적으로 세팅해보겠습니다.
+
+```tsx app/layout.tsx
+export const metadata: Metadata = {
+    metadataBase: new URL(siteConfig.url),
+    manifest: siteConfig.manifest,
+    icons: siteConfig.icons,
+    title: siteConfig.title,
+    description: siteConfig.description,
+    keywords: siteConfig.keywords,
+    creator: siteConfig.author.creator,
+    openGraph: siteConfig.openGraph,
+    twitter: siteConfig.twitter,
+    verification: siteConfig.verification,
+
+    alternates: {
+        canonical: siteConfig.canonical,
+    },
+};
+```
+
+![](/img/2024-06-27-15-11-16.webp)
+메인 페이지의 메타데이터가 깔끔하게 생성되었습니다.
+정적으로 변하지않는 부분에는 정적메타데이터를 전부 만들어두면 되겠습니다..
+
+가장 중요한, 각 게시물별 동적 메타데이터를 다뤄봅시다.
+
+---
+
+### 동적 메타데이터 태그
+
+동적 메타데이터는 `generateMetadata`라는 함수를 활용해서 제작합니다.
+페이지의 `params`를 활용해서 필요한 메타데이터 정보를 요청하고
+해당 정보로 메타데이터를 수정하면 되는데요, 
+
+제가 만든 페이지에서 동적 메타데이터가 필요한 곳은 어디일까요?
+`[category]`와 `[slug]` 폴더에 있는 `page.tsx`가 해당 됩니다.
+
+
+```tsx title="app/posts/[category]/page.tsx"
+export async function generateMetadata({
+    params,
+}: {
+    params: { category: string; slug: string };
+}) {
+    const { category } = params;
+    const metaObj = metadata[category] || metadata['all'];
+    const titleName = metaObj.title;
+
+    return {
+        title: `${titleName} | Trouble Wiki`,
+        keywords: [category, titleName, 'wiki', 'Trouble Wiki'],
+        description: `Trouble Wiki, 개인 블로그. ${titleName} 카테고리의 게시물`,
+        openGraph: {
+            title: `${titleName} | Trouble Wiki`,
+            images: ['/img/template_og_browse.webp'],
+            description: `Trouble Wiki, 개인 블로그. ${titleName} 카테고리의 게시물`,
+        },
+        twitter: {
+            title: `${titleName} | Trouble Wiki`,
+            images: ['/img/template_og_browse.webp'],
+            description: `Trouble Wiki, 개인 블로그. ${titleName} 카테고리의 게시물`,
+        },
+        alternates: {
+            canonical: `${siteConfig.canonical}/posts/${category}`,
+        },
+    };
+}
+```
+
+게시글 목록에서의 메타데이터는 크게 다를게 없습니다. 기존 메타데이터에서
+`title`, `openGraph`, `description`말고는 크게 수정할 게 없습니다.
+
+
+```tsx title="app/posts/[category]/[slug]/page.tsx"
+export async function generateMetadata({
+    params,
+}: {
+    params: { category: string; slug: string };
+}) {
+    const { category, slug } = params;
+    const { frontMatter } = await getPost(category, slug);
+    return {
+        title: `${frontMatter.title} | Trouble Wiki`,
+        keywords: frontMatter.tags,
+        description: frontMatter.description,
+        openGraph: {
+            images: [
+                frontMatter.image ? frontMatter.image : '/img/template_og_browse.webp',
+            ],
+            description: frontMatter.description,
+            publishedTime: frontMatter.date,
+        },
+        twitter: {
+            images: [
+                frontMatter.image ? frontMatter.image : '/img/template_og_browse.webp',
+            ],
+            description: frontMatter.description,
+            title: `${frontMatter.title} | Trouble Wiki`,
+        },
+        alternates: {
+            canonical: `${siteConfig.canonical}/posts/${category}/${slug}`,
+        },
+    };
+}
+```
+게시물 상세내용에서는 수정할 내용이 많습니다. 
+우선 썸네일 이미지를 가져오고, 이미지가 없다면 기본 썸네일 이미지를 지정하고
+이전에 프론트매터에 저장해둔 `tag`를 키워드로 넣어주고
+작성일자는 프론트매터에 저장해둔 `date`를 활용합니다.
+
+![](/img/2024-06-27-15-21-23.webp)
+아주 깔끔하게 메타데이터가 생성되었습니다. 
+이제 검색엔진에 등록할 준비만 하면되겠네요.
+
+---
+
+### robots.txt 적용하기
+
+이제 검색엔진에서 우리 페이지에서 어떤걸 가져가야되는지 알려줘야합니다.
+딱히 뭐 어려운 내용은 없습니다.
+
+```txt title="public/robots.txt"
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://trouble-wiki.vercel.app
+
+# Sitemaps
+Sitemap: https://trouble-wiki.vercel.app/sitemap.xml
+```
+여러분에게 맞는 호스팅주소로 변경하면 되겠습니다.
+
+근데, 여기서 `sitemap.xml`은 뭘까요? 
+경로는 지정되어있는데 우린 아직 만든적이 없습니다.
+
+---
+
+### sitemap.xml 적용하기
+
+`sitemap.xml`은 검색엔진에게 해당 사이트에 어떤 컨텐츠가 존재하는지
+알려주는 `xml`파일입니다. 직접 수동으로 작성할 수도 있지만,
+게시글을 작성하고 이걸 매번 수동으로 작성한다고요? 저는 권장드리지 않습니다.
+
+![](/img/2024-06-27-15-27-33.webp)
+
+저는 [next-sitemap](https://www.npmjs.com/package/next-sitemap)를 활용해서 자동으로 데이터를 추출하게 해보겠습니다.
+
+우선, `npm install next-sitemap`을 실행합니다.
+
+그리고, 빌드과정중에 `sitemap`을 추출하는 명령을 추가합니다.
+
+```json title="package.json"
+"build": "next build && next-sitemap",
+```
+
+그리고, 상위폴더에 `next-sitemap.config.js`를 만들어 `sitemap` 추출을 원하는 형태로 조절합니다.
+
+```javascript title="next-sitemap.config.js"
+/** @type {import('next-sitemap').IConfig} */
+module.exports = {
+    siteUrl: 'https://trouble-wiki.vercel.app',
+    changefreq: 'daily',
+    priority: 0.7,
+    sitemapSize: 7000,
+    generateRobotsTxt: true,
+    exclude: ['/app/api/*'],
+};
+```
+저는 `api`폴더는 제외할 것이기에 위와 같이 설정합니다. `changefreq`는 언제마다 업데이트를 할지를 정해주는데, 
+always | hourly | daily | weekly | monthly | yearly | never
+등 많은 옵션이 존재하므로, 마음에드는대로 사용하시면 됩니다.
+
+이제 `npm run build`를 실행하면 `sitemap.xml`이 생성될텐데, 
+매 빌드마다 생성되므로 `.gitignore`에 넣어두세요.
+
+검색엔진을 위한 준비는 끝났습니다. 실제로 검색엔진에 등록할 차례입니다.
+
+---
+
+### 검색엔진 등록하기
+
+[구글 서치콘솔](https://search.google.com/search-console/about)에 접속하여 가입합니다.
+
+![](/img/2024-06-27-15-35-10.webp)
+
+`속성 추가`를 눌러 현재 배포중인 주소를 등록합니다.
+
+![](/img/2024-06-27-15-35-35.webp)
+
+`URL 접두어`로 진행합니다. 인증방법이 간단하여 사용하기 쉽습니다.
+
+![](/img/2024-06-27-15-36-26.webp)
+
+`HTML태그`로 메타태그를 추가해서 소유권을 증명합시다.
+
+이부분은 **정적메타데이터**에서 제가 나중에 작성하라한 부분을 작성해주시면 되겠습니다.
+
+```tsx title="app/layout.tsx"
+    verification: {
+        google: 'YOUR_VERIFICATION',
+        other: {
+            'naver-site-verification': 'YOUR_VERIFICATION',
+        },
+    },
+```
+
+이 코드는 환경변수로 넣지않고 직접넣어도 문제없습니다. 민감한 코드가 아닙니다.
+
+작성하시고 다시 재배포를 한 후, 소유권 증명을 하시면 등록이 완료됩니다.
+
+![](/img/2024-06-27-15-39-13.webp)
+
+`sitemaps`에서 제가 넣어둔 `sitemap`을 수동으로 추가합니다.
+이제 구글 서치콘솔에서 인식되기까지 짧으면 **2주** 길면 **1달** 입니다.
+영향권이 적은 사이트는 구글검색에서 노출되기 힘듭니다.. 💤
+
+---
+
+## 최적화 개선하기
+
+### 이미지 최적화하기
+
+메타데이터와 오픈그래프 설정이 완료되었습니다.
+이제 사이트 최적화를 하셔야합니다.
+사이트 최적화는 `FCP`, `LCP`, `CLS`등이 있는데,
+저희가 가장 중요하게 봐야할부분은 `FCP`와 `CLS`입니다.
+
+구글 확장프로그램중 `lighthouse`를 사용하셔서 확인하실 수 있습니다.
+
+우선, `FCP`는 `First Contentful Paint`로서
+첫 화면이 사용자에게 제공되는데 걸리는 시간입니다.
+
+첫 화면의 렌더링이 1초이내로 되지않는다면 사용자 이탈율이 `100%`에 가깝다는 통계가 있습니다.
+
+`CLS`는 `Cumulative Layout Shift`라고 칭하는데, 렌더링 이전과 렌더링 이후
+스크롤의 변동이 발생하는 정도를 나타냅니다.
+
+사용자 편의성과 가장 관련있는 부분이므로, 블로그에서 가장 흔한 부분은
+
+역시 `이미지`가 원인입니다.
+
+![](/img/2024-06-27-15-50-33.webp)
+
+이미지의 로딩이 발생할경우 기존 레이아웃이 변동되면서 발생하는 문제가 있습니다. 
+이를 해결하는 방법은 여러가지가 있습니다만,
+
+저희는 작은 썸네일을 만들어놓고, 이를 렌더링하는 방법을 사용해보겠습니다.
+
+[next-image-export-optimizer](https://www.npmjs.com/package/next-image-export-optimizer)를 사용하여 최적화하겠습니다.
+
+다운로드수가 다소 빈약한 라이브러리인데, `next.js`에서는 자동으로 이미지를
+최적화 해주는데, 정적 사이트의 경우 **최적화를 진행해주지 않습니다!**
+
+이를 최적화 해주는 라이브러리 입니다. 빌드 과정중 작은 썸네일을 만들어주고
+이미지가 로딩되기이전에 작은 썸네일부터 보여줘 `CLS`를 방지하고
+모든 이미지를 `webp`로 변환해주어 웹 트래픽을 최소화 합니다.
+
+`npm install next-image-export-optimizer`를 통해 설치합니다.
+
+
+- 사전 설정
+
+우선, `package.json`에서 빌드과정중 추가작업을 넣습니다.
+
+``` json title="package.json"
+"build": "next build && next-image-export-optimizer && next-sitemap"
+```
+
+`next.config.js`를 수정하여 이미지 최적화를 커스텀마이징 합니다.
+
+```javascript title="next.config.js"
+const withMDX = require('@next/mdx')({
+    extension: /\.mdx?$/,
+});
+
+module.exports = withMDX({
+    images: {
+        loader: 'custom',
+        imageSizes: [16, 48, 96, 128, 256],
+        deviceSizes: [640, 1080, 1920, 2048, 3840],
+    },
+    transpilePackages: ['next-image-export-optimizer'],
+    env: {
+        nextImageExportOptimizer_imageFolderPath: 'public/img',
+        nextImageExportOptimizer_exportFolderPath: 'out',
+        nextImageExportOptimizer_quality: '75',
+        nextImageExportOptimizer_storePicturesInWEBP: 'true',
+        nextImageExportOptimizer_exportFolderName: 'nextImageExportOptimizer',
+        nextImageExportOptimizer_generateAndUseBlurImages: 'true',
+        nextImageExportOptimizer_remoteImageCacheTTL: '86400',
+    },
+    pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
+    webpack: (config, { dev, isServer }) => {
+        config.module.rules.push({
+            test: /\.mdx?$/,
+            use: ['raw-loader', '@mdx-js/loader'],
+        });
+
+        return config;
+    },
+});
+```
+
+여러 옵션이 있는데, [next-image-export-optimizer](https://www.npmjs.com/package/next-image-export-optimizer)를 확인하셔서 사용조건에 맞게 커스터마이징 하시면 되겠습니다.
+
+이제 `build`를 하게되면 이미지 용량이 최적화되어 배포되게됩니다.
+
+![](/img/2024-06-27-15-57-40.webp)
+
+
+<Callout type=''>배포 시간이 너무 오래걸리는데요...</Callout>
+
+하지만 안타깝게도 `png`나 `jpg`로 애초부터 배포를 진행할경우,
+이미지 처리하는 과정이 오래걸려 배포속도가 1분이나 더 걸릴수도 있습니다.
+
+너무 느린 배포는 개발생산성에도 영향을 줄 수 있다고 생각합니다.
+
+저는 그래서 유틸리티 함수를 추가적으로 제작하였습니다.
+
+
+```javascript title="utils/imageConvert.js"
+const fs = require('fs');
+const path = require('path');
+const webp = require('webp-converter');
+
+const inputFolder = path.join('public', 'img');
+
+const convertToWebP = async () => {
+    fs.readdir(inputFolder, async (err, files) => {
+        if (err) {
+            console.error('경로가 잘못됨', err);
+            process.exit(1);
+        }
+
+        for (const file of files) {
+            const inputFilePath = path.join(inputFolder, file);
+            const outputFilePath = path.join(inputFolder, `${path.parse(file).name}.webp`);
+
+            // Check if the current path is a file
+            if (fs.lstatSync(inputFilePath).isFile()) {
+                const fileExtension = path.extname(file).toLowerCase();
+                if (['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff'].includes(fileExtension)) {
+                    try {
+                        await webp.cwebp(inputFilePath, outputFilePath, '-q 80');
+                        console.log(`${file} webp로 변환 완료`);
+
+                        // Delete the original file
+                        fs.unlink(inputFilePath, (err) => {
+                            if (err) {
+                                console.error(`삭제 실패 ${file}:`, err);
+                            } else {
+                                console.log(`${file} 삭제 성공`);
+                            }
+                        });
+                    } catch (error) {
+                        console.error(`변환 실패 ${file}:`, error);
+                    }
+                }
+            }
+        }
+        console.log('변환 작업 완료');
+    });
+};
+
+convertToWebP();
+```
+
+```json title="package.json"
+"convert": "node ./utils/imageConvert.js"
+```
+
+배포 이전에 `npm run convert`를 통해 이미지를 최적화하고
+배포 이후에는 자동으로 썸네일이 생성되어
+배포도 빠르게하면서, 이미지도 최적화할 수 있습니다.
+
+---
+
+### 컴포넌트 최적화하기
+
+사실 컴포넌트 최적화는 꽤나 장황한 범위를 나타낸다고 생각합니다.
+리액트에서 최적화하는데 사용되는 `useCallback`, `useMemo`, `memo`등을
+나타낼 수도 있지만
+
+과한 애니메이션을 자중하고 깔끔한 코드작성또한 컴포넌트 최적화라는 항목에서는
+좋은 점수를 줄 수 있기 때문입니다.
+
+`next.js`는 서버사이드렌더링을 지원하기때문에 지나치게 무겁지만 않으면
+빠른속도의 최적화를 자동으로 지원해주기때문에
+
+여러분의 블로그 컴포넌트를 하나하나 다시살펴보면서
+
+`SSG`를 적용할지
+`CSR`을 적용할지
+`SSR`을 적용할지 
+잘 고려하면서 대처해야 합니다.
+
+`SSG`
+ - 빌드시 정적 HTML 페이지를 생성하여 사용자 요청시 제공하는 방식
+ - 매우빠른 로딩시간, SEO 최적화
+ - 콘텐츠가 자주변동 되지않는 블로그 포스트등에 활용
+
+
+`CSR`
+ - `JS`가 클라이언트측에서 실행되어 필요한 데이터를 가져오고, 렌더링
+ - 초기 로딩이 길지만, 페이지간 이동이 빠름
+ - 사용자 상호작용이많고 페이지전환이 빈번할 경우
+ - 카테고리 버튼, 메뉴 버튼, 상호작용 버튼등
+
+`SSR`
+ - 요청마다 서버에서 페이지를 렌더링하여 `HTML`을 생성하고 클라이언트로 보냄
+ - 항상 최신데이터, SEO에 유리, 초기 로딩시간 긴편
+ - 데이터가 자주 변경되며, 항상 최신상태를 보여줘야하는 경우
+ - 댓글, 그래프등 (물론 제 블로그는 `CSR`로 댓글을 가져오고 있습니다.)
+
+---
+
+## 마치며
+
+이제 모든 블로그를 완성하셨습니다. 정말로 축하드립니다.
+자신만의 추가적인 컴포넌트와 디자인, 내용을 추가하시면서 더욱 블로그를
+발전해나가면서 자신만의 기억저장소를 업데이트 해나가시길 바랍니다 :)
+
+저도 이번이 처음으로 만든 블로그라, 개선할 점이 아주많지만
+해당 포스트를 작성하면서 내용을 회고하고, 많은 경험을 얻었다고 생각합니다.
+
+
+<a href="https://github.com/yoyobar/newBlog" className="bg-black p-2 inline-block no-underline rounded-md text-white w-[200px] text-center cursor-pointer hover:scale-105 transition">Post By Kim minsu</a>

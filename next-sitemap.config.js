@@ -5,5 +5,5 @@ module.exports = {
     priority: 0.7,
     sitemapSize: 7000,
     generateRobotsTxt: true,
-    exclude: [],
+    exclude: ['/app/api/*', '/app/calendar/*'],
 };

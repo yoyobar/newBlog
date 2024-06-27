@@ -74,26 +74,6 @@ export interface PlaylistItem {
 export interface PlaylistResponse {
     items: PlaylistItem[];
 }
-
-export type DailyVisitors = {
-    id: number;
-    visit_date: string;
-    visit_count: number;
-    ip_address: string;
-};
-
-export type Database = {
-    public: {
-        Tables: {
-            daily_visitors: {
-                Row: DailyVisitors;
-                Insert: Omit<DailyVisitors, 'id'>;
-                Update: Partial<Omit<DailyVisitors, 'id'>>;
-            };
-        };
-    };
-};
-
 export interface Comment {
     status: boolean;
     content: string;
@@ -103,14 +83,12 @@ export interface Comment {
     id: string;
     admin: string;
 }
-
 export interface CommentFormType {
     name: string;
     password: string;
     path: string;
     content: string;
 }
-
 export interface CommentStatus {
     status: boolean;
     message: string;
