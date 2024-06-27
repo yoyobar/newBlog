@@ -16,8 +16,8 @@ export const Image = ({ src, alt }: ImageProps) => {
     return (
         <>
             <ExportedImage
-                width={300}
-                height={200}
+                width={500}
+                height={332}
                 src={src}
                 alt={alt}
                 onClick={() => {
