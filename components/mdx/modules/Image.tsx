@@ -11,10 +11,10 @@ interface ImageProps {
 
 export const Image = ({ src, alt }: ImageProps) => {
     return (
-        <span className='inline-block w-[700px] h-[480px] relative'>
+        <span className='inline-block w-full h-[320px] xl:w-[700px] xl:h-[470px] relative'>
             <ExportedImage
                 fill
-                sizes='(max-width: 768px) 100vw, 600px'
+                sizes='(max-width: 1280px) 100vw, 700px'
                 src={src}
                 alt={alt}
                 className='object-contain transition-maximize my-6 rounded-md border'
