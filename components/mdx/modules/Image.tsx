@@ -25,7 +25,7 @@ export const Image = ({ src, alt }: ImageProps) => {
                 }}
                 className={`${
                     zoom ? 'w-[800px] cursor-zoom-out' : 'w-[500px] cursor-zoom-in'
-                } transition-width-height my-6 rounded-md border border-black dark:border-white`}
+                } transition-width-height my-6 rounded-md shadow-xl`}
             />
         </>
     );
