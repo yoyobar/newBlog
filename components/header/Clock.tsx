@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Loading from '../Loading';
 import { LOADING_ENUM } from '@/config/types';
 import dayjs from 'dayjs';
@@ -16,7 +16,7 @@ const formatTime = (date: Date) => {
 };
 
 const Clock = () => {
-    const [time, setTime] = useState<string>(formatTime(new Date()));
+    const [time, setTime] = useState<string>('');
 
     useEffectOnce(() => {
         const timeInterval = setInterval(() => {
