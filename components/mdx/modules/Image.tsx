@@ -10,16 +10,21 @@ interface ImageProps {
 }
 
 export const Image = ({ src, alt }: ImageProps) => {
+    const [zoom, setZoom] = useState(false);
+
     return (
-        <span className='inline-block w-full h-[320px] xl:w-[700px] xl:h-[470px] relative'>
-            <ExportedImage
-                fill
-                sizes='(max-width: 1280px) 100vw, 700px'
-                src={src}
-                alt={alt}
-                className='object-contain transition-maximize my-6 rounded-md border'
-            />
-        </span>
+        <ExportedImage
+            width={10}
+            height={10}
+            src={src}
+            alt={alt}
+            onClick={() => {
+                setZoom((prev) => !prev);
+            }}
+            className={`${
+                zoom ? 'w-[800px] cursor-zoom-out' : 'w-[500px] cursor-zoom-in'
+            } transition-width-height my-6 rounded-md border`}
+        />
     );
 };
 
