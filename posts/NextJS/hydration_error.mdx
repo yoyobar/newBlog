@@ -1,0 +1,159 @@
+---
+title: 'Hydration Error, 정확히 알아보자'
+description: 'Next.js Hydration에 대해 자세히 알아봅니다.'
+image: '/img/2024-05-30-20-53-52.webp'
+tags: [next.js, Hydration, next14, trouble-Shooting]
+date: 2024-06-27 22:17:43
+update: 2024-06-27 22:17:43
+---
+
+## 시작
+
+블로그를 개발하던 과정에 발생한 에러입니다.
+
+![](/img/2024-06-27-22-24-07.webp)
+
+<Callout type='danger'>텍스트 컨텐츠가 서버 렌더링 HTML과 일치하지 않습니다.</Callout>
+
+이러한 에러는 `Next.js`에서 빈번히 발생할 수 있습니다. 왜 발생하고, 어떻게 해결해야 할까요?
+`Next.js`의 작동방식을 이해하면 이러한 에러를 방지할 수 있습니다.
+
+
+## Next.js의 동작과정
+
+일반적으로 React로 만든 애플리케이션의 경우 `body`는 텅비어있는 `html`을 다운받습니다.
+이후 CSR(Client-Side Rendering)을 통해 UI를 그리게 됩니다.
+
+![](/img/2024-06-27-22-27-30.webp)
+
+
+반면, `Next.js`는 모든 페이지를 미리 렌더링`Pre-rendering` 합니다. 
+생성된 HTML은 해당 페이지에 필요한만큼의 자바스크립트 코드와 연결되고, 브라우저가 페이지를 로드하면
+자바스크립트 코드가 전달됩니다. 
+
+이 과정을 `Hydration`이라고 부릅니다.
+
+![](/img/2024-06-27-22-30-03.webp)
+
+`Hydration`은 직역하면 **수화(水化)시키다**라는 의미입니다. 명칭으로는 이해하기가 힘든데요.
+
+사전 렌더링 과정에서 `건조한` html만 제공할경우, javascript로 `물`을 주어 촉촉하게
+만들어줄 수 없기 때문에 이러한 부분을 `hydration`이라고 부릅니다.
+
+## Hydration mismatch
+이러한 `hydration` 과정중에서 서버에서 가져온 `HTML` 데이터와 클라이언트 `HTML`데이터가 다를경우가 존재합니다. 대표적으로 시간과 관련된 내용이 그렇습니다.
+
+```tsx title="Clock.tsx"
+'use client';
+
+import { useEffect, useMemo, useState } from 'react';
+
+const formatTime = (date: Date) => {
+    //? 월 일 시 분 데이터
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hour = String(date.getHours()).padStart(2, '0');
+    const minute = String(date.getMinutes()).padStart(2, '0');
+    //? 요일 데이터
+    const weeks = ['일', '월', '화', '수', '목', '금', '토'];
+    const week = weeks[date.getDay()];
+    //? AM/PM 데이터
+    const ampm = Number(hour) >= 12 ? '오후' : '오전';
+
+    return `${month}월 ${day}일 (${week}) ${ampm} ${hour}:${minute}`;
+};
+
+const Clock = () => {
+    const initialTime = new Date();
+    const [time, setTime] = useState<Date>(initialTime);
+
+    useEffect(() => {
+        const timeInterval = setInterval(() => {
+            setTime(new Date());
+        }, 1000);
+
+        return () => clearInterval(timeInterval);
+    }, []);
+
+    const timeData = useMemo(() => formatTime(time), [time]);
+
+    return (
+        <div>
+            <div>{timeData}</div>
+        </div>
+    );
+};
+
+export default Clock;
+```
+
+위 데이터는 `hydration Error`가 발생하는 코드입니다.
+실제 `pre-rendering`된 `html`요소에 존재하는 `time`값과
+`useEffect`로 호출된 `time`값이 달라서 에러가 발생합니다.
+
+시간 값을 초기에 저장하는게 아니라 렌더링 이후 초기화 되게 작성해야 합니다.
+
+`pre-rendering`를 항상 고려해서 코드를 작성해야 합니다.
+
+```tsx title="Clock.tsx"
+'use client';
+import { useEffect, useState } from 'react';
+import Loading from '../Loading';
+import { LOADING_ENUM } from '@/config/types';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
+import { useEffectOnce } from 'react-use';
+
+dayjs.locale('ko');
+
+const formatTime = (date: Date) => {
+    const formattedDate = dayjs(date);
+
+    const month = formattedDate.format('MM');
+    const day = formattedDate.format('DD');
+    const week = formattedDate.format('ddd');
+    const ampm = formattedDate.format('A');
+    const hour = formattedDate.format('hh');
+    const minute = formattedDate.format('mm');
+
+    return `${month}월 ${day}일 (${week}) ${ampm} ${hour}:${minute}`;
+};
+
+const Clock = () => {
+    const [time, setTime] = useState<string>('');
+
+    useEffectOnce(() => {
+        setTime(formatTime(new Date()));
+    });
+
+    useEffect(() => {
+        const timeInterval = setInterval(() => {
+            const newTime = formatTime(new Date());
+            if (newTime !== time) {
+                setTime(newTime);
+            }
+        }, 1000);
+
+        return () => {
+            clearInterval(timeInterval);
+        };
+    }, [time]);
+
+    return (
+        <div>
+            <div>{time === '' && <Loading type={LOADING_ENUM.SMALL} />}</div>
+            <div>{time && time}</div>
+        </div>
+    );
+};
+
+export default Clock;
+```
+
+저는 위와같이 코드를 변경해서 수정했습니다.
+`dayjs`를 도입해서 코드를 간결화하고 초기값을 비워두어 `hydration Error`를 처리합니다.
+
+
+> 도움이 된 자료 [medium](https://medium.com/@olayidecodes/client-side-rendering-vs-server-side-rendering-3c41f03c700d)
+
+
