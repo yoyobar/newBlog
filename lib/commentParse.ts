@@ -1,43 +1,50 @@
 import { supabase } from './supabase/client';
 import crypto from 'crypto';
-import { Comment, CommentFormType } from '@/config/types';
+import { Comment, CommentFormType, CommentStatus } from '@/config/types';
 
 function hashPassword(password: string): string {
     const hash = crypto.createHash('sha256'); // SHA-256 해시 알고리즘 사용
     hash.update(password);
     return hash.digest('hex');
 }
+function handleError(error: any, message: string): CommentStatus {
+    console.error(message, error);
+    return {
+        status: false,
+        message: `${message}: ${error.message}`,
+    };
+}
 
-export async function getComments(pathId: string): Promise<Comment[] | null> {
+async function fetchAdminData() {
+    try {
+        const response = await fetch('/api/comments');
+        if (!response.ok) {
+            throw new Error(`Error fetching admin data: ${response.statusText}`);
+        }
+        const data: { adminId: string; adminPw: string } = await response.json();
+        return data;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
+export async function getComments(pathId: string): Promise<Comment[] | CommentStatus> {
     const { data, error } = await supabase
         .from('comments')
         .select('content, created_at, updated_at, name, id, admin')
         .eq('path', pathId);
 
     if (error) {
-        console.log('error:', error);
-        return null;
+        return handleError(error, 'Failed to fetch comments');
     }
 
-    return data;
+    return data as Comment[];
 }
 
-async function fetchAdminList() {
-    try {
-        const response = await fetch('/api/comments');
-        if (!response.ok) {
-            throw new Error(`Error fetching data: ${response.statusText}`);
-        }
-        const data: { adminId: string; adminPw: string } = await response.json();
-        return data;
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-async function setAdminComments(form: CommentFormType): Promise<Comment[] | null> {
+async function setAdminComments(form: CommentFormType): Promise<CommentStatus> {
     const hashedPassword = hashPassword(form.password);
-    const { data, error } = await supabase.from('comments').insert({
+    const { error } = await supabase.from('comments').insert({
         name: form.name,
         password: hashedPassword,
         content: form.content,
@@ -46,16 +53,19 @@ async function setAdminComments(form: CommentFormType): Promise<Comment[] | null
     });
 
     if (error) {
-        console.log('insert error:', error);
-        return null;
+        return handleError(error, 'Failed to insert admin comment');
     }
 
-    return data;
+    return {
+        status: true,
+        message: 'Admin comment inserted successfully',
+    };
 }
-export async function setComments(form: CommentFormType): Promise<Comment[] | null> {
-    const hashedPassword = hashPassword(form.password);
 
-    const adminData = await fetchAdminList();
+export async function setComments(form: CommentFormType): Promise<CommentStatus> {
+    const hashedPassword = hashPassword(form.password);
+    const adminData = await fetchAdminData();
+
     if (adminData) {
         const { adminId, adminPw } = adminData;
         if (hashedPassword === adminPw && form.name === adminId) {
@@ -63,7 +73,7 @@ export async function setComments(form: CommentFormType): Promise<Comment[] | nu
         }
     }
 
-    const { data, error } = await supabase.from('comments').insert({
+    const { error } = await supabase.from('comments').insert({
         name: form.name,
         password: hashedPassword,
         content: form.content,
@@ -71,51 +81,53 @@ export async function setComments(form: CommentFormType): Promise<Comment[] | nu
     });
 
     if (error) {
-        console.log('insert error:', error);
-        return null;
+        return handleError(error, 'Failed to insert comment');
     }
 
-    return data;
+    return {
+        status: true,
+        message: 'Comment inserted successfully',
+    };
 }
 
 export async function removeComments(
     pathId: string,
     password: string,
     commentId: string
-): Promise<void> {
-    // 비밀번호 해시 함수 호출
+): Promise<CommentStatus> {
     const hashedPassword = hashPassword(password);
 
-    // Supabase를 통해 주어진 pathId에 대한 비밀번호를 조회
-    const { data: tableData, error: passwordParsingError } = await supabase
+    const { data, error } = await supabase
         .from('comments')
         .select('password')
-        .eq('path', pathId);
+        .eq('path', pathId)
+        .eq('id', commentId)
+        .single();
 
-    // 비밀번호 조회 중 에러가 발생한 경우
-    if (passwordParsingError) {
-        console.error('Password parsing error:', passwordParsingError);
-        return;
+    if (error) {
+        return handleError(error, 'Failed to fetch comment for deletion');
     }
 
-    // 데이터가 없는 경우나 비밀번호가 일치하지 않는 경우
-    if (!tableData || !tableData.length || tableData[0].password !== hashedPassword) {
-        alert('암호가 일치하지 않습니다.');
-        return;
+    if (!data || data.password !== hashedPassword) {
+        return {
+            status: false,
+            message: 'Incorrect password',
+        };
     }
 
-    // 주어진 pathId, 비밀번호, commentId에 해당하는 댓글 삭제
     const { error: deleteError } = await supabase
         .from('comments')
         .delete()
-        .eq('path', pathId)
-        .eq('password', hashedPassword)
         .eq('id', commentId);
 
-    // 삭제 중 에러가 발생한 경우
     if (deleteError) {
-        console.error('Delete error:', deleteError);
+        return handleError(deleteError, 'Failed to delete comment');
     }
+
+    return {
+        status: true,
+        message: 'Comment deleted successfully',
+    };
 }
 
 export async function editComments(
@@ -123,28 +135,24 @@ export async function editComments(
     content: string,
     password: string,
     id: string
-): Promise<void> {
+): Promise<CommentStatus> {
     const hashedPassword = hashPassword(password);
 
-    const { data: comments, error: passwordParsingError } = await supabase
+    const { data, error } = await supabase
         .from('comments')
         .select('id, password')
-        .eq('path', pathId);
+        .eq('id', id)
+        .single();
 
-    if (passwordParsingError) {
-        console.log('parsing error:', passwordParsingError);
-        return;
+    if (error) {
+        return handleError(error, 'Failed to fetch comment for editing');
     }
 
-    const commentToUpdate = comments.find((comment) => comment.id === id);
-    if (!commentToUpdate) {
-        console.log('Comment not found.');
-        return;
-    }
-
-    if (commentToUpdate.password !== hashedPassword) {
-        alert('암호가 일치하지 않습니다.');
-        return;
+    if (data.password !== hashedPassword) {
+        return {
+            status: false,
+            message: 'Incorrect password',
+        };
     }
 
     const { error: updateError } = await supabase
@@ -153,6 +161,11 @@ export async function editComments(
         .eq('id', id);
 
     if (updateError) {
-        console.log('update error:', updateError);
+        return handleError(updateError, 'Failed to update comment');
     }
+
+    return {
+        status: true,
+        message: 'Comment updated successfully',
+    };
 }

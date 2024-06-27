@@ -9,7 +9,7 @@ export interface CardProps extends PropsWithChildren {
 
 export const Cards = ({ children }: { children: React.ReactNode }) => {
     return (
-        <div className='select-none block md:grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8 '>
+        <div className='select-none block xl:grid xl:grid-cols-2 2xl:grid-cols-3 gap-x-8'>
             {children}
         </div>
     );

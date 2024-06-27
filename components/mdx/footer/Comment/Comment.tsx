@@ -22,7 +22,7 @@ const CommentComponent = () => {
     const path = usePathname();
     const deleteRef = useRef<HTMLInputElement>(null);
     const editRef = useRef<HTMLTextAreaElement>(null);
-    const [comments, setComment] = useState<Comment[]>([]);
+    const [comment, setComment] = useState<Comment[]>([]);
     const [deleteVisible, setDeleteVisible] = useState(false);
     const [editVisible, setEditVisible] = useState(false);
     const [deletePassword, setDeletePassword] = useState('');
@@ -38,27 +38,29 @@ const CommentComponent = () => {
         name: false,
         password: false,
     });
-    const sortedComments = comments.sort((a: Comment, b: Comment) => {
-        return new Date(a.updated_at).getTime() - new Date(b.updated_at).getTime();
-    });
 
+    //? path 변경시 댓글 데이터 재요청
     useEffect(() => {
-        const getComment = async () => {
-            const data = await getComments(path);
-            if (data) {
-                setComment(data);
+        const fetchComments = async () => {
+            const response = await getComments(path);
+            if ('status' in response) {
+                console.error(response.message);
+            } else {
+                setComment(response);
             }
         };
 
-        getComment();
-    }, [path, comments]);
+        fetchComments();
+    }, [path]);
 
+    //? 비밀번호 입력창 포커싱
     useEffect(() => {
         if (deleteVisible) {
             deleteRef.current?.focus();
         }
     }, [deleteVisible]);
 
+    //? 댓글 편집창 포커싱
     useEffect(() => {
         if (editVisible) {
             editRef.current?.focus();
@@ -67,6 +69,17 @@ const CommentComponent = () => {
         }
     }, [editVisible]);
 
+    //? 데이터 업데이트 요청
+    const handleUpdateComments = async () => {
+        const response = await getComments(path);
+        if ('status' in response) {
+            console.error(response.message);
+        } else {
+            setComment(response);
+        }
+    };
+
+    //? 이름, 비밀번호, 컨텐츠 변경사항 추적
     const formChangeHandler = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
@@ -78,7 +91,8 @@ const CommentComponent = () => {
         setFormAlert({ name: false, password: false });
     };
 
-    const submitHandler = (
+    //? CREATE HANDLER
+    const submitHandler = async (
         e: React.FormEvent<HTMLFormElement> | React.FormEvent<HTMLTextAreaElement>
     ) => {
         e.preventDefault();
@@ -89,22 +103,39 @@ const CommentComponent = () => {
             return setFormAlert((prev) => ({ ...prev, password: true }));
         if (form.content.trim() === '') return;
 
-        setComments(form);
-        setForm((prev) => ({ ...prev, name: '', password: '', content: '' }));
+        const response = await setComments(form);
+        if (response) {
+            await handleUpdateComments();
+            setForm((prev) => ({ ...prev, name: 'ㅇㅇ', password: '', content: '' }));
+        }
     };
 
-    const deleteHandler = () => {
-        removeComments(path, deletePassword, currentId);
+    //? DELETE HANDLER
+    const deleteHandler = async () => {
+        const response = await removeComments(path, deletePassword, currentId);
+        if (response) {
+            await handleUpdateComments();
+        }
     };
-    const editSubmitHandler = (
+
+    //? EDIT HANDLER
+    const editSubmitHandler = async (
         e: React.FormEvent<HTMLFormElement> | React.FormEvent<HTMLInputElement>
     ) => {
         e.preventDefault();
 
-        editComments(path, editContent, deletePassword, currentId);
-        setEditVisible(false);
-        setDeletePassword('');
+        const response = await editComments(path, editContent, deletePassword, currentId);
+        if (response) {
+            setEditVisible(false);
+            setDeletePassword('');
+            await handleUpdateComments();
+        }
     };
+
+    //? 시간순 정렬
+    const sortedComments = comment.sort((a: Comment, b: Comment) => {
+        return new Date(a.updated_at).getTime() - new Date(b.updated_at).getTime();
+    });
 
     return (
         <>

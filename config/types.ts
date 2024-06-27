@@ -95,6 +95,7 @@ export type Database = {
 };
 
 export interface Comment {
+    status: boolean;
     content: string;
     created_at: Date;
     updated_at: Date;
@@ -108,4 +109,9 @@ export interface CommentFormType {
     password: string;
     path: string;
     content: string;
+}
+
+export interface CommentStatus {
+    status: boolean;
+    message: string;
 }
