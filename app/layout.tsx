@@ -21,7 +21,7 @@ export const robots = (): MetadataRoute.Robots => {
             allow: '/',
             disallow: '/private/',
         },
-        sitemap: 'https://trouble-wiki.vercel.app/sitemap.xml',
+        sitemap: 'https://wiki.yoyobar.xyz/sitemap.xml',
     };
 };
 
