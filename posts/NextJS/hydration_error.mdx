@@ -2,7 +2,7 @@
 title: 'Hydration Error, 정확히 알아보자'
 description: 'Next.js Hydration에 대해 자세히 알아봅니다.'
 image: '/img/2024-05-30-20-53-52.webp'
-tags: [next.js, Hydration, next14, trouble-Shooting]
+tags: [next.js, Hydration, solution]
 date: 2024-06-27 22:17:43
 update: 2024-06-27 22:17:43
 ---
@@ -37,8 +37,8 @@ update: 2024-06-27 22:17:43
 
 `Hydration`은 직역하면 **수화(水化)시키다**라는 의미입니다. 명칭으로는 이해하기가 힘든데요.
 
-사전 렌더링 과정에서 `건조한` html만 제공할경우, javascript로 `물`을 주어 촉촉하게
-만들어줄 수 없기 때문에 이러한 부분을 `hydration`이라고 부릅니다.
+사전 렌더링 과정에서 `건조한` html만 제공하고 javascript로 `물`을 주어 촉촉하게 만듭니다.
+이러한 과정을 `hydration`이라고 부릅니다.
 
 ## Hydration mismatch
 이러한 `hydration` 과정중에서 서버에서 가져온 `HTML` 데이터와 클라이언트 `HTML`데이터가 다를경우가 존재합니다. 대표적으로 시간과 관련된 내용이 그렇습니다.
@@ -87,7 +87,7 @@ const Clock = () => {
 export default Clock;
 ```
 
-위 데이터는 `hydration Error`가 발생하는 코드입니다.
+위 데이터는 배포시에 `hydration Error`가 발생하는 코드입니다.
 실제 `pre-rendering`된 `html`요소에 존재하는 `time`값과
 `useEffect`로 호출된 `time`값이 달라서 에러가 발생합니다.
 
@@ -96,37 +96,16 @@ export default Clock;
 `pre-rendering`를 항상 고려해서 코드를 작성해야 합니다.
 
 ```tsx title="Clock.tsx"
-'use client';
-import { useEffect, useState } from 'react';
-import Loading from '../Loading';
-import { LOADING_ENUM } from '@/config/types';
-import dayjs from 'dayjs';
-import 'dayjs/locale/ko';
-import { useEffectOnce } from 'react-use';
-
-dayjs.locale('ko');
-
 const formatTime = (date: Date) => {
-    const formattedDate = dayjs(date);
+    const formattedDate = dayjs(date).format('MM월 DD일 (ddd) A hh:mm');
 
-    const month = formattedDate.format('MM');
-    const day = formattedDate.format('DD');
-    const week = formattedDate.format('ddd');
-    const ampm = formattedDate.format('A');
-    const hour = formattedDate.format('hh');
-    const minute = formattedDate.format('mm');
-
-    return `${month}월 ${day}일 (${week}) ${ampm} ${hour}:${minute}`;
+    return formattedDate;
 };
 
 const Clock = () => {
     const [time, setTime] = useState<string>('');
 
     useEffectOnce(() => {
-        setTime(formatTime(new Date()));
-    });
-
-    useEffect(() => {
         const timeInterval = setInterval(() => {
             const newTime = formatTime(new Date());
             if (newTime !== time) {
@@ -137,7 +116,7 @@ const Clock = () => {
         return () => {
             clearInterval(timeInterval);
         };
-    }, [time]);
+    });
 
     return (
         <div>

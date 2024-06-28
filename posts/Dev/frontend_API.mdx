@@ -1,0 +1,105 @@
+---
+title: '프론트엔드에서 API요청 예외처리의 중요성'
+description: 'API요청시에 문제가 될만한요소를 고려하자'
+image: '/img/2024-06-28-13-04-55.webp'
+tags: [API, solution]
+date: 2024-06-28 13:04:07
+update: 2024-06-28 13:04:07
+---
+
+이 문제는 제가 직접 겪은 문제였습니다.
+
+![supabase](/img/2024-06-28-13-19-58.webp)
+
+단순한 댓글기능 하나에 `REST REQUEST`가 80만건이 넘어갔습니다.
+이게 말이되는 상황일까요? 절대 그럴리가 없죠
+
+## 문제의 원인
+
+```tsx title="components/footer/comment/Comment.tsx"
+    useEffect(() => {
+        const getComment = async () => {
+            const data = await getComments(path);
+            if (data) {
+                setComment(data);
+            }
+        };
+
+        getComment();
+    }, [path, comments]);
+```
+
+`API 요청`을 `comments`가 바뀔때마다 재요청을 보내게 해두었는데,
+실제로 전달받은 값은 `[]` 빈 배열 이었습니다. 
+
+하지만 항상 API 요청으로 반환되는 이 값은 동일한 메모리주소로 취급받지않고,
+항상 새로운 데이터가 온다고 인식이 되고 있었던 것입니다.
+
+따라서 계속해서 요청을 `10ms`마다 보내고 있었던 것이었죠! 
+`supabase`가 요청에 payment를 요구하지않아서 정말 다행입니다..
+
+## 해결 과정
+
+### 1. 별개의 요청 함수를 제작
+```tsx title="components/footer/comment/Comment.tsx"
+        const handleUpdateComments = async () => {
+        const response = await getComments(path);
+        if ('status' in response) {
+            console.error(response.message);
+        } else {
+            setComment(response);
+        }
+    };
+
+        useEffect(() => {
+            handleUpdateComments()
+    }, [path]);
+```
+
+`useEffect`를 통해 항상 요청을 보내는게 아니라
+요청 함수를 제작해서 `path` 변동시 한번 요청을 보냅니다.
+
+이후에는 `CRUD` 이벤트가 발생할때마다 
+해당 갱신함수를 호출해서 해결할 수 있었습니다.
+
+### 2. 모든 요청의 실패를 반환
+`supabase`와의 통신이 항상 성공할거라고 보장할수는 없습니다.
+데이터를 요청하고 데이터의 요청이 실패했을때도 전부 처리해야 했습니다.
+
+```tsx title="lib/commentParse.ts"
+function handleError(error: any, message: string): CommentStatus {
+    console.error(message, error);
+    return {
+        status: false,
+        message: `${message}: ${error.message}`,
+    };
+}
+
+export async function getComments(pathId: string): Promise<Comment[] | CommentStatus> {
+    const { data, error } = await supabase
+        .from('comments')
+        .select('content, created_at, updated_at, name, id, admin')
+        .eq('path', pathId);
+
+    if (error) {
+        return handleError(error, 'Failed to fetch comments');
+    }
+
+    return data as Comment[];
+}
+
+(...)
+```
+이런식으로 `CRUD` 발생중 통신 핸들링을 하여 에러 형식에 맞춰 반환하고,
+반환된 `status`가 `false`일 경우 `message`를 출력하게끔 조정하였습니다.
+
+
+### 결론
+
+![개선된 API요청](/img/2024-06-28-13-57-00.webp)
+
+**개선된 API요청**
+
+프론트엔드의 주업무중 하나는 백엔드와의 `API 통신`이고
+모든 실패의 대한 예외처리와 데이터 검사가 필요합니다. 주의하면서 코드를 작성하도록 해야합니다.
+

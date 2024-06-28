@@ -1,0 +1,68 @@
+---
+title: '모바일에서 overflow-hidden, 잘될까?'
+description: '모바일에서 overflow-hidden 이 동작하지 않는 경우가 있습니다...'
+image: '/img/2024-06-28-14-07-28.webp'
+tags: [css, style, overflow-hidden]
+date: 2024-06-28 14:06:09
+update: 2024-06-28 14:06:09
+---
+
+## 시작
+
+`overflow-hidden` 속성은 화면을 초과하는 요소를 
+스크롤하지 못하게 하는 역할을 합니다.
+
+모달, 캐러셀, 백그라운드등 다양하게 활용될 수 있는 css입니다.
+
+하지만 모바일에서는 제대로 동작하지 않는 경우가 있는데요, 왜 그렇게 되고
+어떻게 해결할 수 있을지 알아보겠습니다.
+
+## 모바일에서 동작하지 않는다?
+
+대부분의 모바일에서도 크롬과 동일한 자바스크립트 엔진을 사용합니다.
+하지만, 항상 `iOS`가 문제인데요, `iOS`의 경우 `overflow-hidden` 옵션이
+존재해도 실제로는 스크롤이 잘만되는 현상이 있습니다.
+
+저는 `body`에 `overflow-hidden`을 주어 백그라운드가 항상 고정된 위치에 있게
+하고싶었습니다.
+
+```tsx title="layout.tsx"
+<body
+    style={{
+        backgroundImage: `url(/logo/main-bg.webp)`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        }}
+    className='overflow-hidden w-full h-full bg-background'
+    >
+```
+
+하지만 `iOS` 모바일에서는 아무 문제없이 스크롤이 가능했습니다..
+
+
+## 어떻게 해결할 수 있을까?
+
+여러가지 해결책이 존재 할 수 있습니다.
+`touch-action: none{:css}` 옵션을 주어 터치 동작을 막거나
+`-webkit-overflow-scrolling: none` 옵션을 주어 애초부터 스크롤링을 막거나
+`overscroll-behavior: none` 옵션을 주어 다른 플랫폼에서의 호환 스크롤링을 막을 수 있지만, 저는 다른방법을 사용해보았습니다.
+
+```tsx title="layout.tsx"
+        <html lang='ko' suppressHydrationWarning className={`${pretendard.variable}`}>
+            <body
+                className={`${pretendard.className} fixed bg-cover bg-center overflow-hidden w-full h-full bg-dark bg-background`}
+            >
+                <Provider>
+                    <Analytics />
+                    <Header />
+                    {children}
+                    <Dock />
+                </Provider>
+            </body>
+        </html>
+```
+
+`position:fixed`를 주어 항상 상단에 `body`가 고정되게 하는것도 하나의 해결책이라고 할 수 있습니다.
+
+### 결론
+모바일에서의 `overflow`가 `iOS`환경에서는 제대로 동작하지 않을수도 있으므로 반응형을 고려한다면 제대로 확인해봐야 합니다.

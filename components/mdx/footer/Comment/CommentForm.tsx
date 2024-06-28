@@ -89,7 +89,7 @@ const CommentForm = ({ onSubmit, onFormChange, form, formAlert }: CommentFormPro
                     ></textarea>
                     <button
                         type='submit'
-                        className='hover:bg-black flex gap-1 transition w-fit bottom-12 right-6 absolute p-2 rounded-lg bg-slate-700 text-white'
+                        className='hover:bg-black hover:opacity-100 opacity-50 flex gap-1 transition w-fit bottom-12 right-6 absolute p-2 rounded-lg bg-slate-700 text-white'
                     >
                         <div className='bg-rose-600 rounded-md text-2xl'>{os}</div>
                         <div>등록</div>

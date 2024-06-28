@@ -2,8 +2,8 @@ import dayjs from 'dayjs';
 import React from 'react';
 import 'dayjs/locale/ko';
 import utc from 'dayjs/plugin/utc';
-import { FaCommentSlash } from 'react-icons/fa';
-import { BiCommentEdit } from 'react-icons/bi';
+import { FaTrash } from 'react-icons/fa';
+import { HiPencil } from 'react-icons/hi2';
 import { Comment } from '@/config/types';
 dayjs.locale('ko');
 dayjs.extend(utc);
@@ -32,17 +32,17 @@ const CommentUser = ({
                         {comment.name}
                     </div>
                 </div>
-                <div className='mt-4 mb-4 text-2xl md:text-3xl dark:text-white'>
+                <div className='whitespace-pre-line mt-4 mb-4 text-3xl dark:text-white'>
                     {comment.content}
                 </div>
             </div>
-            <div className='mb-10 w-[95%] xl:w-[70%] flex items-center gap-2 rounded-b-full px-10 py-1 bg-sky-400 dark:bg-sky-700 text-2xl text-white'>
+            <div className='mb-10 w-[95%] xl:w-[70%] flex items-center gap-2 rounded-b-full px-10 py-1 bg-blue-400 dark:bg-sky-700 text-2xl text-white'>
                 <div>
                     {dayjs.utc(comment.created_at).local().format('YYYY.MM.DD A HH:mm')}
                 </div>
-                <FaCommentSlash
+                <FaTrash
                     title='댓글 삭제'
-                    className='cursor-pointer'
+                    className='hover:text-gray-300 cursor-pointer'
                     id={comment.id}
                     onClick={(e) => {
                         setDeleteVisible(true);
@@ -50,9 +50,9 @@ const CommentUser = ({
                     }}
                 />
 
-                <BiCommentEdit
+                <HiPencil
                     title='댓글 수정'
-                    className='cursor-pointer'
+                    className='hover:text-gray-300 cursor-pointer'
                     id={comment.id}
                     onClick={(e) => {
                         setEditVisible(true);

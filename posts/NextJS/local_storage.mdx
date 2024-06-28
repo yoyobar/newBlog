@@ -1,0 +1,134 @@
+---
+title: 'localStorage is not defined (Next.js)'
+description: 'next.js환경에서 로컬스토리지를 다루는법을 익힙니다.'
+image: '/img/2024-06-28-12-21-49.webp'
+tags: [next.js, Hydration, solution]
+date: 2024-06-28 11:05:49
+update: 2024-06-28 11:05:49
+---
+
+## 시작
+
+로컬 스토리지는 웹 페이지 자체에서 데이터를 저장할 수 있는 간단한 저장소입니다. 
+웹 페이지에 재접속 시에도 이전 값이 유지되어 다크 테마 등 다양한 사용자 환경 변수를 관리할 때 주로 사용됩니다.
+
+하지만 `Next.js` 환경에서 로컬 스토리지를 사용할 때는 몇 가지 고려 사항이 있습니다.
+`Next.js`는 사용자 환경에 따라 서버 사이드 렌더링(SSR)과 
+클라이언트 사이드 렌더링(CSR) 중 하나를 결정하여 렌더링하기 때문입니다.
+
+---
+
+### localStorage is not defined
+
+
+`Next.js`는 서버 사이드 렌더링(SSR)과 클라이언트 사이드 렌더링(CSR)을
+모두 지원합니다. `localStorage`는 브라우저 환경에서만 존재하는 API로,
+서버 측에서는 **존재하지 않습니다.** 
+
+따라서, 서버 측에서 `localStorage`에 접근하면 에러가 발생합니다.
+
+이 문제를 해결하려면 `localStorage`가
+클라이언트 측에서만 사용되도록 조건을 걸어야 합니다. 어떻게 접근할 수 있을까요?
+
+---
+
+### 1. 조건부 렌더링
+```jsx
+'use client'
+
+const MyComponent = () => {
+
+    if (typeof window !== 'undefined') {
+      const myData = localStorage.getItem('myData');
+      console.log(myData)
+    }
+};
+```
+
+`typeof`를 사용하여 `window` 객체가 존재할 경우에만 `localStorage`에 접근하도록 작성하면 문제없이 작동합니다.
+
+---
+
+### 2. useEffect 사용
+```jsx
+'use client'
+import { useEffect, useState } from 'react';
+
+const Component = () => {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+      const myData = localStorage.getItem('myData');
+      setData(myData);
+    }
+  }, []);
+
+  return (
+    <div>
+      {data ? <p>{data}</p> : <p>Loading...</p>}
+    </div>
+  );
+};
+
+export default Component;
+```
+
+`useEffect`를 활용하여 `localStorage` 접근 코드가 클라이언트에서만 실행되게
+하면 문제없이 작동할 수 있습니다.
+
+---
+
+
+### 내가 겪었던 문제
+
+저는 `Zustand`를 통해서 전역상태로 들어온 값을 `localStorage`에 저장하려고 시도 했었습니다. 
+하지만 실제로 `store.tsx`에서 `localStorage`를 저장하는 과정중에서 문제가 발생하여 `build`가 실패하였습니다.
+
+```tsx title="config/store.tsx"
+import { create, StateCreator } from 'zustand';
+import { persist, PersistOptions } from 'zustand/middleware';
+
+export interface OptionForm {
+    animation: boolean;
+    theme: boolean;
+}
+interface OptionStore {
+    data: OptionForm;
+    setData: (form: OptionForm) => void;
+}
+
+type Persist = (config: StateCreator<OptionStore>, options: PersistOptions<OptionStore>) => StateCreator<OptionStore>;
+
+const useOptions = create<OptionStore>(
+    (persist as Persist)(
+        (set, get) => ({
+            data: {
+                animation: true,
+                theme: true,
+            },
+            setData: (form: OptionForm) => set({ data: form }),
+        }),
+        {
+            name: 'option',
+        }
+    )
+);
+export default useOptions;
+```
+
+따라서 `zustand`의 기능을 알아보던중 [Persist](https://docs.pmnd.rs/zustand/integrations/persisting-store-data) 기능을 알게되어 `Persist`를 통해서
+`localStorage`에 값을 저장하게 코드를 수정하였고 문제없이 작동을 확인할 수 있었습니다.
+
+---
+
+### 결론
+
+이렇듯 `if` 문을 활용하여 클라이언트에서 동작할 함수인지 명시하거나,
+`useEffect`를 사용해 클라이언트에서만 실행되도록 하면 문제를 해결할 수 있습니다.
+
+처음 `Next.js`를 사용할 때는 다소 당혹스러울 수 있는 에러이지만,
+위와 같은 방법을 사용하면 쉽게 해결할 수 있었습니다.
+
+
+
+
