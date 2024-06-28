@@ -54,7 +54,7 @@ export const siteConfig = {
     verification: {
         google: 'jZMBF77CHHOLwNMrLXxa6qhJeQMM6YkPdYrBdblv8IE',
         other: {
-            'naver-site-verification': '7f959e68f00cadb5b2a462dd0bd29ceed877ad91',
+            'naver-site-verification': 'b1514dfdd78160c51b2a92ab8a32a656e2d92ce7',
         },
     },
     canonical: 'https://wiki.yoyobar.xyz/',
