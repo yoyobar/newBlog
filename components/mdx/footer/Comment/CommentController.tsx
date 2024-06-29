@@ -66,7 +66,7 @@ export const CommentEdit = ({
 }: CommentEditProps) => {
     return (
         <div
-            className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex flex-col gap-4 justify-center items-center z-30'
+            className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex flex-col gap-4 justify-center items-center z-50'
             onClick={() => setEditVisible(false)}
         >
             <div
@@ -91,7 +91,7 @@ export const CommentEdit = ({
                         ref={editRef}
                         value={editContent}
                         onChange={(e) => setEditContent(e.target.value)}
-                        className='resize-none min-w-[80%] h-[100px] max-w-md text-black p-2 rounded-lg bg-white'
+                        className='resize-none min-w-[80%] h-[300px] max-w-md text-black p-2 rounded-lg bg-white'
                     />
                     <div className='text-white mb-4 mt-4 '>암호를 입력하세요</div>
                     <div className='flex gap-2 min-w-2/3'>

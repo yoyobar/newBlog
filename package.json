@@ -36,7 +36,6 @@
         "remark-breaks": "^4.0.0",
         "remark-gfm": "^4.0.0",
         "shiki": "^1.6.3",
-        "webp-converter": "^2.3.3",
         "zustand": "^4.5.2"
     },
     "devDependencies": {
