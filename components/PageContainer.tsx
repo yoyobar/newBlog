@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { MdOpenInFull } from 'react-icons/md';
 import { IoMdClose } from 'react-icons/io';
@@ -9,6 +8,7 @@ import Category from './Category';
 import { useMaximize } from '@/config/store';
 import { AiFillHome } from 'react-icons/ai';
 import Theme from './Theme';
+import { useRouter } from 'next/navigation';
 
 const PageContainer = ({
     children,
@@ -68,8 +68,6 @@ const PageContainer = ({
             maximizeHandler();
         }
     };
-
-    ('use client');
 
     return (
         <>
