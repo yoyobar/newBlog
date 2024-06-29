@@ -91,10 +91,8 @@ update: 2024-06-27 20:48:45
 하지만 프론트엔드 개발자로서 이러한 기술을 익히는것은 당연한 것이고, 도전심을 자극하는 요소 였습니다.
 
 `Next.js`는 SSR`Server Side Rendering`와 SSG`Static Site Generation`를 지원해주어
-정적 사이트를 운영하는데 있어서 필요한 요소를 정보 제공해주었습니다.
+정적 사이트를 운영하는데 있어서 필요한 요소를 제공해주었습니다.
 또한, 동적 라우팅 생성을 손쉽게 제공해주어 제가 원하는 형태의 라우팅을 구현할 수 있었습니다.
-
-`Next.js`를 사용하였습니다.
 
 **• SEO, SSG와 동적 라우팅을 중요하게 생각하여 Next.js를 채택하였다.**
 
@@ -217,6 +215,53 @@ update: 2024-06-27 20:48:45
 - `Framer-motion`를 통한 효과적인 애니메이션 호출과 최적화
 
 ---
+
+## 잘 구현했다고 생각하는 점
+
+블로그의 MDX파싱부분은 총 3가지의 주요컴포넌트로 구성되어있습니다.
+
+```tsx title="app/posts/[category]/slug/page.tsx"
+export default async function Page({
+    params,
+}: {
+    params: { category: string; slug: string };
+}) {
+    const { category, slug } = params;
+    const { frontMatter, content } = await getPost(category, slug);
+    const footMatter = (await getCategoryPost(category)) as FootMatterTypes[];
+    const tocControl = frontMatter?.toc === undefined && true;
+    const footControl = frontMatter?.comment === undefined && true;
+
+    return (
+        <PageContainer>
+            {tocControl && <Mdx_Toc footControl={footControl} />}
+
+            <div className='m-auto w-[95%] md:w-[75%] 3xl:w-[50%]'>
+                <Mdx_Header frontMatter={{ ...frontMatter, category: category }} />
+                <Mdx_Body content={content} />
+                {footControl && <Mdx_Footer footMatter={footMatter} />}
+            </div>
+        </PageContainer>
+    );
+}
+```
+`MDX_TOC`
+- 목차(TOC)정보와 intersectionObserverAPI를 다룹니다. 
+- frontMatter에서 toc가 `false`일 경우 제공하지 않습니다.
+
+`MDX_HEADER`
+- frontMatter 정보를 가공하여 게시글 헤더 및 썸네일 이미지를 설정합니다.
+
+`MDX_BODY`
+- Content 정보를 가공하여 mdx 컨텐츠를 제공합니다.
+
+`MDX_FOOTER`
+- frontMatter 정보중 필요한 정보를 따로 제공받아 게시글 댓글 정보를 제공합니다.
+- frontMatter에서 comment가 `false`일 경우 제공하지 않습니다.
+
+하나의 `[slug]`에서 수많은 정보를 적당히 가공하여 형태로 보여주는 부분의 대한 
+설계를 치밀하게 해냈다고 생각합니다.
+
 
 ## 문제가 발생하였던 요소
 
