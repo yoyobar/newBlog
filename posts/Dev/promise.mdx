@@ -1,0 +1,49 @@
+---
+title: 'async function은 항상 Promise를 반환할까?'
+description: 'setTimeout등 예외적인 콜백함수에서 벌어지는 일을 다룹니다.'
+image: ''
+tags: [js, javascript, promise]
+date: 2024-07-02 11:24:38
+update: 2024-07-02 11:24:38
+---
+
+## 개요
+
+간단한 `async function`을 구현하던 와중,
+`setTimeout`을 사용해서 테스트를 시도해보았다.
+
+```typescript
+export async function addUserAsync(user: User):Promise<void> {
+  await new Promise<void>((resolve) => {
+    setTimeout(() => {
+      addUser(user);
+      resolve(console.log('사용자 추가완료', user.username));
+    }, 1000);
+  });
+}
+```
+
+간단한 `promise` 객체를 반환하는 비동기 함수다.
+`async await`은 항상 프로미스 객체를 반환한다.
+
+그런데, `setTimeout`은 왜 `promise`로 한번더 감싸야 될까? 
+어차피 프로미스 객체를 반환할텐데, 제거해도 동작하지 않을까
+
+하지만 동작하지 않는다. 왜 그럴까?
+
+---
+
+### 원인
+
+<Callout>setTimeout 함수는 콜백 함수를 사용하여 비동기 작업을 처리하므로 Promise를 직접 반환하지 않습니다.</Callout>
+
+`setTimeout` 함수와 같은 비동기 작업을 await과 함께 사용하려면,
+해당 비동기 작업을 `Promise`로 래핑해야만 동작한다.
+
+`setTimeout`은 프로미스를 **직접 반환하지 않고** 콜백함수를 활용해서 비동기작업을 처리하기 때문이다.
+
+
+따라서, `Promise`객체를 따로 만들어서, `setTimeout`에서 반환되는 내용을 프로미스객체로 감싸서 반환해줄 필요가 있는 것이다.
+
+비동기를 다룰 때 자바스크립트에서 주의해야할 점이다.
+잘 기억하도록 하자.
