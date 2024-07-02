@@ -22,16 +22,12 @@ export async function generateMetadata({
         keywords: frontMatter.tags,
         description: frontMatter.description,
         openGraph: {
-            images: [
-                frontMatter.image ? frontMatter.image : '/img/template_og_browse.webp',
-            ],
+            images: [frontMatter.image ? frontMatter.image : '/img/template_post.webp'],
             description: frontMatter.description,
             publishedTime: frontMatter.date,
         },
         twitter: {
-            images: [
-                frontMatter.image ? frontMatter.image : '/img/template_og_browse.webp',
-            ],
+            images: [frontMatter.image ? frontMatter.image : '/img/template_post.webp'],
             description: frontMatter.description,
             title: `${frontMatter.title} | Trouble Wiki`,
         },
