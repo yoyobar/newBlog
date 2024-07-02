@@ -32,7 +32,7 @@ const CommentUser = ({
                         {comment.name}
                     </div>
                 </div>
-                <div className='whitespace-pre-line mt-4 mb-4 text-3xl dark:text-white'>
+                <div className='whitespace-pre-line mt-4 mb-4 text-2xl md:text-3xl dark:text-white'>
                     {comment.content}
                 </div>
             </div>
