@@ -1,7 +1,18 @@
 import PageContainer from '@/components/PageContainer';
 import SeriesView from '@/components/series/SeriesView';
-import { getSeries } from '@/utils/parseData';
+import { getSeries, loadBlogDetails } from '@/utils/parseData';
 import { Suspense } from 'react';
+
+export async function generateStaticParams() {
+    const blogs = await loadBlogDetails();
+    const series = blogs.filter((blog) => blog.meta.series !== '');
+    const seriesSet = new Set(series.map((item) => item.meta.series));
+    const seriesTitle = [...seriesSet];
+
+    return seriesTitle.map((title) => ({
+        params: { slug: encodeURIComponent(title) },
+    }));
+}
 
 export default async function Page({ params }: { params: { slug: string } }) {
     const { slug } = params;
