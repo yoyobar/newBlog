@@ -2,7 +2,7 @@ import ExportedImage from 'next-image-export-optimizer';
 import Link from 'next/link';
 import React from 'react';
 import { CiCalendar } from 'react-icons/ci';
-import { IoTimerOutline } from 'react-icons/io5';
+import { MdAccessTimeFilled } from 'react-icons/md';
 import { AllPostsProp } from '@/config/types';
 interface BrowseContentProps {
     blogs: AllPostsProp[];
@@ -53,7 +53,7 @@ const BrowseContent = ({ blogs }: BrowseContentProps) => {
                                             <div>{blog.meta.date.split('-')[0]}</div>
                                         </div>
                                         <div className='flex gap-2 items-center'>
-                                            <IoTimerOutline className='animate-spin text-3xl antialiased' />
+                                            <MdAccessTimeFilled className='animate-spin text-3xl text-rose-500 antialiased' />
                                             <div className='opacity-0 hover:opacity-100 transition absolute w-[60px] h-[20px] bg-slate-100 dark:bg-darkInner-border dark:text-white shadow-md rounded-md right-2 p-1 text-center text-xl flex items-center justify-center'>
                                                 <div>읽는 시간</div>
                                             </div>
