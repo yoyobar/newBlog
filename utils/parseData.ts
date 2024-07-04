@@ -1,13 +1,13 @@
 import fs from 'fs';
 import path from 'path';
-import { AllBrowseType, FrontMatterTypes } from '@/config/types';
+import { FrontMatterTypes } from '@/config/types';
 import matter from 'gray-matter';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import readingTime from 'reading-time';
 dayjs.extend(utc);
 
-const BASE_DIR = 'posts';
+const BASE_DIR = path.join(process.cwd(), 'posts');
 
 //? 전체 Directory 로드
 export const allDirectoryLoad = () => {
