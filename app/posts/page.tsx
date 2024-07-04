@@ -21,6 +21,7 @@ export const metadata: Metadata = {
         description: `Trouble Wiki, 개인 블로그. 전체 게시물을 다룹니다.`,
     },
 };
+
 export default async function Home() {
     const blogs = await loadBlogDetails();
     const category = await loadBlogCategoryCount();

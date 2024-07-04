@@ -118,6 +118,11 @@ export async function getPosts(category: string) {
     );
 }
 
+export async function getSeries(slug: string) {
+    const allBlogs = await loadBlogDetails();
+    return allBlogs.filter((blog) => blog.meta.series === slug);
+}
+
 //? 게시물 내부 컨텐츠와 상세정보를 불러옴
 //! /posts/[category]/[slug]
 export async function getPost(category: string, slug: string) {
