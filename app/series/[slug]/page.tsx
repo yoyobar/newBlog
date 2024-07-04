@@ -24,7 +24,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
     const decodedSlug = decodeURIComponent(params.slug);
     if (!validSeries.includes(decodedSlug)) {
-        notFound(); // 유효하지 않은 slug인 경우 404 반환
+        notFound();
     }
 
     const data = blogs.filter((blog) => decodedSlug === blog.meta.series);
