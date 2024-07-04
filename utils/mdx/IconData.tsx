@@ -12,7 +12,7 @@ import { BsLightbulbFill } from 'react-icons/bs';
 import { MdDangerous } from 'react-icons/md';
 import { AiFillTags } from 'react-icons/ai';
 import { RiNextjsFill } from 'react-icons/ri';
-
+import { FaAws } from 'react-icons/fa6';
 export const Default = () => <FaArrowRight />;
 export const WarnCallout = () => <IoIosWarning />;
 export const InfoCallout = () => <FaInfoCircle />;
@@ -28,3 +28,4 @@ export const Next = () => <RiNextjsFill />;
 export const React = () => <FaReact />;
 export const Redux = () => <TbBrandRedux />;
 export const Dev = () => <SiNextra />;
+export const Aws = () => <FaAws />;

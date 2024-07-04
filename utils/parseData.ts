@@ -56,6 +56,7 @@ export const loadBlogDetails = async () => {
                 date: dayjs.utc(grayMatter.date).format('YYYY년 MM월 DD일-HH:mm:ss'),
                 readingMinutes: Math.ceil(readingTime(content).minutes),
                 hidden: grayMatter?.hidden || false,
+                series: grayMatter?.series || '',
             },
             slug: category
                 ? `${category}/${file.replace('.mdx', '')}`

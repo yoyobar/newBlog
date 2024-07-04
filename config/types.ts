@@ -14,6 +14,7 @@ export interface FrontMatterTypes {
     toc?: boolean;
     comment: boolean;
     hidden?: boolean;
+    series: string;
 }
 
 export interface FootMatterTypes {
@@ -41,6 +42,7 @@ export interface AllPostsProp {
         toc?: boolean;
         category: string;
         hidden?: boolean;
+        series: string;
     };
     slug: string;
 }

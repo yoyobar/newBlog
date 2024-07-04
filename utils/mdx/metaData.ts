@@ -21,6 +21,7 @@ export const metaStyle = {
     next: 'text-black',
     redux: 'text-[#764ABC]',
     dev: 'text-rose-400',
+    aws: 'text-black',
 };
 
 export const metadata: metaType = {
@@ -78,6 +79,13 @@ export const metadata: metaType = {
         boxClass: metaStyle.dev,
         title: 'Dev',
         link: '/posts/Dev',
+        visible: true,
+    },
+    AWS: {
+        icon: Icon.Aws,
+        boxClass: metaStyle.aws,
+        title: 'AWS',
+        link: '/posts/AWS',
         visible: true,
     },
 };

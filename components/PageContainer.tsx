@@ -9,6 +9,7 @@ import { useMaximize } from '@/config/store';
 import { AiFillHome } from 'react-icons/ai';
 import Theme from './Theme';
 import { useRouter } from 'next/navigation';
+import { IoBook } from 'react-icons/io5';
 
 const PageContainer = ({
     children,
@@ -110,7 +111,13 @@ const PageContainer = ({
                         <CategoryNav text='Posts' onNav={navHandler} />
                     </nav>
                     <nav className='absolute right-3 flex gap-5'>
+                        <IoBook
+                            title='시리즈'
+                            onClick={() => router.push('/series')}
+                            className='hover:text-slate-400 transition text-slate-100 text-4xl cursor-pointer'
+                        />
                         <AiFillHome
+                            title='홈'
                             onClick={() => router.push('/posts')}
                             className='hover:text-slate-400 transition text-slate-100 text-4xl cursor-pointer'
                         />
