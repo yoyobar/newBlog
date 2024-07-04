@@ -160,7 +160,6 @@ const config: Config = {
                         'code[data-line-numbers] > [data-line]::before': {
                             counterIncrement: 'line',
                             content: 'counter(line)',
-
                             display: 'inline-block',
                             width: '1rem',
                             marginRight: '1.4rem',

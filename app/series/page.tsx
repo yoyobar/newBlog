@@ -1,5 +1,5 @@
 import PageContainer from '@/components/PageContainer';
-import { loadBlogCategoryCount, loadBlogDetails } from '@/utils/parseData';
+import { loadBlogDetails } from '@/utils/parseData';
 import type { Metadata } from 'next';
 import { siteConfig } from '@/config/siteconfig';
 import Series from '@/components/series';
@@ -8,16 +8,16 @@ export const metadata: Metadata = {
     title: 'Series | Trouble Wiki',
     description: `Trouble Wiki, 개인 블로그. 시리즈물을 다룹니다.`,
     alternates: {
-        canonical: `${siteConfig.canonical}/series`,
+        canonical: `${siteConfig.canonical}series`,
     },
     openGraph: {
         title: `Blogs | Trouble Wiki`,
-        images: ['/img/template_og_browse.webp'],
+        images: ['/img/template_og_series.webp'],
         description: `Trouble Wiki, 개인 블로그. 시리즈물을 다룹니다.`,
     },
     twitter: {
         title: `Blogs | Trouble Wiki`,
-        images: ['/img/template_og_browse.webp'],
+        images: ['/img/template_og_series.webp'],
         description: `Trouble Wiki, 개인 블로그. 시리즈물을 다룹니다.`,
     },
 };
