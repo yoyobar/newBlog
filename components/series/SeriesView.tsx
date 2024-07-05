@@ -3,6 +3,7 @@ import { MdAccessTimeFilled } from 'react-icons/md';
 import SeriesContent from './SeriesContent';
 import ExportedImage from 'next-image-export-optimizer';
 import { CiBoxList } from 'react-icons/ci';
+import { useMemo } from 'react';
 interface BrowseProps {
     blogs: AllPostsProp[];
 }
@@ -27,13 +28,17 @@ const SeriesView = ({ blogs }: BrowseProps) => {
     }, 0);
 
     const formattedReadingTime = formatTime(readingTime);
+    const seriesSrc = useMemo(() => {
+        const blogWithSrc = blogs.find((blog) => blog.meta.series_src !== '');
+        return blogWithSrc ? blogWithSrc.meta.series_src : '/img/template_post.webp';
+    }, [blogs]);
 
     return (
         <div className="h-full max-w-[1100px] p-0 mx-auto">
             <div className="relative mt-10 mx-10 h-[300px]">
                 <ExportedImage
                     alt={blogs[0].meta.title}
-                    src={blogs[0].meta.src || '/img/template_post.webp'}
+                    src={seriesSrc}
                     fill
                     sizes="(max-width: 1000px) 50vw, 450px"
                     className="object-cover m-0 p-0 rounded-xl"

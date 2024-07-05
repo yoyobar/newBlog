@@ -18,7 +18,7 @@ comment: false
 
 ![sample](/img/2024-05-23-00-10-08.webp)
 
-어드민 페이지는 기본적으로는 유저와 같은 `Task`를 사용하지만, `@nivo`를 활용한 간단한 통계데이터와 <br/>
+어드민 페이지는 기본적으로는 유저와 같은 `Task`를 사용하지만, `@nivo`를 활용한 간단한 통계데이터와 
 전체 사용자 정보를 조회/삭제 할 수 있는 권한을 제공하였다.
 
 ```javascript filename="task.tsx"
@@ -37,7 +37,6 @@ comment: false
 `TaskItem`에게 `Props`로 `ROLE`값을 전달하고, 이 `ROLE`값을 바탕으로 <br/>
 렌더링여부를 결정하게하여 추가적인 데이터와 필요없는 데이터를 소거하였다.
 
-예시)
 
 ```js filename="JavaScript"
 {ROLE === "USER" && <Button name={ID} onClick={editorHandler} text="X EDIT" color="indigo" type="button" />}

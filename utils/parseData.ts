@@ -54,6 +54,7 @@ export const loadBlogDetails = async () => {
                 readingMinutes: Math.ceil(readingTime(content).minutes),
                 hidden: grayMatter?.hidden || false,
                 series: grayMatter?.series || '',
+                series_src: grayMatter?.series_src || '',
             },
             slug: category ? `${category}/${file.replace('.mdx', '')}` : file.replace('.mdx', ''),
         };

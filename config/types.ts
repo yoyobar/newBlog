@@ -15,6 +15,7 @@ export interface FrontMatterTypes {
     comment: boolean;
     hidden?: boolean;
     series: string;
+    series_src: string;
 }
 
 export interface FootMatterTypes {
@@ -43,6 +44,7 @@ export interface AllPostsProp {
         category: string;
         hidden?: boolean;
         series: string;
+        series_src: string;
     };
     slug: string;
 }

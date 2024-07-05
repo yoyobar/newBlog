@@ -22,16 +22,17 @@ const Mdx_Header = ({ frontMatter }: { frontMatter: FrontMatterTypes }) => {
     const updateDate = formatDate(frontMatter.update);
     return (
         <div className="select-none">
-            <div className="relative min-w-full min-h-[200px] md:min-h-[350px] mt-4">
-                <ExportedImage
-                    sizes="(max-width: 1000px) 50vw, 450px"
-                    className="rounded-md p-0 m-0 inset-0 object-cover text-transparent"
-                    fill
-                    alt={frontMatter.description}
-                    src={frontMatter.image === '' ? '/img/template_post.webp' : frontMatter.image}
-                />
-            </div>
-
+            {frontMatter?.image && (
+                <div className="relative min-w-full min-h-[200px] md:min-h-[350px] mt-4">
+                    <ExportedImage
+                        sizes="(max-width: 1000px) 50vw, 450px"
+                        className="rounded-md p-0 m-0 inset-0 object-cover text-transparent"
+                        fill
+                        alt={frontMatter.description}
+                        src={frontMatter.image}
+                    />
+                </div>
+            )}
             <div className="flex flex-col justify-center items-center mt-10">
                 <div className="w-full md:w-[80%] flex flex-col gap-6">
                     <div className="text-5xl md:text-6xl text-black dark:text-white font-bold mb-8">

@@ -8,15 +8,21 @@ interface BrowseProps {
 }
 
 const Series = ({ series }: BrowseProps) => {
-    const seriesSet = new Set(
-        series.map((item) =>
-            JSON.stringify({
-                series: item.meta.series,
-                src: item.meta.src,
-            })
-        )
-    );
-    const seriesTitle = [...seriesSet].map((item) => JSON.parse(item));
+    const seriesMap = new Map();
+
+    series.forEach((item) => {
+        const seriesKey = item.meta.series;
+        if (!seriesMap.has(seriesKey)) {
+            seriesMap.set(seriesKey, { series: seriesKey, src: '' });
+        }
+
+        // 비어있지 않은 src 값이 있으면 업데이트
+        if (item.meta.series_src && !seriesMap.get(seriesKey).src) {
+            seriesMap.get(seriesKey).src = item.meta.series_src;
+        }
+    });
+
+    const seriesTitle = Array.from(seriesMap.values());
     return (
         <div className="min-h-full max-w-[1100px] p-0 mx-auto">
             <div className="relative z-50 gap-x-14 w-full h-full items-center gap-y-14 flex-wrap flex-col flex md:flex-row mt-20">
