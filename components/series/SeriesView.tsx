@@ -17,7 +17,7 @@ function formatTime(minutes: number) {
             return `${hours} Hour`;
         }
     } else {
-        return `${minutes}분`;
+        return `${minutes} Min`;
     }
 }
 
@@ -29,24 +29,24 @@ const SeriesView = ({ blogs }: BrowseProps) => {
     const formattedReadingTime = formatTime(readingTime);
 
     return (
-        <div className='h-full max-w-[1100px] p-0 mx-auto'>
-            <div className='relative mt-10 mx-10 h-[300px]'>
+        <div className="h-full max-w-[1100px] p-0 mx-auto">
+            <div className="relative mt-10 mx-10 h-[300px]">
                 <ExportedImage
                     alt={blogs[0].meta.title}
                     src={blogs[0].meta.src || '/img/template_post.webp'}
                     fill
-                    sizes='(max-width: 1000px) 50vw, 450px'
-                    className='object-cover m-0 p-0 rounded-xl'
+                    sizes="(max-width: 1000px) 50vw, 450px"
+                    className="object-cover m-0 p-0 rounded-xl"
                 />
             </div>
-            <div className='animate-browse'>
-                <div className='w-full gap-2 items-center flex justify-between bg-lime-700 text-white p-5 mt-10 mb-5'>
-                    <div className='px-4 flex gap-2 text-5xl font-[500] antialiased'>
+            <div className="animate-browse">
+                <div className="w-full gap-2 items-center flex justify-between bg-lime-700 text-white p-5 mt-10 mb-5">
+                    <div className="px-4 flex gap-2 text-5xl font-[500] antialiased">
                         <CiBoxList />
-                        <div className=''>{blogs[0].meta.series}</div>
+                        <div className="">{blogs[0].meta.series}</div>
                     </div>
-                    <div className='flex gap-2'>
-                        <MdAccessTimeFilled className='animate-spin' />
+                    <div className="flex gap-2">
+                        <MdAccessTimeFilled className="animate-spin" />
                         <div>{formattedReadingTime}</div>
                     </div>
                 </div>

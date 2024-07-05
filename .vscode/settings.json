@@ -1,3 +1,8 @@
 {
-    "cSpell.words": ["Callout", "Shiki", "Yposition"]
+    "cSpell.words": [
+        "Callout",
+        "Shiki",
+        "Yposition"
+    ],
+    "prettier.configPath": ".prettierrc"
 }
