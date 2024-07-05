@@ -91,17 +91,10 @@ export async function setComments(form: CommentFormType): Promise<CommentStatus>
     };
 }
 
-export async function removeComments(
-    password: string,
-    commentId: string
-): Promise<CommentStatus> {
+export async function removeComments(password: string, commentId: string): Promise<CommentStatus> {
     const hashedPassword = hashPassword(password);
 
-    const { data, error } = await supabase
-        .from('comments')
-        .select('password')
-        .eq('id', commentId)
-        .single();
+    const { data, error } = await supabase.from('comments').select('password').eq('id', commentId).single();
 
     if (error) {
         return handleError(error, 'Failed to fetch comment for deletion');
@@ -114,10 +107,7 @@ export async function removeComments(
         };
     }
 
-    const { error: deleteError } = await supabase
-        .from('comments')
-        .delete()
-        .eq('id', commentId);
+    const { error: deleteError } = await supabase.from('comments').delete().eq('id', commentId);
 
     if (deleteError) {
         return handleError(deleteError, 'Failed to delete comment');
@@ -129,18 +119,10 @@ export async function removeComments(
     };
 }
 
-export async function editComments(
-    content: string,
-    password: string,
-    id: string
-): Promise<CommentStatus> {
+export async function editComments(content: string, password: string, id: string): Promise<CommentStatus> {
     const hashedPassword = hashPassword(password);
 
-    const { data, error } = await supabase
-        .from('comments')
-        .select('id, password')
-        .eq('id', id)
-        .single();
+    const { data, error } = await supabase.from('comments').select('id, password').eq('id', id).single();
 
     if (error) {
         return handleError(error, 'Failed to fetch comment for editing');

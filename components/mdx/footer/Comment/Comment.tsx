@@ -7,12 +7,7 @@ import CommentForm from './CommentForm';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import utc from 'dayjs/plugin/utc';
-import {
-    editComments,
-    getComments,
-    removeComments,
-    setComments,
-} from '@/lib/commentParse';
+import { editComments, getComments, removeComments, setComments } from '@/lib/commentParse';
 import CommentAdmin from './CommentAdmin';
 import CommentUser from './CommentUser';
 import { CommentDelete, CommentEdit } from './CommentController';
@@ -88,9 +83,7 @@ const CommentComponent = () => {
     };
 
     //? 이름, 비밀번호, 컨텐츠 변경사항 추적
-    const formChangeHandler = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
+    const formChangeHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setForm((prevForm) => ({
             ...prevForm,
@@ -100,9 +93,7 @@ const CommentComponent = () => {
     };
 
     //? CREATE HANDLER
-    const submitHandler = async (
-        e: React.FormEvent<HTMLFormElement> | React.FormEvent<HTMLTextAreaElement>
-    ) => {
+    const submitHandler = async (e: React.FormEvent<HTMLFormElement> | React.FormEvent<HTMLTextAreaElement>) => {
         e.preventDefault();
 
         if (form.name.trim() === '' || form.name.trim().length <= 1)
@@ -127,9 +118,7 @@ const CommentComponent = () => {
     };
 
     //? EDIT HANDLER
-    const editSubmitHandler = async (
-        e: React.FormEvent<HTMLFormElement> | React.FormEvent<HTMLInputElement>
-    ) => {
+    const editSubmitHandler = async (e: React.FormEvent<HTMLFormElement> | React.FormEvent<HTMLInputElement>) => {
         e.preventDefault();
 
         const response = await editComments(editContent, deletePassword, currentId);
@@ -147,23 +136,14 @@ const CommentComponent = () => {
 
     return (
         <>
-            <CommentForm
-                onSubmit={submitHandler}
-                onFormChange={formChangeHandler}
-                form={form}
-                formAlert={formAlert}
-            />
-            <div className='w-full h-fit flex flex-col'>
+            <CommentForm onSubmit={submitHandler} onFormChange={formChangeHandler} form={form} formAlert={formAlert} />
+            <div className="w-full h-fit flex flex-col">
                 {loading ? (
-                    <div className='w-full text-center text-sky-400 font-bold'>
-                        댓글을 불러오는 중...
-                    </div>
+                    <div className="w-full text-center text-sky-400 font-bold">댓글을 불러오는 중...</div>
                 ) : (
                     <>
                         {sortedComments.length === 0 ? (
-                            <div className='w-full text-center text-sky-400 font-bold'>
-                                현재 댓글이 없습니다.
-                            </div>
+                            <div className="w-full text-center text-sky-400 font-bold">현재 댓글이 없습니다.</div>
                         ) : (
                             sortedComments.map((comment) =>
                                 comment.admin ? (

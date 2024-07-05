@@ -3,9 +3,7 @@ const withMDX = require('@next/mdx')({
 });
 
 module.exports = withMDX({
-    experimental: {
-        scrollRestoration: false,
-    },
+    crossOrigin: 'anonymous',
     images: {
         loader: 'custom',
         imageSizes: [16, 48, 96, 128, 256],

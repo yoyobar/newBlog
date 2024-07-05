@@ -74,6 +74,13 @@ export const metadata: metaType = {
         link: '/posts/Project',
         visible: true,
     },
+    CS: {
+        icon: Icon.CS,
+        boxClass: metaStyle.next,
+        title: 'CS',
+        link: '/posts/CS',
+        visible: true,
+    },
     Dev: {
         icon: Icon.Dev,
         boxClass: metaStyle.dev,
