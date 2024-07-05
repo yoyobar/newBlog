@@ -1,9 +1,7 @@
 import { AllPostsProp } from '@/config/types';
 import { MdAccessTimeFilled } from 'react-icons/md';
 import SeriesContent from './SeriesContent';
-import ExportedImage from 'next-image-export-optimizer';
 import { CiBoxList } from 'react-icons/ci';
-import { useMemo } from 'react';
 interface BrowseProps {
     blogs: AllPostsProp[];
 }
@@ -28,25 +26,12 @@ const SeriesView = ({ blogs }: BrowseProps) => {
     }, 0);
 
     const formattedReadingTime = formatTime(readingTime);
-    const seriesSrc = useMemo(() => {
-        const blogWithSrc = blogs.find((blog) => blog.meta.series_src !== '');
-        return blogWithSrc ? blogWithSrc.meta.series_src : '/img/template_post.webp';
-    }, [blogs]);
 
     return (
         <div className="h-full max-w-[1100px] p-0 mx-auto">
-            <div className="relative mt-10 mx-10 h-[300px]">
-                <ExportedImage
-                    alt={blogs[0].meta.title}
-                    src={seriesSrc}
-                    fill
-                    sizes="(max-width: 1000px) 50vw, 450px"
-                    className="object-cover m-0 p-0 rounded-xl"
-                />
-            </div>
             <div className="animate-browse">
                 <div className="w-full gap-2 items-center flex justify-between bg-lime-700 text-white p-5 mt-10 mb-5">
-                    <div className="px-4 flex gap-2 text-5xl font-[500] antialiased">
+                    <div className="px-4 flex gap-2 text-3xl md:text-4xl lg:text-5xl font-[500] antialiased">
                         <CiBoxList />
                         <div className="">{blogs[0].meta.series}</div>
                     </div>
