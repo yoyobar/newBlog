@@ -4,11 +4,7 @@ import { siteConfig } from '@/config/siteconfig';
 import { getSeries, loadBlogDetails } from '@/utils/parseData';
 import { Suspense } from 'react';
 
-export async function generateMetadata({
-    params,
-}: {
-    params: { category: string; slug: string };
-}) {
+export async function generateMetadata({ params }: { params: { category: string; slug: string } }) {
     const { slug } = params;
     const decodeSlug = decodeURIComponent(slug);
     const blogs = await getSeries(decodeSlug);
@@ -50,11 +46,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
     return (
         <PageContainer>
-            <Suspense fallback={<div>Loading...</div>}>
-                <div className='w-[90%] m-auto select-none'>
-                    <SeriesView blogs={blogs} />
-                </div>
-            </Suspense>
+            <div className="w-[90%] m-auto select-none">
+                <SeriesView blogs={blogs} />
+            </div>
         </PageContainer>
     );
 }
