@@ -19,14 +19,14 @@ const TocContent = ({ headingEls, currentId }: TocProps) => {
     return (
         <motion.div
             transition={{ duration: 0.8, ease: [0.04, 0.62, 0.23, 0.98] }}
-            animate='open'
-            initial='collapsed'
-            exit='collapsed'
+            animate="open"
+            initial="collapsed"
+            exit="collapsed"
             variants={{
                 open: { opacity: 0.75, translateY: 0 },
                 collapsed: { opacity: 0, translateY: 10 },
             }}
-            className='fixed w-[200px] 3xl:w-[300px] max-h-[400px] overflow-y-scroll overflow-x-hidden border dark:border-none bg-whiteInner-content dark:bg-darkInner-content rounded-md'
+            className="fixed w-[200px] 3xl:w-[300px] max-h-[400px] overflow-y-scroll overflow-x-hidden border dark:border-none bg-whiteInner-content dark:bg-darkInner-content rounded-md"
         >
             {headingEls.map((headingEl) => {
                 const tagName = headingEl.tagName.toLowerCase();
