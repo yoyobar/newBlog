@@ -10,16 +10,18 @@ import { FiLink } from 'react-icons/fi';
 import { TfiCommentAlt } from 'react-icons/tfi';
 import { BiArrowToTop } from 'react-icons/bi';
 import { useCopyToClipboard } from 'react-use';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { FaCheckCircle } from 'react-icons/fa';
+import { FaBookBookmark } from 'react-icons/fa6';
 
-const Mdx_Toc = ({ footControl }: { footControl: boolean }) => {
+const Mdx_Toc = ({ footControl, series }: { footControl: boolean; series: string }) => {
     const { collapse, setCollapse } = useCollapse();
     const [currentId, setCurrentId] = useState<string>('');
     const [copy, setCopy] = useState(false);
     const [headingEls, setHeadingEls] = useState<Element[]>([]);
     const [state, copyToClipboard] = useCopyToClipboard();
     const path = usePathname();
+    const router = useRouter();
 
     useEffect(() => {
         const pageContainer = document.querySelector('.page-container');
@@ -69,62 +71,78 @@ const Mdx_Toc = ({ footControl }: { footControl: boolean }) => {
         }, 1500);
     }, [copyToClipboard, path]);
 
+    const moveToBookHandler = () => {
+        router.push(`/series/${series}`);
+    };
+
     return (
-        <article className='relative'>
-            <div className='absolute right-[55px] z-50 3xl:right-[100px]'>
+        <article className="relative">
+            <div className="absolute right-[55px] z-50 3xl:right-[100px]">
                 <motion.button
                     initial={false}
                     onClick={setCollapse}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
-                    className='toc-toggle-button fixed w-[40px] h-[40px] rounded-md opacity-75 bg-slate-200 dark:bg-gray-800 border dark:text-sky-300 flex justify-center items-center'
+                    className="toc-toggle-button fixed w-[40px] h-[40px] rounded-md opacity-75 bg-slate-200 dark:bg-gray-800 border dark:text-sky-300 flex justify-center items-center"
                 >
                     <FaArrowDownShortWide />
                 </motion.button>
             </div>
 
             {collapse && (
-                <nav className='hidden lg:flex toc-content right-[215px] 3xl:right-[365px] top-24 z-20 absolute flex-col'>
+                <nav className="hidden lg:flex toc-content right-[215px] 3xl:right-[365px] top-24 z-20 absolute flex-col">
                     <TocContent currentId={currentId} headingEls={headingEls} />
                 </nav>
             )}
             {collapse && (
-                <nav className='toc-content right-[50px] lg:right-[250px] 3xl:right-[400px] top-[50px] lg:top-[80px] z-20 absolute flex flex-col'>
+                <nav className="toc-content right-[50px] lg:right-[250px] 3xl:right-[400px] top-[50px] lg:top-[80px] z-20 absolute flex flex-col">
                     <motion.div
                         transition={{ duration: 0.8, ease: [0.04, 0.62, 0.23, 0.98] }}
-                        animate='open'
-                        initial='collapsed'
-                        exit='collapsed'
+                        animate="open"
+                        initial="collapsed"
+                        exit="collapsed"
                         variants={{
                             open: { opacity: 0.9, translateY: 0 },
                             collapsed: { opacity: 0, translateY: 10 },
                         }}
-                        className='fixed gap-2 flex flex-col items-center h-fit w-fit'
+                        className="fixed gap-2 flex flex-col items-center h-fit w-fit"
                     >
-                        <div className='relative'>
+                        <div className="relative">
                             <BiArrowToTop
+                                title="최상단 복귀"
                                 onClick={scrollToTopHandler}
-                                className='bg-white dark:bg-darkInner-content dark:text-white text-black border border-gray-400 p-2 rounded-md text-5xl dark:hover:bg-white dark:hover:text-black hover:bg-whiteInner-border cursor-pointer transition'
+                                className="bg-white dark:bg-darkInner-content dark:text-white text-black border border-gray-400 p-2 rounded-md text-5xl dark:hover:bg-white dark:hover:text-black hover:bg-whiteInner-border cursor-pointer transition"
                             ></BiArrowToTop>
                         </div>
                         <div>
                             {footControl && (
                                 <TfiCommentAlt
+                                    title="댓글 보기"
                                     onClick={scrollToBottomHandler}
-                                    className='bg-white dark:bg-darkInner-content dark:text-white text-black border border-gray-400 p-2 rounded-md text-5xl dark:hover:bg-white dark:hover:text-black hover:bg-whiteInner-border cursor-pointer transition'
+                                    className="bg-white dark:bg-darkInner-content dark:text-white text-black border border-gray-400 p-2 rounded-md text-5xl dark:hover:bg-white dark:hover:text-black hover:bg-whiteInner-border cursor-pointer transition"
                                 ></TfiCommentAlt>
                             )}
                         </div>
                         <div>
                             {copy ? (
                                 <motion.div animate={{ opacity: [0, 1] }}>
-                                    <FaCheckCircle className='bg-white dark:text-lime-600 text-indigo-400 border  border-gray-400 p-2 rounded-md text-5xl select-none transition' />
+                                    <FaCheckCircle className="bg-white dark:text-lime-600 text-indigo-400 border  border-gray-400 p-2 rounded-md text-5xl select-none transition" />
                                 </motion.div>
                             ) : (
                                 <FiLink
+                                    title="링크 복사"
                                     onClick={shareHandler}
-                                    className='bg-white dark:bg-darkInner-content dark:text-white text-black border border-gray-400 p-2 rounded-md dark:hover:bg-white dark:hover:text-black text-5xl hover:bg-whiteInner-border cursor-pointer transition'
+                                    className="bg-white dark:bg-darkInner-content dark:text-white text-black border border-gray-400 p-2 rounded-md dark:hover:bg-white dark:hover:text-black text-5xl hover:bg-whiteInner-border cursor-pointer transition"
                                 />
+                            )}
+                        </div>
+                        <div>
+                            {series && (
+                                <FaBookBookmark
+                                    title="시리즈"
+                                    onClick={moveToBookHandler}
+                                    className="bg-white dark:bg-darkInner-content dark:text-white text-black border border-gray-400 p-2 rounded-md text-5xl dark:hover:bg-white dark:hover:text-black hover:bg-whiteInner-border cursor-pointer transition"
+                                ></FaBookBookmark>
                             )}
                         </div>
                     </motion.div>

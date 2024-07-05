@@ -10,11 +10,7 @@ import { FootMatterTypes } from '@/config/types';
 import { siteConfig } from '@/config/siteconfig';
 const BASE_DIR = 'posts';
 
-export async function generateMetadata({
-    params,
-}: {
-    params: { category: string; slug: string };
-}) {
+export async function generateMetadata({ params }: { params: { category: string; slug: string } }) {
     const { category, slug } = params;
     const { frontMatter } = await getPost(category, slug);
     return {
@@ -40,9 +36,7 @@ export async function generateMetadata({
 export async function generateStaticParams() {
     const allItems = fs.readdirSync(BASE_DIR);
     const categories = allItems.filter(
-        (item) =>
-            !item.includes('.mdx') &&
-            fs.lstatSync(path.join(BASE_DIR, item)).isDirectory()
+        (item) => !item.includes('.mdx') && fs.lstatSync(path.join(BASE_DIR, item)).isDirectory()
     );
 
     const allPaths = categories.flatMap((category) => {
@@ -55,11 +49,7 @@ export async function generateStaticParams() {
 
     return allPaths;
 }
-export default async function Page({
-    params,
-}: {
-    params: { category: string; slug: string };
-}) {
+export default async function Page({ params }: { params: { category: string; slug: string } }) {
     const { category, slug } = params;
     const { frontMatter, content } = await getPost(category, slug);
     const footMatter = (await getCategoryPost(category)) as FootMatterTypes[];
@@ -68,9 +58,9 @@ export default async function Page({
 
     return (
         <PageContainer>
-            {tocControl && <Mdx_Toc footControl={footControl} />}
+            {tocControl && <Mdx_Toc series={frontMatter.series} footControl={footControl} />}
 
-            <div className='m-auto w-[95%] md:w-[75%] 3xl:w-[50%]'>
+            <div className="m-auto w-[95%] md:w-[75%] 3xl:w-[50%]">
                 <Mdx_Header frontMatter={{ ...frontMatter, category: category }} />
                 <Mdx_Body content={content} />
                 {footControl && <Mdx_Footer footMatter={footMatter} />}
