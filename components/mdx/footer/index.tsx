@@ -1,16 +1,11 @@
 'use client';
-import React, { useState } from 'react';
 import { FootMatterTypes } from '@/config/types';
 import { usePathname, useRouter } from 'next/navigation';
-import { useCopyToClipboard } from 'react-use';
 import CopyRight from './CopyRight';
-
 import Card from './Card';
 import Comment from './Comment/Comment';
 
 const Mdx_Footer = ({ footMatter }: { footMatter: FootMatterTypes[] }) => {
-    const [copiedText, copy] = useCopyToClipboard();
-    const [copyStatus, setCopyStatus] = useState<boolean>(false);
     const path = usePathname();
     const folderPath = path.split('/')[2];
     const nowPath = path.split('/')[3];
