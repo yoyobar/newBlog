@@ -63,7 +63,7 @@ const Mdx_Toc = ({ footControl, series }: { footControl: boolean; series: string
     };
 
     const shareHandler = useCallback(() => {
-        copyToClipboard(`https://trouble-wiki.vercel.app${path}`);
+        copyToClipboard(`https://wiki.yoyobar.xyz${path}`);
         setCopy(true);
 
         setTimeout(() => {

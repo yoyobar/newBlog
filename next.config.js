@@ -6,7 +6,7 @@ module.exports = withMDX({
     crossOrigin: 'anonymous',
     images: {
         loader: 'custom',
-        imageSizes: [16, 48, 96, 128, 256],
+        imageSizes: [16, 48, 128],
         deviceSizes: [640, 1080, 1920, 2048, 3840],
     },
     transpilePackages: ['next-image-export-optimizer'],

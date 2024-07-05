@@ -13,9 +13,7 @@ const BASE_DIR = path.join(process.cwd(), 'posts');
 export const allDirectoryLoad = () => {
     const allItems = fs.readdirSync(path.join(BASE_DIR));
     const category = allItems.filter(
-        (item) =>
-            !item.includes('.mdx') &&
-            fs.lstatSync(path.join(BASE_DIR, item)).isDirectory()
+        (item) => !item.includes('.mdx') && fs.lstatSync(path.join(BASE_DIR, item)).isDirectory()
     );
     return category;
 };
@@ -40,9 +38,7 @@ export const loadBlogDetails = async () => {
     const allFiles = [...categoryFiles];
 
     const blogs = allFiles.map(({ category, file }) => {
-        const filePath = category
-            ? path.join(BASE_DIR, category, file)
-            : path.join(BASE_DIR, file);
+        const filePath = category ? path.join(BASE_DIR, category, file) : path.join(BASE_DIR, file);
         const fileContent = fs.readFileSync(filePath, 'utf-8');
         const { content, data } = matter(fileContent);
         const grayMatter = data as FrontMatterTypes;
@@ -59,9 +55,7 @@ export const loadBlogDetails = async () => {
                 hidden: grayMatter?.hidden || false,
                 series: grayMatter?.series || '',
             },
-            slug: category
-                ? `${category}/${file.replace('.mdx', '')}`
-                : file.replace('.mdx', ''),
+            slug: category ? `${category}/${file.replace('.mdx', '')}` : file.replace('.mdx', ''),
         };
     });
     return blogs;
@@ -114,9 +108,7 @@ export async function getCategoryPost(category: string) {
 //! /posts/[category]
 export async function getPosts(category: string) {
     const allBlogs = await loadBlogDetails();
-    return allBlogs.filter(
-        (blog) => blog.meta.category === category && !blog.meta.hidden
-    );
+    return allBlogs.filter((blog) => blog.meta.category === category && !blog.meta.hidden);
 }
 
 export async function getSeries(slug: string) {
