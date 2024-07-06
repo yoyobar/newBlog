@@ -1,8 +1,9 @@
 import dayjs from 'dayjs';
-import ExportedImage from 'next-image-export-optimizer';
 import React from 'react';
 import { CiCalendar } from 'react-icons/ci';
 import { CDN } from '@/config/const';
+import BlurredImageFill from '@/components/BlurredImageFill';
+
 interface CardProps {
     description: string;
     image: string | undefined;
@@ -24,10 +25,9 @@ const Card = ({ description, image, title, date, slug, text, onRouter }: CardPro
             className="cursor-pointer flex h-fit md:h-[300px] flex-col gap-3 overflow-hidden rounded-md border shadow-md transition-all hover:shadow-xl dark:border-slate-700 dark:hover:border-white"
         >
             <div className="relative aspect-video rounded-t-md border-b dark:border-slate-700">
-                <ExportedImage
+                <BlurredImageFill
                     sizes="(max-width: 1000px) 50vw, 250px"
                     className="p-0 m-0 inset-0 object-cover text-transparent"
-                    fill
                     alt={description}
                     src={image ? CDN + image : CDN + '/img/template_post.webp'}
                 />

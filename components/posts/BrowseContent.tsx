@@ -1,10 +1,11 @@
-import ExportedImage from 'next-image-export-optimizer';
 import Link from 'next/link';
 import React from 'react';
 import { CiCalendar } from 'react-icons/ci';
 import { MdAccessTimeFilled } from 'react-icons/md';
 import { AllPostsProp } from '@/config/types';
 import { CDN } from '@/config/const';
+import BlurredImageFill from '../BlurredImageFill';
+
 interface BrowseContentProps {
     blogs: AllPostsProp[];
 }
@@ -21,10 +22,9 @@ const BrowseContent = ({ blogs }: BrowseContentProps) => {
                     >
                         <nav className="flex h-full flex-col gap-3 overflow-hidden rounded-md border shadow-md transition-all hover:shadow-xl dark:border-slate-700 dark:hover:border-white">
                             <div className="relative aspect-video w-full rounded-t-md border-b dark:border-slate-700">
-                                <ExportedImage
+                                <BlurredImageFill
                                     sizes="(max-width: 1000px) 50vw, 450px"
                                     className="p-0 m-0 inset-0 object-cover text-transparent"
-                                    fill
                                     alt={blog.meta.title}
                                     src={blog.meta.src !== '' ? CDN + blog.meta.src : CDN + '/img/template_post.webp'}
                                 />

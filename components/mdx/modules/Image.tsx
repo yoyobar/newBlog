@@ -1,7 +1,7 @@
 'use client';
 
+import BlurredImage from '@/components/BlurredImage';
 import { CDN } from '@/config/const';
-import ExportedImage from 'next-image-export-optimizer';
 import { useState } from 'react';
 
 /* eslint-disable @next/next/no-img-element */
@@ -15,7 +15,7 @@ export const Image = ({ src, alt }: ImageProps) => {
 
     return (
         <>
-            <ExportedImage
+            <BlurredImage
                 width={500}
                 height={332}
                 src={CDN + src}

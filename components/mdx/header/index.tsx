@@ -6,10 +6,10 @@ import { CiCalendar } from 'react-icons/ci';
 import Mdx_Tag from './Mdx_Tag';
 import dayjs from 'dayjs';
 import Link from 'next/link';
-import ExportedImage from 'next-image-export-optimizer';
 import utc from 'dayjs/plugin/utc';
 import 'dayjs/locale/ko';
 import { CDN } from '@/config/const';
+import BlurredImageFill from '@/components/BlurredImageFill';
 
 const Mdx_Header = ({ frontMatter }: { frontMatter: FrontMatterTypes }) => {
     const formatDate = (date: Date) => {
@@ -25,10 +25,9 @@ const Mdx_Header = ({ frontMatter }: { frontMatter: FrontMatterTypes }) => {
         <div className="select-none">
             {frontMatter?.image && (
                 <div className="relative min-w-full min-h-[200px] md:min-h-[350px] mt-4">
-                    <ExportedImage
+                    <BlurredImageFill
                         sizes="(max-width: 1000px) 50vw, 450px"
                         className="rounded-md p-0 m-0 inset-0 object-cover text-transparent"
-                        fill
                         alt={frontMatter.description}
                         src={CDN + frontMatter.image}
                     />

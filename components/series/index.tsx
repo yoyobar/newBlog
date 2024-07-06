@@ -1,8 +1,8 @@
 import { AllPostsProp } from '@/config/types';
-import ExportedImage from 'next-image-export-optimizer';
 import Link from 'next/link';
 import BookEffect from './BookEffect';
 import { CDN } from '@/config/const';
+import BlurredImageFill from '../BlurredImageFill';
 
 interface BrowseProps {
     series: AllPostsProp[];
@@ -38,10 +38,9 @@ const Series = ({ series }: BrowseProps) => {
                         >
                             <div className="text-center">{item.series}</div>
                             <div className="relative w-full mt-10 mx-10 h-[200px]">
-                                <ExportedImage
+                                <BlurredImageFill
                                     alt={item.series}
                                     src={CDN + item.src || CDN + '/img/template_post.webp'}
-                                    fill
                                     sizes="(max-width: 1000px) 50vw, 450px"
                                     className="object-cover m-0 p-0 rounded-xl"
                                 />

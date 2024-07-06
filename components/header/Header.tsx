@@ -3,8 +3,8 @@ import Link from 'next/link';
 import Clock from './Clock';
 import UserCount from './UserCount';
 import { useState } from 'react';
-import ExportedImage from 'next-image-export-optimizer';
 import { CDN } from '@/config/const';
+import BlurredImage from '../BlurredImage';
 
 const Header = () => {
     const [showMenu, setShowMenu] = useState(false);
@@ -41,7 +41,7 @@ const Header = () => {
                         </Link>
                     </div>
                 )}
-                <ExportedImage
+                <BlurredImage
                     onClick={() => {
                         setShowMenu(!showMenu);
                     }}

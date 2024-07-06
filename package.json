@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "dev": "next dev",
-        "build": "next build && next-image-export-optimizer && next-sitemap",
+        "build": "next build && next-sitemap",
         "start": "next start",
         "lint": "next lint",
         "convert": "node ./utils/imageConvert.js"
@@ -23,7 +23,6 @@
         "gray-matter": "^4.0.3",
         "js-cookie": "^3.0.5",
         "next": "14.2.3",
-        "next-image-export-optimizer": "^1.14.1",
         "next-mdx-remote": "^5.0.0",
         "next-themes": "^0.3.0",
         "react": "^18",

@@ -1,8 +1,7 @@
 'use client';
 import { motion } from 'framer-motion';
-import ExportedImage from 'next-image-export-optimizer';
 import { useRouter } from 'next/navigation';
-import { useRef } from 'react';
+import BlurredImage from '../BlurredImage';
 
 interface IconProps {
     src: string;
@@ -27,13 +26,12 @@ const Icon = ({ src, name, href, hidden, desc }: IconProps) => {
             onClick={selectHandler}
             className={`${hidden && 'hidden'} text-white sm:block relative cursor-pointer w-[60px] h-[60px]`}
         >
-            <ExportedImage
-                className="absolute top-0 left-0 w-full h-full"
+            <BlurredImage
+                className="pointer-events-none absolute top-0 left-0 w-full h-full"
                 src={src}
                 alt={name}
                 width={60}
                 height={60}
-                style={{ pointerEvents: 'none' }}
             />
             <div className=" absolute w-[60px] text-center -bottom-10 text-3xl">{name}</div>
         </motion.div>
