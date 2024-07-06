@@ -17,6 +17,7 @@ const BlurredImageFill = ({ src, sizes, className, alt }: BlurredImageProps) => 
             src={src}
             sizes={sizes}
             alt={alt}
+            fill
         />
     );
 };
