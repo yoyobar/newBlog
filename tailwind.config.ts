@@ -16,7 +16,7 @@ const config: Config = {
         },
         extend: {
             backgroundImage: {
-                dark: "url('https://d2wzue8j5vpr8f.cloudfront.net/img/main-bg.webp')",
+                dark: "url('https://d1su9fsid9aw3f.cloudfront.net/img/main-bg.webp')",
             },
             transitionProperty: {
                 'width-height': 'width, height',

@@ -9,7 +9,7 @@ module.exports = withMDX({
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: 'd2wzue8j5vpr8f.cloudfront.net',
+                hostname: 'd1su9fsid9aw3f.cloudfront.net',
                 port: '',
                 pathname: '/img/**',
             },
