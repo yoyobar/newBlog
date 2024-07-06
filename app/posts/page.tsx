@@ -3,6 +3,7 @@ import { loadBlogCategoryCount, loadBlogDetails } from '@/utils/parseData';
 import Browse from '@/components/posts/Browse';
 import type { Metadata } from 'next';
 import { siteConfig } from '@/config/siteconfig';
+import { CDN } from '@/config/const';
 
 export const metadata: Metadata = {
     title: 'Blogs | Trouble Wiki',
@@ -12,12 +13,12 @@ export const metadata: Metadata = {
     },
     openGraph: {
         title: `Blogs | Trouble Wiki`,
-        images: ['/img/template_og_browse.webp'],
+        images: [`${CDN}/img/template_og_browse.webp`],
         description: `Trouble Wiki, 개인 블로그. 전체 게시물을 다룹니다.`,
     },
     twitter: {
         title: `Blogs | Trouble Wiki`,
-        images: ['/img/template_og_browse.webp'],
+        images: [`${CDN}/img/template_og_browse.webp`],
         description: `Trouble Wiki, 개인 블로그. 전체 게시물을 다룹니다.`,
     },
 };
@@ -28,7 +29,7 @@ export default async function Home() {
 
     return (
         <PageContainer>
-            <div className='w-[90%] m-auto select-none'>
+            <div className="w-[90%] m-auto select-none">
                 <Browse blogs={blogs} categories={category} />
             </div>
         </PageContainer>

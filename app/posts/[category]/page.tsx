@@ -5,13 +5,10 @@ import { getPosts } from '@/utils/parseData';
 import { metadata } from '@/utils/mdx/metaData';
 import { loadBlogCategoryCount } from '@/utils/parseData';
 import { siteConfig } from '@/config/siteconfig';
+import { CDN } from '@/config/const';
 
 const BASE_DIR = 'posts';
-export async function generateMetadata({
-    params,
-}: {
-    params: { category: string; slug: string };
-}) {
+export async function generateMetadata({ params }: { params: { category: string; slug: string } }) {
     const { category } = params;
     const metaObj = metadata[category] || metadata['all'];
     const titleName = metaObj.title;
@@ -22,12 +19,12 @@ export async function generateMetadata({
         description: `Trouble Wiki, 개인 블로그. ${titleName} 카테고리의 게시물`,
         openGraph: {
             title: `${titleName} | Trouble Wiki`,
-            images: ['/img/template_og_browse.webp'],
+            images: [`${CDN}/img/template_og_browse.webp`],
             description: `Trouble Wiki, 개인 블로그. ${titleName} 카테고리의 게시물`,
         },
         twitter: {
             title: `${titleName} | Trouble Wiki`,
-            images: ['/img/template_og_browse.webp'],
+            images: [`${CDN}/img/template_og_browse.webp`],
             description: `Trouble Wiki, 개인 블로그. ${titleName} 카테고리의 게시물`,
         },
         alternates: {
@@ -49,7 +46,7 @@ export default async function Page({ params }: { params: { category: string } })
 
     return (
         <PageContainer>
-            <div className='w-[90%] select-none m-auto'>
+            <div className="w-[90%] select-none m-auto">
                 <Browse blogs={blogs} categories={blogCategory} />
             </div>
         </PageContainer>

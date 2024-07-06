@@ -1,5 +1,6 @@
 import PageContainer from '@/components/PageContainer';
 import SeriesView from '@/components/series/SeriesView';
+import { CDN } from '@/config/const';
 import { siteConfig } from '@/config/siteconfig';
 import { getSeries, loadBlogDetails } from '@/utils/parseData';
 import { Suspense } from 'react';
@@ -13,12 +14,12 @@ export async function generateMetadata({ params }: { params: { category: string;
         keywords: blogs[0].meta.tags,
         description: blogs[0].meta.description,
         openGraph: {
-            images: [blogs[0].meta.src ? blogs[0].meta.src : '/img/template_post.webp'],
+            images: [blogs[0].meta.src ? CDN + blogs[0].meta.src : CDN + '/img/template_post.webp'],
             description: blogs[0].meta.description,
             publishedTime: blogs[0].meta.date,
         },
         twitter: {
-            images: [blogs[0].meta.src ? blogs[0].meta.src : '/img/template_post.webp'],
+            images: [blogs[0].meta.src ? CDN + blogs[0].meta.src : CDN + '/img/template_post.webp'],
             description: blogs[0].meta.description,
             title: `${blogs[0].meta.title} | Trouble Wiki`,
         },

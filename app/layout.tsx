@@ -11,7 +11,6 @@ import Analytic from './Analytics';
 const pretendard = localFont({
     src: '../public/fonts/PretendardVariable.woff2',
     display: 'swap',
-    weight: '45, 920',
     variable: '--font-pretendard',
 });
 
@@ -45,7 +44,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang='ko' suppressHydrationWarning className={`${pretendard.variable}`}>
+        <html lang="ko" suppressHydrationWarning className={`${pretendard.variable}`}>
             <body
                 className={`${pretendard.className} fixed bg-cover bg-center overflow-hidden w-full h-full bg-dark bg-background`}
             >

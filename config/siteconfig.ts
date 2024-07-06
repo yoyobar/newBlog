@@ -1,3 +1,5 @@
+import { CDN } from './const';
+
 export const siteConfig = {
     url: 'https://wiki.yoyobar.xyz/',
     manifest: '/favicon/site.webmanifest',
@@ -39,7 +41,7 @@ export const siteConfig = {
     openGraph: {
         url: 'https://wiki.yoyobar.xyz/',
         siteName: 'Trouble Wiki',
-        images: ['/img/template_og_main.webp'],
+        images: [CDN + '/img/template_og_main.webp'],
         description: 'Trouble Wiki, 개인 블로그. 다양한 개발정보를 다룹니다.',
         type: 'article',
         authors: ['Minsu Kim', 'yoyobar'],
@@ -49,7 +51,7 @@ export const siteConfig = {
         title: `Trouble Wiki`,
         description: 'Trouble Wiki, 개인 블로그. 다양한 개발정보를 다룹니다.',
         creator: 'yoyobar',
-        images: ['/img/template_og_main.webp'],
+        images: [CDN + '/img/template_og_main.webp'],
     },
     verification: {
         google: 'jZMBF77CHHOLwNMrLXxa6qhJeQMM6YkPdYrBdblv8IE',

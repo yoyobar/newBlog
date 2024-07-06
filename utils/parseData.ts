@@ -5,6 +5,7 @@ import matter from 'gray-matter';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import readingTime from 'reading-time';
+import { CDN } from '@/config/const';
 dayjs.extend(utc);
 
 const BASE_DIR = path.join(process.cwd(), 'posts');
@@ -47,7 +48,7 @@ export const loadBlogDetails = async () => {
             meta: {
                 title: grayMatter.title,
                 tags: grayMatter.tags,
-                src: grayMatter.image,
+                src: grayMatter.image || '',
                 description: grayMatter.description,
                 category: category,
                 date: dayjs.utc(grayMatter.date).format('YYYY년 MM월 DD일-HH:mm:ss'),

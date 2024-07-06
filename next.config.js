@@ -17,6 +17,7 @@ module.exports = withMDX({
         nextImageExportOptimizer_storePicturesInWEBP: 'true',
         nextImageExportOptimizer_exportFolderName: 'nextImageExportOptimizer',
         nextImageExportOptimizer_generateAndUseBlurImages: 'true',
+        nextImageExportOptimizer_remoteImageDomain: 'https://d2wzue8j5vpr8f.cloudfront.net',
         // nextImageExportOptimizer_remoteImageCacheTTL: '86400',
     },
     pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],

@@ -3,6 +3,7 @@ import { loadBlogDetails } from '@/utils/parseData';
 import type { Metadata } from 'next';
 import { siteConfig } from '@/config/siteconfig';
 import Series from '@/components/series';
+import { CDN } from '@/config/const';
 
 export const metadata: Metadata = {
     title: 'Series | Trouble Wiki',
@@ -12,12 +13,12 @@ export const metadata: Metadata = {
     },
     openGraph: {
         title: `Blogs | Trouble Wiki`,
-        images: ['/img/template_og_series.webp'],
+        images: [CDN + '/img/template_og_series.webp'],
         description: `Trouble Wiki, 개인 블로그. 시리즈물을 다룹니다.`,
     },
     twitter: {
         title: `Blogs | Trouble Wiki`,
-        images: ['/img/template_og_series.webp'],
+        images: [CDN + '/img/template_og_series.webp'],
         description: `Trouble Wiki, 개인 블로그. 시리즈물을 다룹니다.`,
     },
 };
@@ -27,7 +28,7 @@ export default async function Home() {
     const series = blogs.filter((blog) => blog.meta.series !== '');
     return (
         <PageContainer>
-            <div className='w-[90%] m-auto select-none'>
+            <div className="w-[90%] m-auto select-none">
                 <Series series={series} />
             </div>
         </PageContainer>

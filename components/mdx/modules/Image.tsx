@@ -1,8 +1,8 @@
 'use client';
 
+import { CDN } from '@/config/const';
 import ExportedImage from 'next-image-export-optimizer';
 import { useState } from 'react';
-import { RiZoomInFill } from 'react-icons/ri';
 
 /* eslint-disable @next/next/no-img-element */
 interface ImageProps {
@@ -18,7 +18,7 @@ export const Image = ({ src, alt }: ImageProps) => {
             <ExportedImage
                 width={500}
                 height={332}
-                src={src}
+                src={CDN + src}
                 alt={alt}
                 onClick={() => {
                     setZoom((prev) => !prev);

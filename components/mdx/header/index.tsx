@@ -9,6 +9,7 @@ import Link from 'next/link';
 import ExportedImage from 'next-image-export-optimizer';
 import utc from 'dayjs/plugin/utc';
 import 'dayjs/locale/ko';
+import { CDN } from '@/config/const';
 
 const Mdx_Header = ({ frontMatter }: { frontMatter: FrontMatterTypes }) => {
     const formatDate = (date: Date) => {
@@ -29,7 +30,7 @@ const Mdx_Header = ({ frontMatter }: { frontMatter: FrontMatterTypes }) => {
                         className="rounded-md p-0 m-0 inset-0 object-cover text-transparent"
                         fill
                         alt={frontMatter.description}
-                        src={frontMatter.image}
+                        src={CDN + frontMatter.image}
                     />
                 </div>
             )}

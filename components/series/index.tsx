@@ -2,6 +2,7 @@ import { AllPostsProp } from '@/config/types';
 import ExportedImage from 'next-image-export-optimizer';
 import Link from 'next/link';
 import BookEffect from './BookEffect';
+import { CDN } from '@/config/const';
 
 interface BrowseProps {
     series: AllPostsProp[];
@@ -39,7 +40,7 @@ const Series = ({ series }: BrowseProps) => {
                             <div className="relative w-full mt-10 mx-10 h-[200px]">
                                 <ExportedImage
                                     alt={item.series}
-                                    src={item.src || '/img/template_post.webp'}
+                                    src={CDN + item.src || CDN + '/img/template_post.webp'}
                                     fill
                                     sizes="(max-width: 1000px) 50vw, 450px"
                                     className="object-cover m-0 p-0 rounded-xl"
