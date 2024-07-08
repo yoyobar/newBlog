@@ -25,8 +25,11 @@ export const Image = ({ src, alt }: ImageProps) => {
                 }}
                 className={`${
                     zoom ? 'w-[800px] cursor-zoom-out' : 'w-[500px] cursor-zoom-in'
-                } transition-width-height my-6 rounded-md shadow-xl`}
+                } transition-width-height p-0 m-0 rounded-md shadow-xl`}
             />
+            <a target="_blank" href={alt} className="inline-block text-gray mb-4 text-xl no-underline">
+                {alt ? alt : ''}
+            </a>
         </>
     );
 };
