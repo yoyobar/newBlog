@@ -9,23 +9,23 @@ export interface FrontMatterTypes {
     description: string;
     image: string;
     tags: string[];
+    update: Date;
     date: Date;
-    [key: string]: any;
     toc?: boolean;
     comment: boolean;
     hidden?: boolean;
     series: string;
     series_src: string;
+    category: string;
 }
 
 export interface FootMatterTypes {
     title: string;
     description: string;
-    image: '';
+    image: string;
     tags: string[];
     date: Date;
     slug: string;
-    [key: string]: any;
 }
 
 export interface AllBrowseType {

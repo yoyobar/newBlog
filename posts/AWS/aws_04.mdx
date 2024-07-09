@@ -1,0 +1,220 @@
+---
+title: '[RDS] 04. RDS 구축 및 데이터베이스 서버 연결'
+description: 'RDS로 데이터베이스를 구축해보고, 실제 서버에서 통신 해봅니다.'
+image: '/img/RDS.webp'
+tags: [AWS, RDS, server]
+date: 2024-07-10 00:16:19
+update: 2024-07-10 00:16:19
+series: 'AWS 개념잡기'
+---
+
+## RDS 의 개념
+
+### ✅ RDS 란?
+
+<Callout type='info'>한 줄 요약 : 관계형 데이터베이스 서비스</Callout>
+
+
+
+`MySQL`, `MariaDB`등 다양한 관계형 데이터베이스 서비스를
+AWS로부터 빌려서 사용하는 서비스입니다.
+
+### ✅ RDS를 왜 사용하는 걸까?
+
+로컬환경에서 개발할 때는 로컬 환경에 설치된 DB를 연결해서 사용합니다.
+하지만 서버를 배포하고 나면 내 컴퓨터의 MySQL과 연결할수가 없습니다.
+`DB`도 외부 인터넷에서 접근할 수 있게 같이 배포해주어야만 합니다.
+
+이러한 이유때문에 `AWS RDS`라는 데이터베이스 서비스를 이용하여
+배포합니다. 이외에도 `RDS`는 다양한 부가기능을 제공해줍니다.
+
+<Callout type=''>그렇다면 EC2에 MySQL DB를 설치해도 되지 않을까?</Callout>
+
+학습하는 용도로는 그러한 방법을 사용하는 경우가 많습니다.
+비용절감의 측면도 존재하기 때문이죠.
+
+하지만 실제 현업에서는 `MySQL`서버를 같이 배포하는 경우는 드뭅니다.
+
+왜냐하면 백엔드 서버가 문제로 인해 **정지**될 경우, 데이터베이스도 같이 다운되는것을 감당 해야하기 때문입니다.
+
+---
+
+## RDS 생성하기
+
+### ✅ 기본 설정
+
+우선 `AWS RDS`서비스에 접속해서 RDS 인스턴스를 새로 생성합니다.
+
+![](/img/2024-07-10-00-34-28.webp)
+
+`MySQL`를 선택하고 진행합니다.
+
+![](/img/2024-07-10-00-34-56.webp)
+
+템플릿은 반드시 `프리 티어`를 선택하셔야 합니다.
+학습이 목적이기때문에 추가적인 요금을 최소화 해야합니다.
+
+![](/img/2024-07-10-00-36-34.webp)
+
+`자격 증명 관리`에서 자체 관리를 선택하시고
+사용자이름과 마스터 암호를 기억합니다.
+
+<Callout type='danger'>실제로 DB에 접근할 수 있는 아이디와 암호 입니다. 잘 기억하세요!</Callout>
+
+![](/img/2024-07-10-00-43-07.webp)
+스토리지 유형은 `gp3`를 선택해주세요.
+용량은 `20GB`이상 사용하시면 안됩니다.
+다른 스토리지가 성능적으로 우수합니다만, 요금적인 측면을 고려해야합니다.
+
+![](/img/2024-07-10-00-38-52.webp)
+
+퍼블릭 억세스는 허용해야합니다.
+아키텍처 구조를 생각해보면서 다시한번 구조를 이해해봅시다.
+
+![](/img/2024-07-10-00-39-40.webp)
+
+무작위 특정 사용자들이 `EC2`를 통해서 RDS로 요청을 보내게됩니다.
+여기서 `RDS`는 `VPC`를 활용해서 억세스를 제한할 수 있지만,
+
+어차피 `RDS`의 `ID`와 `PW`가 없다면 데이터베이스에 접근할 수 없습니다.
+
+보안적으로 치명적인 문제가 없으므로 저는 간단하게 진행하겠습니다.
+
+이제 생성은 완료되었습니다.
+생성하는데 오래걸리는 편 생성이 완료되길 기다리시면 되겠습니다.
+
+### ✅ 보안그룹 설정
+
+사용할 `EC2`에서 보안그룹을 생성해야 하므로 EC2 보안그룹으로 접속합니다.
+
+![](/img/2024-07-10-01-04-22.webp)
+
+위와 같이 생성합니다. 다시 `RDS`로 돌아갑니다.
+
+![](/img/2024-07-10-01-08-00.webp)
+
+`RDS` 수정에서 보안그룹에 방금 만든 보안그룹을 등록합니다.
+기본적인 설정은 완료되었습니다.
+
+---
+
+## 파라미터 생성하기
+
+### ✅ 파라미터란
+
+파라미터는 `RDS`에서 `DB`에 적용할 기본적인 설정입니다.
+여기서 설정값을 미리 세팅해두지 않으면 한글, 이모티콘, 정렬식에 문제가 발생합니다. 
+이를 위해서 파라미터를 설정해야 합니다.
+
+### ✅ 파라미터 설정
+
+![](/img/2024-07-10-01-15-33.webp)
+
+`RDS`에서 파라미터 그룹으로 들어가서 새로 생성합니다.
+생성된 파라미터에 들어가서 `편집` 탭에서 추가적인 내용값을 할당 합니다.
+
+1. 아래의 속성 값 전부 `utf8mb4`로 설정
+```
+character_set_client
+character_set_connection
+character_set_database
+character_set_filesystem
+character_set_results
+character_set_server
+```
+
+2. 아래의 속성 값 전부 `utf8mb4_unicode_ci`로 설정
+```
+collation_connection
+collation_server
+```
+
+3. RDS의 파라미터 그룹 변경하기
+
+![](/img/2024-07-10-01-23-08.webp)
+`RDS`의 `DB` 인스턴스 수정탭에 다시 접속하여 `DB` 파라미터 그룹을 변경합니다.
+
+---
+
+## RDS 연결 테스트 해보기
+
+### ✅ Workbench로 테스트 해보기
+
+이제 `RDS`에서 가동중인 `DB 인스턴스`가 실제로 연결이 잘되는지 확인해야합니다.
+저는 `mysql workbench`를 통해서 연결 테스트를 진행 해보겠습니다.
+
+![](/img/2024-07-10-01-28-27.webp)
+
+위와같이 작성합니다. 이전에 숙지해둔 name과 password`를 기록합니다.
+`Hostname`은 `RDS`의 엔드포인트를 복사해서 할당합니다.
+
+![](/img/2024-07-10-01-30-08.webp)
+
+아주 정상적으로 작동하는걸 확인할 수 있습니다.
+
+### ✅ Express 서버로 테스트 해보기
+
+`express`서버로 가동을 테스트해보기 위해서 간단하게 서버 단을 작성해보겠습니다.
+
+```javascript title="app.js"
+const express = require('express')
+const app = express()
+const port = 80;
+require('dotenv').config()
+const { Sequelize } = require('sequelize');
+
+const sequelize = new Sequelize(
+  process.env.DATABASE_NAME,
+  process.env.DATABASE_USERNAME,
+  process.env.DATABASE_PASSWORD,
+  {
+    host: process.env.DATABASE_HOST,
+    dialect: 'mysql'
+  }
+);
+
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
+app.listen(port, async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('DB 연결 성공!');
+  } catch (err) {
+    console.log('DB 연결 X', err);
+  }
+  console.log(`Example app listening on port ${port}`)
+})
+```
+
+필요한 라이브러리는 아래와 같습니다.
+```json title="package.json"
+{
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mysql2": "^3.6.3",
+    "sequelize": "^6.35.0"
+  }
+}
+```
+
+이제 `.env` 환경변수를 입력해야합니다. 이 값은 노출되지 않도록 하세요. 
+
+```env
+DATABASE_NAME=<사용하는 데이터 베이스 이름>
+DATABASE_USERNAME=<RDS 사용자 명>
+DATABASE_PASSWORD=<RDS 사용자 비밀번호>
+DATABASE_HOST=<RDS 엔드 포인트>
+```
+
+작성하신 env의 `NAME`속성에는 만들어두신 `database`의 명칭을 입력해야합니다. 만약 만드신게 없다면 `workbench`등을 활용해서 간단한 데이터베이스를 작성해보시면 됩니다.
+
+![](/img/2024-07-10-01-39-19.webp)
+
+성공적으로 연결하셨다면 위와같이 연결된 정보를 확인할 수 있습니다.
+
+이제 이 `server.js` 파일을 `EC2`에 업로드하여 직접 데이터를 조작해보면서 연습해보실 수 있습니다!
+
+다음 챕터에서는 `S3`를 활용하는 이미지 호스팅을 직접 구현해보겠습니다.

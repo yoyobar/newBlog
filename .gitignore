@@ -41,6 +41,7 @@ next-env.d.ts
 
 # CUSTOM
 old
+/public/robots.txt
 /public/img/nextImageExportOptimizer
 /public/img/next-image-export-optimizer-hashes.json
 /public/img,public
