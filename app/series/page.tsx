@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import { siteConfig } from '@/config/siteconfig';
 import Series from '@/components/series';
 import { CDN } from '@/config/const';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
     title: 'Series | Trouble Wiki',
@@ -22,14 +23,21 @@ export const metadata: Metadata = {
         description: `Trouble Wiki, 개인 블로그. 시리즈물을 다룹니다.`,
     },
 };
-export default async function Home() {
+async function SeriesContent() {
     const blogs = await loadBlogDetails();
 
     const series = blogs.filter((blog) => blog.meta.series !== '');
+
+    return <Series series={series} />;
+}
+
+export default function Home() {
     return (
         <PageContainer>
             <div className="w-[90%] m-auto select-none">
-                <Series series={series} />
+                <Suspense fallback={<div>Loading...</div>}>
+                    <SeriesContent />
+                </Suspense>
             </div>
         </PageContainer>
     );

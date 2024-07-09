@@ -40,15 +40,20 @@ export async function generateStaticParams() {
     }));
 }
 
-export default async function Page({ params }: { params: { slug: string } }) {
-    const { slug } = params;
+async function SeriesContent({ slug }: { slug: string }) {
     const decodeSlug = decodeURIComponent(slug);
     const blogs = await getSeries(decodeSlug);
 
+    return <SeriesView blogs={blogs} />;
+}
+
+export default function Page({ params }: { params: { slug: string } }) {
     return (
         <PageContainer>
             <div className="w-[90%] m-auto select-none">
-                <SeriesView blogs={blogs} />
+                <Suspense fallback={<div>Loading...</div>}>
+                    <SeriesContent slug={params.slug} />
+                </Suspense>
             </div>
         </PageContainer>
     );
