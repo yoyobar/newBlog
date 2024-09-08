@@ -23,4 +23,23 @@ module.exports = withMDX({
 
         return config;
     },
+    async redirects() {
+        return [
+            {
+                source: '/api/comments',
+                destination: '/',
+                permanent: true,
+            },
+            {
+                source: '/api/playdetail',
+                destination: '/',
+                permanent: true,
+            },
+            {
+                source: '/api/playlist',
+                destination: '/',
+                permanent: true,
+            },
+        ];
+    },
 });
