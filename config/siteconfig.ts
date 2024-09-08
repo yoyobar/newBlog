@@ -54,7 +54,7 @@ export const siteConfig = {
         images: [CDN + '/img/template_og_main.webp'],
     },
     verification: {
-        google: '',
+        google: 'B3igpFq97OplLTa0FIJ1j8QW7m9HrV7ka8mYWKu9Yqc',
         other: {
             'naver-site-verification': 'b1514dfdd78160c51b2a92ab8a32a656e2d92ce7',
         },
