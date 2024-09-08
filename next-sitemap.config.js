@@ -5,5 +5,8 @@ module.exports = {
     priority: 0.7,
     sitemapSize: 7000,
     generateRobotsTxt: true,
-    exclude: ['/app/api/*', '/app/calendar/*'],
+    exclude: ['/server-sitemap-index.xml'],
+    robotsTxtOptions: {
+        additionalSitemaps: ['https://wiki.yoyobar.xyz/server-sitemap-index.xml'],
+    },
 };
