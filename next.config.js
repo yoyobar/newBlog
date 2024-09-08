@@ -30,16 +30,6 @@ module.exports = withMDX({
                 destination: '/',
                 permanent: true,
             },
-            {
-                source: '/api/playdetail',
-                destination: '/',
-                permanent: true,
-            },
-            {
-                source: '/api/playlist',
-                destination: '/',
-                permanent: true,
-            },
         ];
     },
 });
