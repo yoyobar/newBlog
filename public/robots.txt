@@ -1,9 +1,8 @@
 # *
 User-agent: *
 Allow: /
-
-# Host
-Host: https://wiki.yoyobar.xyz/
+Disallow: /api/comments
+Disallow: /api/playlist
 
 # Sitemaps
 Sitemap: https://wiki.yoyobar.xyz/sitemap.xml
