@@ -4,6 +4,6 @@ module.exports = {
     changefreq: 'always',
     priority: 0.7,
     sitemapSize: 7000,
-    generateRobotsTxt: true,
+    generateRobotsTxt: false,
     exclude: ['/api/comments', '/api/playlist'],
 };
