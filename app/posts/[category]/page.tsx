@@ -13,6 +13,7 @@ export async function generateMetadata({ params }: { params: { category: string;
     const metaObj = metadata[category] || metadata['all'];
     const titleName = metaObj.title;
 
+
     return {
         title: `${titleName} | Trouble Wiki`,
         keywords: [category, titleName, 'wiki', 'Trouble Wiki'],
