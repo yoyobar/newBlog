@@ -8,3 +8,4 @@ Host: https://wiki.yoyobar.xyz/
 # Sitemaps
 Sitemap: https://wiki.yoyobar.xyz/sitemap.xml
 Sitemap: https://wiki.yoyobar.xyz/server-sitemap-index.xml
+Sitemap: https://wiki.yoyobar.xyz/sitemap-0.xml
