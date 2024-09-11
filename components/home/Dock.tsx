@@ -1,3 +1,4 @@
+import { CDN } from '@/config/const';
 import Alert from './Alert';
 import Icon from './Icon';
 
@@ -12,7 +13,7 @@ const Dock = () => {
                 hidden={false}
                 name="Emotree"
                 href="https://emotree.yoyobar.xyz"
-                src="/img/badge_placeholder.png"
+                src={`${CDN}/img/badge_placeholder.png`}
             />
             <div className="flex flex-col gap-10 m-10">
                 <Alert title={'환영합니다.'} subTitle={`Kim, minsu의 블로그입니다.`} />
